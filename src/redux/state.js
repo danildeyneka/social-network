@@ -1,6 +1,8 @@
-import {rerenderDOM} from "../render";
+let rerenderDOM = () => {
+    console.log('fasfsa')
+}
 
-const state = {
+let state = { // изначальная БД (хардкод). группировка по страницам
     profilePage: {
         postData: [
             {id: 1, message: 'Hi there', likesCount: 4},
@@ -8,7 +10,7 @@ const state = {
             {id: 3, message: 'Hi 23213', likesCount: 11},
             {id: 4, message: 'Hi', likesCount: 2},
         ],
-        newPostText: 'Введите текст',
+        newPost: 'Введите текст',
     },
     messengerPage: {
         dialogsData: [
@@ -29,14 +31,24 @@ const state = {
     }
 }
 
-export const addPost = (postMessage) => {
+export const addPost = () => {
     const newPost = {
-        id: 5,
-        message: postMessage,
+        id: 5, // хардкод
+        message: state.profilePage.newPost, // ловим сообщение из textarea, записанное в стейт
         likesCount: 0
     }
-    state.profilePage.postData.push(newPost)
+    state.profilePage.postData.push(newPost) // добавление поста в стейт
+    state.profilePage.newPost = '' // очистка поля ввода после добавления поста
     rerenderDOM(state);
+}
+
+export const updateNewPost = (newMessage) => {
+    state.profilePage.newPost = newMessage
+    rerenderDOM(state)
+}
+
+export const subscribe = (observer) => {
+    rerenderDOM = observer
 }
 
 export default state
