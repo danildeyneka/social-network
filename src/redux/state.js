@@ -1,3 +1,6 @@
+const UPDATE_NEW_POST = 'UPDATE-NEW-POST'
+const ADD_POST = 'ADD-POST'
+
 let store = {
     _state: { // изначальная БД (хардкод). группировка по страницам
         profilePage: {
@@ -27,30 +30,45 @@ let store = {
             ]
         }
     },
-    getState() {
-        return this._state
-    },
     _callSubscriber() {
         console.log('fasfsa')
     },
-    addPost() {
-        const newPost = {
-            id: 5, // хардкод
-            message: this._state.profilePage.newPost, // ловим сообщение из textarea, записанное в стейт
-            likesCount: 0
-        }
-        this._state.profilePage.postData.push(newPost) // добавление поста в стейт
-        this._state.profilePage.newPost = '' // очистка поля ввода после добавления поста
-        this._callSubscriber(this._state);
-    },
-    updateNewPost(newMessage) {
-        this._state.profilePage.newPost = newMessage
-        this._callSubscriber(this._state)
+
+    getState() {
+        return this._state
     },
     subscribe(observer) {
         this._callSubscriber = observer
     },
 
+    dispatch(action) { // { type: 'add-post' }
+        if (action.type === ADD_POST) {
+            const newPost = {
+                id: 5, // хардкод
+                message: this._state.profilePage.newPost, // ловим сообщение из textarea, записанное в стейт
+                likesCount: 0
+            }
+            this._state.profilePage.postData.push(newPost) // добавление поста в стейт
+            this._state.profilePage.newPost = '' // очистка поля ввода после добавления поста
+            this._callSubscriber(this._state);
+        } else if (action.type === UPDATE_NEW_POST) {
+            this._state.profilePage.newPost = action.newMessage
+            this._callSubscriber(this._state)
+        }
+    }
+}
+
+export const addPostActionCreator = () => {
+    return {
+        type: ADD_POST
+    }
+}
+
+export const updateNewPostActionCreator = (text) => {
+    return {
+        type: UPDATE_NEW_POST,
+        newMessage: text
+    }
 }
 
 export default store

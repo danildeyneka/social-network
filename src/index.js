@@ -12,9 +12,8 @@ const rerenderDOM = (state) => { // или let ???
         <React.StrictMode>
             <BrowserRouter>
                 <App
-                    state={store.getState()}
-                    addPost={store.addPost}
-                    updateNewPost={store.updateNewPost}
+                    state={state}
+                    dispatch={store.dispatch.bind(store)} // вместо  addPost={store.addPost.bind(store)}
                 />
             </BrowserRouter>
         </React.StrictMode>
