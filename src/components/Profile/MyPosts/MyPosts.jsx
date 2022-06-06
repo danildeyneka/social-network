@@ -1,7 +1,7 @@
 import c from './MyPosts.module.scss'
 import Post from './Post/Post'
 import React from "react";
-import {addPostActionCreator, updateNewPostActionCreator} from "../../../redux/state";
+import {addNewPostActionCreator, writeNewPostActionCreator} from "../../../redux/profileReducer";
 
 const MyPosts = (props) => {
 
@@ -9,13 +9,13 @@ const MyPosts = (props) => {
 
     const newPost = React.createRef();
 
-    const addPost = () => {
-        props.dispatch(addPostActionCreator())
-    }
-
     const onPostChange = () => {
         let text = newPost.current.value
-        props.dispatch(updateNewPostActionCreator(text))
+        props.dispatch(writeNewPostActionCreator(text))
+    }
+
+    const addPost = () => {
+        props.dispatch(addNewPostActionCreator())
     }
 
     return (<div className={c.posts__wrapper}>

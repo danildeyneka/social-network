@@ -1,12 +1,12 @@
-const UPDATE_NEW_POST = 'UPDATE-NEW-POST'
-const ADD_POST = 'ADD-POST'
+import profileReducer from "./profileReducer";
+import messengerReducer from "./messengerReducer";
 
 let store = {
     _state: { // изначальная БД (хардкод). группировка по страницам
         profilePage: {
             postData: [
                 {id: 1, message: 'Hi there', likesCount: 4},
-                {id: 2, message: 'Hi dasdqwdqdwd3dq', likesCount: 6},
+                {id: 2, message: 'Hi e3dq', likesCount: 6},
                 {id: 3, message: 'Hi 23213', likesCount: 11},
                 {id: 4, message: 'Hi', likesCount: 2},
             ],
@@ -24,14 +24,15 @@ let store = {
             messagesData: [
                 {id: 1, message: 'Hello React'},
                 {id: 2, message: 'Its cool'},
-                {id: 3, message: 'adsdad'},
+                {id: 3, message: 'ads'},
                 {id: 4, message: 'f3w3'},
                 {id: 5, message: 'lorem'}
-            ]
+            ],
+            newMessage: 'Введите сообщение'
         }
     },
     _callSubscriber() {
-        console.log('fasfsa')
+        console.log('ssss')
     },
 
     getState() {
@@ -42,32 +43,11 @@ let store = {
     },
 
     dispatch(action) { // { type: 'add-post' }
-        if (action.type === ADD_POST) {
-            const newPost = {
-                id: 5, // хардкод
-                message: this._state.profilePage.newPost, // ловим сообщение из textarea, записанное в стейт
-                likesCount: 0
-            }
-            this._state.profilePage.postData.push(newPost) // добавление поста в стейт
-            this._state.profilePage.newPost = '' // очистка поля ввода после добавления поста
-            this._callSubscriber(this._state);
-        } else if (action.type === UPDATE_NEW_POST) {
-            this._state.profilePage.newPost = action.newMessage
-            this._callSubscriber(this._state)
-        }
-    }
-}
 
-export const addPostActionCreator = () => {
-    return {
-        type: ADD_POST
-    }
-}
+        this._state.profilePage = profileReducer(this._state.profilePage, action)
+        this._state.messengerPage = messengerReducer(this._state.messengerPage, action)
 
-export const updateNewPostActionCreator = (text) => {
-    return {
-        type: UPDATE_NEW_POST,
-        newMessage: text
+        this._callSubscriber(this._state)
     }
 }
 
