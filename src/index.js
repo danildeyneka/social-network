@@ -1,4 +1,4 @@
-import store from "./redux/state";
+import store from "./redux/redux-store";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -20,6 +20,9 @@ const rerenderDOM = (state) => { // или let ???
     );
 }
 
-rerenderDOM(store.getState()) // исходный рендер всего приложения
+rerenderDOM(store.getState()) // исходный рендер всего приложения. стейт вызывается геттером
 
-store.subscribe(rerenderDOM)
+store.subscribe(() => {
+    let state = store.getState()
+    rerenderDOM(state)
+})

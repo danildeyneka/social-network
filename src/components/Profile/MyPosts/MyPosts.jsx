@@ -12,6 +12,7 @@ const MyPosts = (props) => {
     const onPostChange = () => {
         let text = newPost.current.value
         props.dispatch(writeNewPostActionCreator(text))
+        // props.dispatch({type: 'WRITE-POST', newPost: text}) аналог без actionCreator. неудобно
     }
 
     const addPost = () => {

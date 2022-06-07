@@ -1,7 +1,16 @@
 const WRITE_POST = 'UPDATE-NEW-POST'
 const ADD_POST = 'WRITE-POST'
+const initialState = {
+    postData: [
+        {id: 1, message: 'Hi there', likesCount: 4},
+        {id: 2, message: 'Hi e3dq', likesCount: 6},
+        {id: 3, message: 'Hi 23213', likesCount: 11},
+        {id: 4, message: 'Hi', likesCount: 2},
+    ],
+    newPost: 'Введите текст',
+}
 
-const profileReducer = (state, action) => {
+const profileReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_POST:
             const newPost = {
@@ -29,16 +38,16 @@ export const addNewPostActionCreator = () => ({type: ADD_POST}) // return опу
 export default profileReducer
 
 // если бы мы не использовали редьюсер, такой код был бы в store.dispatch
-//  state = сам редьюсер того компонента. сейчас state = profilePage
+//  state - это редьюсер того компонента. сейчас state = profilePage
 
 // if (action.type === ADD_POST) {
 //     const newPost = {
 //         id: 5, // хардкод
-//         message: this._state.profilePage.newPost, // ловим сообщение из textarea, записанное в стейт
+//         message: this._state.profilePage.newPost,
 //         likesCount: 0
 //     }
-//     this._state.profilePage.postData.push(newPost) // добавление поста в стейт
-//     this._state.profilePage.newPost = '' // очистка поля ввода после добавления поста
+//     this._state.profilePage.postData.push(newPost)
+//     this._state.profilePage.newPost = ''
 //     this._callSubscriber(this._state)
 //
 // } else if (action.type === WRITE_POST) {

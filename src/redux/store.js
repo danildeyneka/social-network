@@ -3,7 +3,7 @@ import messengerReducer from "./messengerReducer";
 
 let store = {
     _state: { // изначальная БД (хардкод). группировка по страницам
-        profilePage: {
+        profilePage: { // все что внутри - initial state для profileReducer, первоначальная загрузка БД
             postData: [
                 {id: 1, message: 'Hi there', likesCount: 4},
                 {id: 2, message: 'Hi e3dq', likesCount: 6},
@@ -31,11 +31,11 @@ let store = {
             newMessage: 'Введите сообщение'
         }
     },
-    _callSubscriber() {
-        console.log('ssss')
-    },
+    // _callSubscriber() {
+    //     console.log('ssss')
+    // },
 
-    getState() {
+    getState() { // геттер - мы не можем обращатсья напрямую к _state. _ это индикатор неприкосновенности к внешнему миру
         return this._state
     },
     subscribe(observer) {
