@@ -2,23 +2,21 @@ import c from './Messenger.module.scss'
 import User from "./User/User";
 import Message from "./Message/Messsage";
 import React from "react";
-import {addNewMessageActionCreator, writeNewMessageActionCreator} from '../../redux/messengerReducer'
 
 const Messenger = (props) => {
 
-    const dialogsElements = props.messengerPage.dialogsData.map(user => <User name={user.name} id={user.id}/>)
-    const messageElements = props.messengerPage.messagesData.map(message => <Message message={message.message}
+    const dialogsElements = props.dialogsData.map(user => <User name={user.name} id={user.id}/>)
+    const messageElements = props.messagesData.map(message => <Message message={message.message}
                                                                                      id={message.id}/>)
-
     const newMessage = React.createRef()
 
-    const onMessageChange = (e) => { // обращение к полю ввода напрямую (в myPosts по-другому)
+    const onMessageChange = (e) => {
         let text = e.target.value
-        props.dispatch(writeNewMessageActionCreator(text))
+        props.writeNewMessage(text)
     }
 
     const addMessage = () => {
-        props.dispatch(addNewMessageActionCreator())
+        props.addNewMessage()
     }
 
     return (
@@ -32,7 +30,7 @@ const Messenger = (props) => {
             <textarea
                 className={c.textarea}
                 ref={newMessage}
-                value={props.messengerPage.newMessage}
+                value={props.newMessage}
                 onChange={onMessageChange}/>
             <button
                 className={c.button}

@@ -2,8 +2,8 @@ import './App.css';
 import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import Profile from './components/Profile/Profile';
-import Messenger from "./components/Messenger/Messenger";
 import {Routes, Route} from "react-router-dom";
+import MessengerContainer from "./components/Messenger/MessengerContainer";
 
 const App = (props) => {
     return (
@@ -14,19 +14,16 @@ const App = (props) => {
                 <Routes>
                     <Route path='/profile' element={
                         <Profile
-                            profilePage={props.state.profilePage}
-                            dispatch={props.dispatch}
+                            store={props.store}
                         />}/>
                     <Route path='/messenger/*' element={
-                        <Messenger
-                            messengerPage={props.state.messengerPage}
-                            dispatch={props.dispatch}
+                        <MessengerContainer
+                            store={props.store}
                         />}/>
                     {/*<Route path='/' element={<App/>}/>*/}
                 </Routes>
             </div>
         </div>
-
-    );
+    )
 }
 export default App;

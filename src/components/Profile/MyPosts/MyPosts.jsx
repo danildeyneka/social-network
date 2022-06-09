@@ -1,23 +1,20 @@
 import c from './MyPosts.module.scss'
 import Post from './Post/Post'
 import React from "react";
-import {addNewPostActionCreator, writeNewPostActionCreator} from "../../../redux/profileReducer";
 
 const MyPosts = (props) => {
-
-    const postElements = props.postData.map(post => <Post message={post.message} id={post.id}/>)
-
     const newPost = React.createRef();
 
-    const onPostChange = () => {
-        let text = newPost.current.value
-        props.dispatch(writeNewPostActionCreator(text))
-        // props.dispatch({type: 'WRITE-POST', newPost: text}) аналог без actionCreator. неудобно
+    const onPostChange = (e) => {
+        let text = e.target.value
+        props.writeNewPost(text)
     }
 
     const addPost = () => {
-        props.dispatch(addNewPostActionCreator())
+        props.addNewPost()
     }
+
+    const postElements = props.postData.map(post => <Post message={post.message} id={post.id}/>)
 
     return (<div className={c.posts__wrapper}>
         <h3>My posts</h3>

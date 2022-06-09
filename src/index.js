@@ -13,6 +13,7 @@ const rerenderDOM = (state) => { // или let ???
             <BrowserRouter>
                 <App
                     state={state}
+                    store={store}
                     dispatch={store.dispatch.bind(store)} // вместо  addPost={store.addPost.bind(store)}
                 />
             </BrowserRouter>
