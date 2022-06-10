@@ -1,12 +1,11 @@
 import c from './Profile.module.scss'
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import MyPostsContainer from "./MyPosts/MyPostsContainer";
+import MyPosts from "./MyPosts/MyPosts";
 
-const Profile = (props) => {
+const Profile = () => {
     return <div className={c.content}>
         <ProfileInfo/>
-        <MyPostsContainer store={props.store}
-        />
+        <MyPosts/>
     </div>
 }
 

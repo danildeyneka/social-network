@@ -1,27 +1,31 @@
 import c from './MyPosts.module.scss'
 import Post from './Post/Post'
 import React from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {addNewPostActionCreator, writeNewPostActionCreator} from "../../../redux/profileReducer";
 
-const MyPosts = (props) => {
+const MyPosts = () => {
+    const dispatch = useDispatch()
+    const profilePage = useSelector(s => s.profilePage)
     const newPost = React.createRef();
 
     const onPostChange = (e) => {
         let text = e.target.value
-        props.writeNewPost(text)
+        dispatch(writeNewPostActionCreator(text))
     }
 
     const addPost = () => {
-        props.addNewPost()
+        dispatch(addNewPostActionCreator())
     }
 
-    const postElements = props.postData.map(post => <Post message={post.message} id={post.id}/>)
+    const postElements = profilePage.postData.map(post => <Post message={post.message} id={post.id}/>)
 
     return (<div className={c.posts__wrapper}>
         <h3>My posts</h3>
         <div>
             <div>
                 <textarea ref={newPost}
-                          value={props.newPost}
+                          value={profilePage.newPost}
                           onChange={onPostChange}/>
             </div>
             <div>
