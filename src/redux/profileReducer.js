@@ -1,5 +1,5 @@
-const WRITE_POST = 'UPDATE-NEW-POST'
-const ADD_POST = 'WRITE-POST'
+const WRITE_POST = 'UPDATE_NEW_POST'
+const ADD_POST = 'WRITE_POST'
 const initialState = {
     postData: [
         {id: 1, message: 'Hi there', likesCount: 4},
@@ -12,19 +12,23 @@ const initialState = {
 
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
+        case WRITE_POST:
+            return {
+                ...state,
+                newPost: action.newPost
+            }
+
         case ADD_POST:
-            const newPost = {
+            let newPost = {
                 id: 5, // хардкод
                 message: state.newPost, // ловим сообщение из textarea, записанное в стейт
                 likesCount: 0
             }
-            state.postData.push(newPost) // добавление поста в стейт
-            state.newPost = '' // очистка поля ввода после добавления поста
-            return state
-
-        case WRITE_POST:
-            state.newPost = action.newPost
-            return state
+            return {
+                ...state, // копия стейта. варианты глубокой - JSON.parse(JSON.stringify(state)) и Object.assign({}, state)
+                newPost: '', // очистка поля ввода после добавления поста
+                postData: [...state.postData, newPost]
+            }
 
         default:
             return state

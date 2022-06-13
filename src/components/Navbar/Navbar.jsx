@@ -10,6 +10,9 @@ const Navbar = () => {
         <div className={c.item}>
             <NavLink to='/Messenger' className={(nav) => nav.isActive ? c.active : ''}> Messenger </NavLink>
         </div>
+        <div className={c.item}>
+            <NavLink to='/Users' className={(nav) => nav.isActive ? c.active : ''}> Users </NavLink>
+        </div>
     </nav>
 }
 

@@ -18,7 +18,7 @@ const MyPosts = () => {
         dispatch(addNewPostActionCreator())
     }
 
-    const postElements = profilePage.postData.map(post => <Post message={post.message} id={post.id}/>)
+    const postElements = profilePage.postData.map(post => <Post message={post.message} id={post.id} key={post.id}/>)
 
     return (<div className={c.posts__wrapper}>
         <h3>My posts</h3>

@@ -8,7 +8,6 @@ import {Provider} from "react-redux";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const rerenderDOM = (state) => { // или let ???
     root.render(
         <React.StrictMode>
             <BrowserRouter>
@@ -22,11 +21,7 @@ const rerenderDOM = (state) => { // или let ???
                 </Provider>
             </BrowserRouter>
         </React.StrictMode>
-    );
-}
+    )
 
-rerenderDOM() // исходный рендер всего приложения. стейт вызывается геттером
-
-store.subscribe(() => {
-    rerenderDOM()
-})
+// rerenderDOM() // исходный рендер всего приложения. стейт вызывается геттером
+// уже не нужен тк добавили хуки

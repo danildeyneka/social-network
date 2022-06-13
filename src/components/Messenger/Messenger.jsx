@@ -9,9 +9,9 @@ const Messenger = () => {
     const dispatch = useDispatch()
     const messengerPage = useSelector(s => s.messengerPage)
 
-    const dialogsElements = messengerPage.dialogsData.map(user => <User name={user.name} id={user.id}/>)
+    const dialogsElements = messengerPage.dialogsData.map(user => <User name={user.name} id={user.id} key={user.id}/>)
     const messageElements = messengerPage.messagesData.map(message => <Message message={message.message}
-                                                                               id={message.id}/>)
+                                                                               id={message.id} key={message.id}/>)
     const newMessage = React.createRef()
 
     const onMessageChange = (e) => {

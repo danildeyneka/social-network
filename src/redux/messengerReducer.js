@@ -1,5 +1,6 @@
-const ADD_MESSAGE = 'WRITE-MESSAGE'
-const WRITE_MESSAGE = 'ADD-MESSAGE'
+const ADD_MESSAGE = 'WRITE_MESSAGE'
+const WRITE_MESSAGE = 'ADD_MESSAGE'
+
 const initialState = {
     dialogsData: [
         {id: 1, name: 'Саша'},
@@ -20,20 +21,20 @@ const initialState = {
 }
 
 const messengerReducer = (state = initialState, action) => {
-
     switch (action.type) {
-        case ADD_MESSAGE:
-            const newMessage = {
-                id: 6,
-                message: state.newMessage
-            }
-            state.messagesData.push(newMessage)
-            state.newMessage = ''
-            return state
-
         case WRITE_MESSAGE:
-            state.newMessage = action.newMessage
-            return state
+            return {
+            ...state,
+            newMessage: action.newMessage
+            }
+
+        case ADD_MESSAGE:
+            let newMessage = state.newMessage
+            return {
+                ...state,
+                newMessage: '',
+                messagesData: [...state.messagesData, {id: 6, message: newMessage}]
+            }
 
         default:
             return state
@@ -41,7 +42,7 @@ const messengerReducer = (state = initialState, action) => {
 }
 
 export const writeNewMessageActionCreator = (text) => ({type: WRITE_MESSAGE, newMessage: text})
-
+// возвращают данные, передаваемые в редьюсер при вызове в коротком виде
 export const addNewMessageActionCreator = () => ({type: ADD_MESSAGE})
 
 export default messengerReducer
