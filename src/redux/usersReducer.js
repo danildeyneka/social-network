@@ -3,9 +3,12 @@ const TOGGLE_FOLLOW = 'TOGGLE_FOLLOW'
 
 const initialState = {
     usersData: [
-        {id: 1, name: 'Dmitriy', photo: 'https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80', status: 'unique status', location: {city: 'Minsk', country: 'Belarus'}, following: false},
-        {id: 2, name: 'Eugene', photo: 'https://images.unsplash.com/photo-1597589827317-4c6d6e0a90bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80', status: 'unique status 2', location: {city: 'Warsaw', country: 'Poland'}, following: true},
-        {id: 3, name: 'Sasha', photo: 'https://images.unsplash.com/photo-1495615080073-6b89c9839ce0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=906&q=80', status: 'unique status 3', location: {city: 'Moscow', country: 'Russia'}, following: false}
+        {id: 1, name: 'Dmitriy', photo: 'https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80',
+            status: 'unique status', location: {city: 'Minsk', country: 'Belarus'}, following: false},
+        {id: 2, name: 'Eugene', photo: 'https://images.unsplash.com/photo-1597589827317-4c6d6e0a90bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
+            status: 'unique status 2', location: {city: 'Warsaw', country: 'Poland'}, following: true},
+        {id: 3, name: 'Sasha', photo: 'https://images.unsplash.com/photo-1495615080073-6b89c9839ce0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=906&q=80',
+            status: 'unique status 3', location: {city: 'Moscow', country: 'Russia'}, following: false}
     ]
 }
 
@@ -14,13 +17,15 @@ const usersReducer = (state = initialState, action) => {
         case SET_USERS:
             return {
                 ...state,
-                users: [...state.users, ...action.users]
+                users: [...action.users]
+                // вместо users: [...state.users, ...action.users]
             }
+
+
 
         case TOGGLE_FOLLOW:
             return {
                 ...state,
-                // usersData: [state.usersData],
                 usersData: state.usersData.map(user => {
                     if (user.id === action.userId) {
                         return {...user, following: !user.following}
@@ -28,6 +33,9 @@ const usersReducer = (state = initialState, action) => {
                     return user
                 })
             }
+
+
+
         default:
             return state
     }

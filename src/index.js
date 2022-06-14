@@ -1,4 +1,4 @@
-import store from "./redux/redux-store";
+import store from "./redux/store";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
         <React.StrictMode>
             <BrowserRouter>
                 <Provider store={store}
-                    // нужен для работы хуков
+                    // нужен для работы редакса и хуков
                 >
                     <App
                         // dispatch={store.dispatch.bind(store)} // вместо  addPost={store.addPost.bind(store)}
