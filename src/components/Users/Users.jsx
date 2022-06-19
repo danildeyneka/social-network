@@ -1,12 +1,23 @@
 import c from './Users.module.scss'
 import {useDispatch, useSelector} from "react-redux";
-import {setUsersAC, toggleFollowAC} from "../../redux/usersReducer";
+import {setTotalUsersCountAC, setCurrentPageAC, setUsersAC, toggleFollowAC} from "../../redux/usersReducer";
 import axios from "axios";
 import initialPhoto from '../../assets/images/avatar.png'
+import {useEffect} from "react";
 
 const Users = () => {
     const dispatch = useDispatch()
-    const usersData = useSelector(s => s.usersPage.usersData)
+    const usersPage = useSelector(s => s.usersPage)
+    const pagesCount = Math.ceil(usersPage.totalUsersCount / usersPage.pageSize)
+
+    let pages = []
+    for (let i = 1; i <= pagesCount; i++) {
+        pages.push(i)
+    }
+    let currentPage = usersPage.currentPage
+    let prevPage = currentPage + 5
+    let nextPage = ((currentPage - 5) < 0) ? 0 : currentPage - 5
+    let slicedPages = pages.slice(nextPage, prevPage)
 
     const setUsers = (users) => {
         dispatch(setUsersAC(users))
@@ -14,20 +25,42 @@ const Users = () => {
     const toggleFollow = (userId) => {
         dispatch(toggleFollowAC(userId))
     }
+    const setCurrentPage = (pageNumber) => {
+        dispatch(setCurrentPageAC(pageNumber))
+    }
+    const setTotalUsersCount = (totalUsersCount) => {
+        dispatch(setTotalUsersCountAC(totalUsersCount))
+    }
 
-    if (usersData.length === 0) {
-        axios.get('https://social-network.samuraijs.com/api/1.0/users')
+    useEffect(() => {
+        console.log('raz')
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${usersPage.currentPage}&count=${usersPage.pageSize}`)
+            .then((response) => {
+                setUsers(response.data.items)
+                console.log(response.data)
+                setTotalUsersCount(response.data.totalCount)
+            })
+    }, [])
+
+    const onPageChanged = (pageNumber) => {
+        setCurrentPage(pageNumber)
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${usersPage.pageSize}`)
             .then((response) => {
                 setUsers(response.data.items)
             })
     }
 
     return (
-        <div className={c.user}>
-            {
-                usersData.map(u => <div key={u.id}>
+        <div>
+            <div className={c.pages}>
+                {slicedPages.map(p => <span className={usersPage.currentPage === p ? c.selected : ''}
+                                            onClick={() => onPageChanged(p)}>{p}</span>)}
+            </div>
+            <div className={c.user}>
+                {usersPage.usersData.map(u => <div key={u.id}>
                     <img className={c.user__avatar}
-                         src={u.photos.small !== null ? u.photos.small : initialPhoto} alt='img'/>
+                         src={u.photos.small !== null ? u.photos.small : initialPhoto}
+                         alt='img'/>
                     <div>
                         <button onClick={() => toggleFollow(u.id)}>{u.following ? 'Unfollow' : 'Follow'}</button>
                     </div>
@@ -39,8 +72,8 @@ const Users = () => {
                             <p className={c.user__city}>{'u.location.city'}</p>
                         </div>
                     </div>
-                </div>)
-            }
+                </div>)}
+            </div>
         </div>
     )
 }
@@ -50,33 +83,14 @@ export default Users
 // ================== old code w/o api
 
 // if (usersData.length === 0) { // хардкодим БД вместе с отрисовкой страницы, ка кбудто она приходит к нам извне
-//     setUsers([
-//         {id: 1, name: 'Dmitriy', photo: 'https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80',
-//             status: 'unique status', location: {city: 'Minsk', country: 'Belarus'}, following: false},
-//         {id: 2, name: 'Eugene', photo: 'https://images.unsplash.com/photo-1597589827317-4c6d6e0a90bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
-//             status: 'unique status 2', location: {city: 'Warsaw', country: 'Poland'}, following: true},
-//         {id: 3, name: 'Sasha', photo: 'https://images.unsplash.com/photo-1495615080073-6b89c9839ce0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=906&q=80',
-//             status: 'unique status 3', location: {city: 'Moscow', country: 'Russia'}, following: false}
-//     ])
+//     setUsers([...])
 // }
 
-// return (
-//     <div className={c.user}>
-//         {
-//             usersData.map(user => <div key={user.id}>
-//                 <div>
-//                     <img className={c.user__avatar} src={user.photo}/>
-//                     <button onClick={() => toggleFollow(user.id)}>{user.following ? 'Unfollow' : 'Follow'}</button>
-//                 </div>
-//                 <div className={c.user__info}>
-//                     <div className={c.user__name}>{user.name}</div>
-//                     <div className={c.user__status}>{user.status}</div>
-//                     <div className={c.user__location}>
-//                         <p className={c.user__country}>{user.location.country}</p>
-//                         <p className={c.user__city}>{user.location.city}</p>
-//                     </div>
-//                 </div>
-//             </div>)
-//         }
-//     </div>
-// )
+// return (...)
+
+// if (usersData.length === 0) {
+//     axios.get('https://social-network.samuraijs.com/api/1.0/users')
+//         .then((response) => {
+//             setUsers(response.data.items)
+//         })
+// }

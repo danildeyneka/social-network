@@ -9,7 +9,7 @@ import {Provider} from "react-redux";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
     root.render(
-        <React.StrictMode>
+        // <React.StrictMode>
             <BrowserRouter>
                 <Provider store={store}
                     // нужен для работы редакса и хуков
@@ -20,8 +20,5 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
                     />
                 </Provider>
             </BrowserRouter>
-        </React.StrictMode>
+         // </React.StrictMode> // чтобы useState не вызывался 2 раза (проверка на его размонтированность)
     )
-
-// rerenderDOM() // исходный рендер всего приложения. стейт вызывается геттером
-// уже не нужен тк добавили хуки
