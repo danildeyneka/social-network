@@ -15,7 +15,8 @@ const App = () => {
             // заворачиваем ту часть, где будут меняться страницы в роуты - а сам навбар для роутов выше
             >
                 <Routes>
-                    <Route path='/profile/*' element={<Profile/>}/>
+                    <Route path='/profile/:userId' element={<Profile/>}/>
+                    <Route path='/profile/' element={<Profile/>}/>
                     <Route path='/messenger/*' element={<Messenger/>}/>
                     <Route path='/users' element={<Users/>}/>
                 </Routes>

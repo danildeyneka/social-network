@@ -1,5 +1,7 @@
 const WRITE_POST = 'UPDATE_NEW_POST'
 const ADD_POST = 'WRITE_POST'
+const SET_USER_PROFILE = 'SET_USER_PROFILE'
+
 const initialState = {
     postData: [
         {id: 1, message: 'Hi there', likesCount: 4},
@@ -8,6 +10,7 @@ const initialState = {
         {id: 4, message: 'Hi', likesCount: 2},
     ],
     newPost: 'Введите текст',
+    profile: null
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -30,15 +33,20 @@ const profileReducer = (state = initialState, action) => {
                 postData: [...state.postData, newPost]
             }
 
+        case SET_USER_PROFILE:
+            return {
+                ...state,
+                profile: action.profile
+            }
+
         default:
             return state
     }
 }
 
 export const writeNewPostActionCreator = (text) => ({type: WRITE_POST, newPost: text})
-
-export const addNewPostActionCreator = () => ({type: ADD_POST}) // return опускается, а объект заворачивается в скобки
-
+export const addNewPostActionCreator = () => ({type: ADD_POST})
+export const setUserProfileAC = (profile) => ({type: SET_USER_PROFILE, profile})
 export default profileReducer
 
 // если бы мы не использовали редьюсер, такой код был бы в store.dispatch
