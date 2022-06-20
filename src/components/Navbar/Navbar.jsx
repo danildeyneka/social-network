@@ -1,17 +1,16 @@
 import c from './Navbar.module.scss'
-// import SingleLink from './SingleLink/SingleLink'
 import {NavLink} from "react-router-dom";
 
 const Navbar = () => {
     return <nav>
         <div className={c.item}>
-            <NavLink to='/Profile' className={(nav) => nav.isActive ? c.active : ''}> Profile </NavLink>
+            <NavLink to='/profile' className={(nav) => nav.isActive ? c.active : ''}> Profile </NavLink>
         </div>
         <div className={c.item}>
-            <NavLink to='/Messenger' className={(nav) => nav.isActive ? c.active : ''}> Messenger </NavLink>
+            <NavLink to='/messenger' className={(nav) => nav.isActive ? c.active : ''}> Messenger </NavLink>
         </div>
         <div className={c.item}>
-            <NavLink to='/Users' className={(nav) => nav.isActive ? c.active : ''}> Users </NavLink>
+            <NavLink to='/users' className={(nav) => nav.isActive ? c.active : ''}> Users </NavLink>
         </div>
     </nav>
 }

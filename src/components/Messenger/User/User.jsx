@@ -4,7 +4,7 @@ import {NavLink} from "react-router-dom";
 const User = (props) => {
     return (
         <div className={c.dialogs__item + c.active}>
-            <NavLink to={"/Messenger/" + props.id}> {props.name} </NavLink>
+            <NavLink to={"/messenger/" + props.id}> {props.name} </NavLink>
         </div>
     )
 }
