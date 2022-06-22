@@ -16,7 +16,7 @@ const Profile = () => {
     let match = useMatch('/profile/:userId')
 
     useEffect(() => {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${match ? match.params.userId : 2}`)
+        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${match ? match.params.userId : 24558}`)
             .then((response) => {
                 setUserProfile(response.data)
             })

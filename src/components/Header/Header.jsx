@@ -21,7 +21,6 @@ const Header = () => {
                 if (response.data.resultCode === 0) {
                     let {id, email, login} = response.data.data
                     setAuthUserData(id, email, login)
-                    debugger
                 }
             })
     })
