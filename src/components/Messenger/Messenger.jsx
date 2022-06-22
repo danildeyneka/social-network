@@ -3,7 +3,7 @@ import User from "./User/User";
 import Message from "./Message/Messsage";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addNewMessageActionCreator, writeNewMessageActionCreator} from "../../redux/messengerReducer";
+import {addMessage, writeMessage} from "../../redux/messengerReducer";
 
 const Messenger = () => {
     const dispatch = useDispatch()
@@ -13,15 +13,6 @@ const Messenger = () => {
     const messageElements = messengerPage.messagesData.map(message => <Message message={message.message}
                                                                                id={message.id} key={message.id}/>)
     const newMessage = React.createRef()
-
-    const onMessageChange = (e) => {
-        let text = e.target.value
-        dispatch(writeNewMessageActionCreator(text))
-    }
-
-    const addMessage = () => {
-        dispatch(addNewMessageActionCreator())
-    }
 
     return (
         <div className={c.dialogs}>
@@ -35,10 +26,10 @@ const Messenger = () => {
                 className={c.textarea}
                 ref={newMessage}
                 value={messengerPage.newMessage}
-                onChange={onMessageChange}/>
+                onChange={(e)=>dispatch(writeMessage(e.target.value))}/>
             <button
                 className={c.button}
-                onClick={addMessage}>
+                onClick={() => dispatch(addMessage())}>
                 <span>Send</span>
             </button>
         </div>

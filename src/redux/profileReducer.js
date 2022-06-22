@@ -44,9 +44,9 @@ const profileReducer = (state = initialState, action) => {
     }
 }
 
-export const writeNewPostActionCreator = (text) => ({type: WRITE_POST, newPost: text})
-export const addNewPostActionCreator = () => ({type: ADD_POST})
-export const setUserProfileAC = (profile) => ({type: SET_USER_PROFILE, profile})
+export const writePost = (text) => ({type: WRITE_POST, newPost: text})
+export const addPost = () => ({type: ADD_POST})
+export const setUserProfile = (profile) => ({type: SET_USER_PROFILE, profile})
 export default profileReducer
 
 // если бы мы не использовали редьюсер, такой код был бы в store.dispatch

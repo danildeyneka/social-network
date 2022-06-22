@@ -41,8 +41,7 @@ const messengerReducer = (state = initialState, action) => {
     }
 }
 
-export const writeNewMessageActionCreator = (text) => ({type: WRITE_MESSAGE, newMessage: text})
-// возвращают данные, передаваемые в редьюсер при вызове в коротком виде
-export const addNewMessageActionCreator = () => ({type: ADD_MESSAGE})
+export const writeMessage = (text) => ({type: WRITE_MESSAGE, newMessage: text})
+export const addMessage = () => ({type: ADD_MESSAGE})
 
 export default messengerReducer

@@ -1,6 +1,6 @@
 import c from './Users.module.scss'
 import {useDispatch, useSelector} from "react-redux";
-import {setTotalUsersCountAC, setCurrentPageAC, setUsersAC, toggleIsFetchingAC, followAC, unfollowAC} from "../../redux/usersReducer";
+import {setTotalUsersCount, setCurrentPage, setUsers, toggleIsFetching, follow, unfollow} from "../../redux/usersReducer";
 import initialPhoto from '../../assets/images/avatar.png'
 import {useEffect} from "react";
 import Preloader from "../common/Preloader/Preloader";
@@ -22,30 +22,23 @@ const Users = () => {
     let nextPage = currentPage + 5
     let slicedPages = pages.slice(prevPage, nextPage)
 
-    // const setUsers = (users) => { dispatch(setUsersAC(users))}
-    const follow = (userId) => { dispatch(followAC(userId)) }
-    const unfollow = (userId) => { dispatch(unfollowAC(userId)) }
-    const setCurrentPage = (pageNumber) => { dispatch(setCurrentPageAC(pageNumber)) }
-    const setTotalUsersCount = (totalUsersCount) => { dispatch(setTotalUsersCountAC(totalUsersCount)) }
-    const toggleIsFetching = (isFetching) => { dispatch(toggleIsFetchingAC(isFetching)) }
-
     useEffect(() => {
-        toggleIsFetching(true)
+        dispatch(toggleIsFetching(true))
         usersAPI.getUsers(currentPage, pageSize)
             .then(data => {
-                toggleIsFetching(false)
-                dispatch(setUsersAC(data.items))
-                setTotalUsersCount(data.totalCount)
+                dispatch(toggleIsFetching(false))
+                dispatch(setUsers(data.items))
+                dispatch(setTotalUsersCount(data.totalCount))
             })
     }, [])
 
     const onPageChanged = (pageNumber) => {
-        setCurrentPage(pageNumber)
-        toggleIsFetching(true)
+        dispatch(setCurrentPage(pageNumber))
+        dispatch(toggleIsFetching(true))
         usersAPI.getUsers(pageNumber, pageSize)
             .then(data => {
-                toggleIsFetching(false)
-                dispatch(setUsersAC(data.items))
+                dispatch(toggleIsFetching(false))
+                dispatch(setUsers(data.items))
             })
     }
 
@@ -68,7 +61,7 @@ const Users = () => {
                                 usersAPI.unfollow(u.id)
                                     .then(data => {
                                         if (data.resultCode === 0) {
-                                            unfollow(u.id)
+                                            dispatch(unfollow(u.id))
                                         }
                                     })
                             }}>Unfollow</button> :
@@ -76,7 +69,7 @@ const Users = () => {
                                 usersAPI.follow(u.id)
                                     .then(data => {
                                         if (data.resultCode === 0) {
-                                            follow(u.id)
+                                            dispatch(follow(u.id))
                                         }
                                     })
                             }}>Follow</button>}
