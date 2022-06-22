@@ -1,7 +1,18 @@
 .header {
   grid-area: h;
   background-color: aqua;
+
   img {
     width: 20px;
+  }
+}
+
+.login {
+  display: flex;
+  justify-content: end;
+
+  a {
+    color: black;
+    font-weight: bold;
   }
 }
