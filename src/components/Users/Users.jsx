@@ -1,11 +1,10 @@
 import c from './Users.module.scss'
 import {useDispatch, useSelector} from "react-redux";
-import {setTotalUsersCount, setCurrentPage, setUsers, toggleIsFetching, follow, unfollow} from "../../redux/usersReducer";
+import {followThunk, getUsers, onPageChanged, unfollowThunk} from "../../redux/usersReducer";
 import initialPhoto from '../../assets/images/avatar.png'
 import {useEffect} from "react";
 import Preloader from "../common/Preloader/Preloader";
 import {NavLink} from "react-router-dom";
-import {usersAPI} from "../../api/api";
 
 const Users = () => {
     const dispatch = useDispatch()
@@ -23,30 +22,14 @@ const Users = () => {
     let slicedPages = pages.slice(prevPage, nextPage)
 
     useEffect(() => {
-        dispatch(toggleIsFetching(true))
-        usersAPI.getUsers(currentPage, pageSize)
-            .then(data => {
-                dispatch(toggleIsFetching(false))
-                dispatch(setUsers(data.items))
-                dispatch(setTotalUsersCount(data.totalCount))
-            })
+        dispatch(getUsers(currentPage, pageSize))
     }, [])
-
-    const onPageChanged = (pageNumber) => {
-        dispatch(setCurrentPage(pageNumber))
-        dispatch(toggleIsFetching(true))
-        usersAPI.getUsers(pageNumber, pageSize)
-            .then(data => {
-                dispatch(toggleIsFetching(false))
-                dispatch(setUsers(data.items))
-            })
-    }
 
     return (<>
         {usersPage.isFetching ? <Preloader/> : <div>
             <div className={c.pages}>
                 {slicedPages.map(p => <span className={usersPage.currentPage === p ? c.selected : ''}
-                                            onClick={() => onPageChanged(p)}>{`${p} `}</span>)}
+                                            onClick={() => dispatch(onPageChanged(p, pageSize))}>{`${p} `}</span>)}
             </div>
             <div className={c.user}>
                 {usersPage.usersData.map(u => <div key={u.id}>
@@ -56,23 +39,14 @@ const Users = () => {
                              alt='img'/>
                     </NavLink>
                     <div>
-                        {u.followed ?
-                            <button onClick={() => {
-                                usersAPI.unfollow(u.id)
-                                    .then(data => {
-                                        if (data.resultCode === 0) {
-                                            dispatch(unfollow(u.id))
-                                        }
-                                    })
-                            }}>Unfollow</button> :
-                            <button onClick={() => {
-                                usersAPI.follow(u.id)
-                                    .then(data => {
-                                        if (data.resultCode === 0) {
-                                            dispatch(follow(u.id))
-                                        }
-                                    })
-                            }}>Follow</button>}
+                        {u.followed ? <button disabled={usersPage.isFollowingInProgress.includes(u.id)}
+                                              onClick={() => {
+                                                  dispatch(unfollowThunk(u.id))
+                                              }}>Unfollow</button> :
+                            <button disabled={usersPage.isFollowingInProgress.includes(u.id)}
+                                    onClick={() => {
+                                        dispatch(followThunk(u.id))
+                                    }}>Follow</button>}
                     </div>
                     <div className={c.user__info}>
                         <div className={c.user__name}>{u.name}</div>

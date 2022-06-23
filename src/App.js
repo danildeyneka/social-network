@@ -19,6 +19,7 @@ const App = () => {
                     <Route path='/profile/' element={<Profile/>}/>
                     <Route path='/messenger/*' element={<Messenger/>}/>
                     <Route path='/users' element={<Users/>}/>
+                    <Route path='/login' element={<Users/>}/>
                 </Routes>
             </div>
         </div>

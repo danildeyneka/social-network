@@ -1,3 +1,5 @@
+import {profileAPI} from "../api/api";
+
 const WRITE_POST = 'UPDATE_NEW_POST'
 const ADD_POST = 'WRITE_POST'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
@@ -46,23 +48,14 @@ const profileReducer = (state = initialState, action) => {
 
 export const writePost = (text) => ({type: WRITE_POST, newPost: text})
 export const addPost = () => ({type: ADD_POST})
-export const setUserProfile = (profile) => ({type: SET_USER_PROFILE, profile})
+const setUserProfileAC = (profile) => ({type: SET_USER_PROFILE, profile})
+
+export const setUserProfile = (match) => {
+    return (dispatch) => {
+        profileAPI.getProfile(match)
+            .then(data => {
+                dispatch(setUserProfileAC(data))
+            })
+    }
+}
 export default profileReducer
-
-// если бы мы не использовали редьюсер, такой код был бы в store.dispatch
-//  state - это редьюсер того компонента. сейчас state = profilePage
-
-// if (action.type === ADD_POST) {
-//     const newPost = {
-//         id: 5, // хардкод
-//         message: this._state.profilePage.newPost,
-//         likesCount: 0
-//     }
-//     this._state.profilePage.postData.push(newPost)
-//     this._state.profilePage.newPost = ''
-//     this._callSubscriber(this._state)
-//
-// } else if (action.type === WRITE_POST) {
-//     this._state.profilePage.newPost = action.newPost
-//     this._callSubscriber(this._state)
-// }
