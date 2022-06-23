@@ -5,6 +5,7 @@ import Profile from './components/Profile/Profile';
 import {Routes, Route} from "react-router-dom";
 import Messenger from "./components/Messenger/Messenger";
 import Users from "./components/Users/Users";
+import Login from "./components/Login/Login";
 
 const App = () => {
     return (
@@ -19,7 +20,7 @@ const App = () => {
                     <Route path='/profile/' element={<Profile/>}/>
                     <Route path='/messenger/*' element={<Messenger/>}/>
                     <Route path='/users' element={<Users/>}/>
-                    <Route path='/login' element={<Users/>}/>
+                    <Route path='/login' element={<Login/>}/>
                 </Routes>
             </div>
         </div>
