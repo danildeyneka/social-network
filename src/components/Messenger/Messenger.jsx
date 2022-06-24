@@ -1,27 +1,19 @@
 import c from './Messenger.module.scss'
 import User from "./User/User";
 import Message from "./Message/Messsage";
-import React, {useEffect} from "react";
+import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addMessage, writeMessage} from "../../redux/messengerReducer";
-import {useNavigate} from "react-router-dom";
+import withRedirect from "../../hoc/withRedirect";
 
 const Messenger = () => {
     const dispatch = useDispatch()
     const messengerPage = useSelector(s => s.messengerPage)
-    const isAuth = useSelector(s=>s.auth.isAuth)
-    const navigate = useNavigate()
 
     const dialogsElements = messengerPage.dialogsData.map(user => <User name={user.name} id={user.id} key={user.id}/>)
     const messageElements = messengerPage.messagesData.map(message => <Message message={message.message}
                                                                                id={message.id} key={message.id}/>)
     const newMessage = React.createRef()
-
-    useEffect(() => {
-        if (!isAuth) {
-            return navigate('/login')
-        }
-    }, [isAuth])
 
     return (
         <div className={c.dialogs}>
@@ -45,4 +37,6 @@ const Messenger = () => {
     )
 }
 
-export default Messenger
+const MessengerWithRedirect = withRedirect(Messenger)
+
+export default MessengerWithRedirect

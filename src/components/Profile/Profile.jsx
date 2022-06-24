@@ -4,25 +4,17 @@ import MyPosts from "./MyPosts/MyPosts";
 import {useEffect} from "react";
 import {setUserProfile} from "../../redux/profileReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {useMatch, useNavigate} from "react-router-dom";
+import {useMatch} from "react-router-dom";
+import withRedirect from "../../hoc/withRedirect";
 
 const Profile = () => {
     const dispatch = useDispatch()
-    const profile = useSelector(s=>s.profilePage.profile)
-    let match = useMatch('/profile/:userId')
+    const profile = useSelector(s => s.profilePage.profile)
+    const match = useMatch('/profile/:userId')
 
     useEffect(() => {
         dispatch(setUserProfile(match))
     }, [match])
-
-    const isAuth = useSelector(s=>s.auth.isAuth)
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (!isAuth) {
-            return navigate('/login')
-        }
-    }, [isAuth])
 
     return <div className={c.content}>
         <ProfileInfo profile={profile}/>
@@ -30,4 +22,6 @@ const Profile = () => {
     </div>
 }
 
-export default Profile
+const ProfileWithRedirect = withRedirect(Profile)
+
+export default ProfileWithRedirect
