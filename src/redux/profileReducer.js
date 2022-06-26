@@ -3,6 +3,7 @@ import {profileAPI} from "../api/api";
 const WRITE_POST = 'UPDATE_NEW_POST'
 const ADD_POST = 'WRITE_POST'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
+const SET_STATUS = 'SET_STATUS'
 
 const initialState = {
     postData: [
@@ -12,7 +13,8 @@ const initialState = {
         {id: 4, message: 'Hi', likesCount: 2},
     ],
     newPost: 'Введите текст',
-    profile: null
+    profile: null,
+    status: 'edit status'
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -41,6 +43,12 @@ const profileReducer = (state = initialState, action) => {
                 profile: action.profile
             }
 
+        case SET_STATUS:
+            return {
+                ...state,
+                status: action.status
+            }
+
         default:
             return state
     }
@@ -49,6 +57,31 @@ const profileReducer = (state = initialState, action) => {
 export const writePost = (text) => ({type: WRITE_POST, newPost: text})
 export const addPost = () => ({type: ADD_POST})
 const setUserProfileAC = (profile) => ({type: SET_USER_PROFILE, profile})
+// const getStatusAC = (id) => ({type: GET_STATUS, id})
+export const setStatusAC = (status) => ({type: SET_STATUS, status: status})
+
+export const getStatus = (id) => {
+    return dispatch => {
+        profileAPI.getStatus(id)
+            .then(response => {
+                dispatch(setStatusAC(response.data))
+            })
+    }
+}
+
+export const updateStatus = (status) => {
+    return dispatch => {
+        profileAPI.updateStatus(status)
+            .then(response => {
+                if (response.data.resultCode === 0) {
+                    dispatch(setStatusAC(status))
+                } else if (response.data.resultCode === 1) {
+                    alert('Max status length is 300 symbols')
+                    dispatch(setStatusAC('edit status'))
+                }
+            })
+    }
+}
 
 export const setUserProfile = (match) => {
     return (dispatch) => {

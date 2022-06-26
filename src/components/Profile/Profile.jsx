@@ -17,7 +17,7 @@ const Profile = () => {
     }, [match])
 
     return <div className={c.content}>
-        <ProfileInfo profile={profile}/>
+        <ProfileInfo profile={profile} match={match}/>
         <MyPosts/>
     </div>
 }

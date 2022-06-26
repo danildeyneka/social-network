@@ -8,13 +8,10 @@ const ProfileInfo = (props) => {
         return <Preloader/>
     }
     return <div>
-        {/*<div>*/}
-        {/*    <img alt="" src='https://www.ukinbound.org/wp-content/uploads/2019/08/Northumberland-National-Park-875x350.jpg'></img>*/}
-        {/*</div>*/}
         <div className={c.description}>
             <img className={c.img} src={props.profile.photos.large ? props.profile.photos.large : avatar} alt="avatar"/>
             <div>{props.profile.fullName}</div>
-            <ProfileStatus/>
+            <ProfileStatus match={props.match}/>
         </div>
     </div>
 }

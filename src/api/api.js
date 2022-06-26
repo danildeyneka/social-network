@@ -1,4 +1,6 @@
 import axios from "axios";
+import {useSelector} from "react-redux";
+
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
@@ -27,6 +29,12 @@ export const profileAPI = {
     getProfile: (match) => {
         return instance.get(`profile/${match ? match.params.userId : 24558}`)
             .then(response => response.data)
+    },
+    getStatus: (id) => {
+        return instance.get('profile/status/' + id)
+    },
+    updateStatus: (status) => {
+        return instance.put('profile/status', {status: status})
     }
 }
 
