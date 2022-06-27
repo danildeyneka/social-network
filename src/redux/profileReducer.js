@@ -77,7 +77,7 @@ export const updateStatus = (status) => {
                     dispatch(setStatusAC(status))
                 } else if (response.data.resultCode === 1) {
                     alert('Max status length is 300 symbols')
-                    dispatch(setStatusAC('edit status'))
+                    dispatch(setStatusAC(initialState.status))
                 }
             })
     }

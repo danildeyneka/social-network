@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getStatus, setStatusAC, updateStatus} from "../../../redux/profileReducer";
 
@@ -16,19 +16,17 @@ const ProfileStatus = (props) => {
         setToggleEdit(false)
     }
     const status = useSelector(s => s.profilePage.status)
-    const statusInitial = useSelector(s => s.profilePage.status)
-
     const userId = useSelector(s => s.auth.id)
     const id = props.match ? props.match.params.userId : userId
     useEffect(() => {
         dispatch(getStatus(id))
-    }, [id]) // initial loading of status on page
+    }, [id]) // initial loading of status on page (connected to matched url)
 
     return (
         <>
             {!toggleEdit &&
                 <div>
-                    <span onClick={() => setToggleEdit(true)}>{statusInitial}</span>
+                    <span onClick={() => setToggleEdit(true)}>{status}</span>
                 </div>
             }
             {toggleEdit &&
