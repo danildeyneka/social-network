@@ -1,5 +1,4 @@
-const ADD_MESSAGE = 'WRITE_MESSAGE'
-const WRITE_MESSAGE = 'ADD_MESSAGE'
+const SEND_MESSAGE = 'SEND_MESSAGE'
 
 const initialState = {
     dialogsData: [
@@ -16,23 +15,16 @@ const initialState = {
         {id: 3, message: 'ads'},
         {id: 4, message: 'f3w3'},
         {id: 5, message: 'lorem'}
-    ],
-    newMessage: 'Введите сообщение'
+    ]
 }
 
 const messengerReducer = (state = initialState, action) => {
     switch (action.type) {
-        case WRITE_MESSAGE:
-            return {
-            ...state,
-            newMessage: action.newMessage
-            }
 
-        case ADD_MESSAGE:
-            let newMessage = state.newMessage
+        case SEND_MESSAGE:
+            let newMessage = action.newMessage
             return {
                 ...state,
-                newMessage: '',
                 messagesData: [...state.messagesData, {id: 6, message: newMessage}]
             }
 
@@ -41,7 +33,6 @@ const messengerReducer = (state = initialState, action) => {
     }
 }
 
-export const writeMessage = (text) => ({type: WRITE_MESSAGE, newMessage: text})
-export const addMessage = () => ({type: ADD_MESSAGE})
+export const sendMessage = (newMessage) => ({type: SEND_MESSAGE, newMessage})
 
 export default messengerReducer

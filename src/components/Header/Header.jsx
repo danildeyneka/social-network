@@ -18,7 +18,7 @@ const Header = () => {
         <div className={c.login}>
             {isAuth
                 ? login
-                : <NavLink to='/login'>Login</NavLink>
+                : <NavLink className={(nav) => nav.isActive ? c.active : ''} to='/login'>Login</NavLink>
             }
         </div>
     </header>

@@ -1,7 +1,6 @@
 import {profileAPI} from "../api/api";
 
-const WRITE_POST = 'UPDATE_NEW_POST'
-const ADD_POST = 'WRITE_POST'
+const ADD_POST = 'ADD_POST'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
 const SET_STATUS = 'SET_STATUS'
 
@@ -19,21 +18,14 @@ const initialState = {
 
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
-        case WRITE_POST:
-            return {
-                ...state,
-                newPost: action.newPost
-            }
-
         case ADD_POST:
             let newPost = {
                 id: 5, // хардкод
-                message: state.newPost, // ловим сообщение из textarea, записанное в стейт
+                message: action.newPost, // ловим сообщение из textarea, записанное в стейт
                 likesCount: 0
             }
             return {
                 ...state, // копия стейта. варианты глубокой - JSON.parse(JSON.stringify(state)) и Object.assign({}, state)
-                newPost: '', // очистка поля ввода после добавления поста
                 postData: [...state.postData, newPost]
             }
 
@@ -54,10 +46,8 @@ const profileReducer = (state = initialState, action) => {
     }
 }
 
-export const writePost = (text) => ({type: WRITE_POST, newPost: text})
-export const addPost = () => ({type: ADD_POST})
+export const addPost = (newPost) => ({type: ADD_POST, newPost})
 const setUserProfileAC = (profile) => ({type: SET_USER_PROFILE, profile})
-// const getStatusAC = (id) => ({type: GET_STATUS, id})
 export const setStatusAC = (status) => ({type: SET_STATUS, status: status})
 
 export const getStatus = (id) => {

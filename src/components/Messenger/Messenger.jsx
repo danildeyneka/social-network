@@ -1,19 +1,16 @@
 import c from './Messenger.module.scss'
 import User from "./User/User";
 import Message from "./Message/Messsage";
-import {useRef} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {addMessage, writeMessage} from "../../redux/messengerReducer";
+import {useSelector} from "react-redux";
 import withRedirect from "../../hoc/withRedirect";
+import NewMessageForm from "./NewMessageForm";
 
 const Messenger = () => {
-    const dispatch = useDispatch()
     const messengerPage = useSelector(s => s.messengerPage)
 
     const dialogsElements = messengerPage.dialogsData.map(user => <User name={user.name} id={user.id} key={user.id}/>)
     const messageElements = messengerPage.messagesData.map(message => <Message message={message.message}
                                                                                id={message.id} key={message.id}/>)
-    // const newMessage = useRef()
 
     return (
         <div className={c.dialogs}>
@@ -23,16 +20,7 @@ const Messenger = () => {
             <div className={c.messages}>
                 {messageElements}
             </div>
-            <textarea
-                className={c.textarea}
-                // ref={newMessage}
-                value={messengerPage.newMessage}
-                onChange={(e)=>dispatch(writeMessage(e.target.value))}/>
-            <button
-                className={c.button}
-                onClick={() => dispatch(addMessage())}>
-                <span>Send</span>
-            </button>
+            <NewMessageForm/>
         </div>
     )
 }
