@@ -1,15 +1,17 @@
 import {Form, Field} from 'react-final-form'
 import c from './Login.module.scss'
+import {required, maxLength} from "../../utils/validators/validators";
 
 const LoginForm = () => {
     const onSubmit = (values) => {
         console.log(values)
     }
-    const required = value => (value ? undefined : 'Required')
 
+    const composeValidators = (...validators) => value =>
+        validators.reduce((error, validator) => error || validator(value), undefined)
     return <Form
         onSubmit={onSubmit}
-        initialValues={{
+        initialFormValues={{
             remember: false
         }}
         render={({handleSubmit, form, submitting, pristine}) => (
@@ -32,7 +34,7 @@ const LoginForm = () => {
                 <div>
                     <Field
                         name="password"
-                        validate={required}
+                        validate={composeValidators(required, maxLength(20))}
                     >
                         {({input, meta}) => (
                             <div>

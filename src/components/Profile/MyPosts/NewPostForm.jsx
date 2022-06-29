@@ -1,6 +1,8 @@
 import {addPost} from "../../../redux/profileReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {Form, Field} from 'react-final-form'
+import {required} from "../../../utils/validators/validators";
+import {Textarea} from "../../common/Forms/Forms";
 
 const NewPostForm = () => {
     const dispatch = useDispatch()
@@ -15,8 +17,9 @@ const NewPostForm = () => {
                   <form onSubmit={handleSubmit}>
                       <div>
                           <Field name='newPost'
-                                 component='textarea'
+                                 component={Textarea}
                                  value={profilePage.newPost}
+                                 validate={required}
                           />
                       </div>
                       <div>

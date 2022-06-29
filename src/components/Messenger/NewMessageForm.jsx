@@ -2,6 +2,8 @@ import c from "./Messenger.module.scss";
 import {sendMessage} from "../../redux/messengerReducer";
 import {Field, Form} from "react-final-form";
 import {useDispatch, useSelector} from "react-redux";
+import {Textarea} from "../common/Forms/Forms";
+import {required} from "../../utils/validators/validators";
 
 const NewMessageForm = () => {
     const dispatch = useDispatch()
@@ -16,9 +18,9 @@ const NewMessageForm = () => {
                   <form onSubmit={handleSubmit}>
                       <div>
                           <Field name='newMessage'
-                                 component='textarea'
+                                 component={Textarea}
                                  value={messengerPage.newMessage}
-                                 // onChange={e => dispatch(writeMessage(e.target.value))}
+                                 validate={required}
                           />
                       </div>
                       <div>
