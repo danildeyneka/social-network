@@ -1,14 +1,18 @@
 import {Form, Field} from 'react-final-form'
 import c from './Login.module.scss'
 import {required, maxLength} from "../../utils/validators/validators";
+import {useDispatch} from "react-redux";
+import {logIn} from "../../redux/authReducer";
 
 const LoginForm = () => {
-    const onSubmit = (values) => {
-        console.log(values)
-    }
 
+    const dispatch = useDispatch()
+    const onSubmit = (values) => {
+        dispatch(logIn(values))
+    }
     const composeValidators = (...validators) => value =>
         validators.reduce((error, validator) => error || validator(value), undefined)
+
     return <Form
         onSubmit={onSubmit}
         initialFormValues={{
@@ -18,13 +22,13 @@ const LoginForm = () => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <Field
-                        name="login"
+                        name="email"
                         validate={required}
                     >
                         {({input, meta}) => (
                             <div>
-                                <label>Login</label>
-                                <input {...input} type="text" placeholder="Login"/>
+                                <label>Email</label>
+                                <input {...input} type="text" placeholder="Email"/>
                                 {meta.error && meta.touched && <span className={c.error}>{meta.error}</span>}
                             </div>
                         )}
@@ -45,6 +49,7 @@ const LoginForm = () => {
                         )}
                     </Field>
                 </div>
+
                 <div>
                     <label>Remember me</label>
                     <Field name="remember" component="input" type="checkbox"/>

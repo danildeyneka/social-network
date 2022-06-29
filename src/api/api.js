@@ -1,6 +1,4 @@
 import axios from "axios";
-import {useSelector} from "react-redux";
-
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
@@ -42,5 +40,13 @@ export const authAPI = {
     getSelf: () => {
         return instance.get(`auth/me`)
             .then(response => response.data)
+    },
+    logIn: (email, password, remember) => {
+        return instance.post('auth/login', {
+            email, password, remember
+        })
+    },
+    logOut: () => {
+        return instance.delete('auth/login')
     }
 }
