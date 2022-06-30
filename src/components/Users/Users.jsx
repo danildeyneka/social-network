@@ -26,7 +26,9 @@ const Users = () => {
     }, [])
 
     return (<>
-        {usersPage.isFetching ? <Preloader/> : <div>
+        {usersPage.isFetching
+            ? <Preloader/>
+            : <div>
             <div className={c.pages}>
                 {slicedPages.map(p => <span className={usersPage.currentPage === p ? c.selected : ''}
                                             onClick={() => dispatch(onPageChanged(p, pageSize))}>{`${p} `}</span>)}

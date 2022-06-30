@@ -1,5 +1,6 @@
 import {authAPI} from "../api/api";
 
+const INIT = 'INIT'
 const SET_USER_DATA = 'SET_USER_DATA'
 const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR'
 
@@ -7,12 +8,19 @@ const initialState = {
     id: null,
     email: null,
     login: null,
+    error: null,
     isAuth: false,
-    error: null
+    init: false
 }
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
+        case INIT:
+            return {
+                ...state,
+                init: true
+            }
+
         case SET_USER_DATA:
             return {
                 ...state,
@@ -30,17 +38,23 @@ const authReducer = (state = initialState, action) => {
     }
 }
 
+const init = () => ({type: INIT})
 const setAuthUserDataAC = (id, email, login, isAuth) => ({type: SET_USER_DATA, payload: {id, email, login, isAuth}})
 const setLoginErrorAC = (error) => ({type: SET_LOGIN_ERROR, error})
 
 export const getAuthUserData = () => dispatch => {
-    authAPI.getSelf()
+    return authAPI.getSelf() // return потому что делаем промис от диспатча
         .then((data) => {
             if (data.resultCode === 0) {
                 let {id, email, login} = data.data
                 dispatch(setAuthUserDataAC(id, email, login, true))
             }
         })
+}
+
+export const initApp = () => async dispatch => {
+    await dispatch(getAuthUserData())
+    dispatch(init())
 }
 
 export const logIn = ({email, password, remember}) => dispatch => {
@@ -50,7 +64,7 @@ export const logIn = ({email, password, remember}) => dispatch => {
                 dispatch(getAuthUserData())
                 dispatch(setLoginErrorAC(null))
             } else {
-                dispatch(setLoginErrorAC(...response.data.messages)) //
+                dispatch(setLoginErrorAC(response.data.messages))
             }
         })
 }
@@ -63,5 +77,6 @@ export const logOut = () => dispatch => {
             }
         })
 }
+
 
 export default authReducer

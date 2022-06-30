@@ -6,9 +6,21 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import MessengerWithRedirect from "./components/Messenger/Messenger";
 import Users from "./components/Users/Users";
 import Login from "./components/Login/Login";
+import {useDispatch, useSelector} from "react-redux";
+import {initApp} from "./redux/authReducer";
+import {useEffect} from "react";
+import Preloader from "./components/common/Preloader/Preloader";
 
 const App = () => {
-    return (<div className='app-wrapper'>
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(initApp())
+    }, [dispatch])
+
+    const init = useSelector(s=>s.auth.init)
+    if (init === false) return <Preloader/>
+    return <div className='app-wrapper'>
         <Header/>
         <Navbar/>
         <div className='app-wrapper__content'
@@ -24,7 +36,7 @@ const App = () => {
                 />
             </Routes>
         </div>
-    </div>)
+    </div>
 
 }
 
