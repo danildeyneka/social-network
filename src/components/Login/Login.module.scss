@@ -1,3 +1,13 @@
 .error{
   color: #ff0000;
 }
+
+.loginError{
+  display: none;
+  &__display{
+    display: block;
+    border: red 2px solid;
+    color: red;
+    width: 120px;
+  }
+}

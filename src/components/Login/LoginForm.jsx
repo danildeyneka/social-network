@@ -1,12 +1,13 @@
 import {Form, Field} from 'react-final-form'
 import c from './Login.module.scss'
 import {required, maxLength} from "../../utils/validators/validators";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {logIn} from "../../redux/authReducer";
 
 const LoginForm = () => {
 
     const dispatch = useDispatch()
+    const error = useSelector(s=>s.auth.error)
     const onSubmit = (values) => {
         dispatch(logIn(values))
     }
@@ -53,6 +54,11 @@ const LoginForm = () => {
                 <div>
                     <label>Remember me</label>
                     <Field name="remember" component="input" type="checkbox"/>
+                </div>
+
+                <div className={(c.loginError) + ' ' + (error === null ? '' : c.loginError__display)}
+                >
+                    {error}
                 </div>
 
                 <div className="buttons">
