@@ -2,8 +2,9 @@ import c from './MyPosts.module.scss'
 import Post from './Post/Post'
 import {useSelector} from "react-redux";
 import NewPostForm from "./NewPostForm";
+import React from 'react'
 
-const MyPosts = () => {
+const MyPosts = React.memo(() => {
     const postData = useSelector(s => s.profilePage.postData)
     const postElements = postData.map(post => <Post message={post.message} id={post.id} key={post.id}/>)
 
@@ -16,6 +17,6 @@ const MyPosts = () => {
             {postElements}
         </div>
     </div>)
-}
+})
 
 export default MyPosts
