@@ -6,7 +6,10 @@ import React from 'react'
 
 const MyPosts = React.memo(() => {
     const postData = useSelector(s => s.profilePage.postData)
-    const postElements = postData.map(post => <Post message={post.message} id={post.id} key={post.id}/>)
+    const postElements =
+        [...postData]
+            .reverse()
+            .map(post => <Post message={post.message} id={post.id} key={post.id}/>)
 
     return (<div className={c.posts__wrapper}>
         <h3>My posts</h3>
