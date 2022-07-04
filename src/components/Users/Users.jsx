@@ -1,6 +1,6 @@
 import c from './Users.module.scss'
 import {useDispatch, useSelector} from "react-redux";
-import {followThunk, getUsers, onPageChanged, unfollowThunk} from "../../redux/usersReducer";
+import {follow, getUsers, onPageChanged, unfollow} from "../../redux/usersReducer";
 import initialPhoto from '../../assets/images/avatar.png'
 import {useEffect} from "react";
 import Preloader from "../common/Preloader/Preloader";
@@ -29,38 +29,39 @@ const Users = () => {
         {usersPage.isFetching
             ? <Preloader/>
             : <div>
-            <div className={c.pages}>
-                {slicedPages.map(p => <span className={usersPage.currentPage === p ? c.selected : ''}
-                                            onClick={() => dispatch(onPageChanged(p, pageSize))}>{`${p} `}</span>)}
-            </div>
-            <div className={c.user}>
-                {usersPage.usersData.map(u => <div key={u.id}>
-                    <NavLink to={`/profile/${u.id}`}>
-                        <img className={c.user__avatar}
-                             src={u.photos.small !== null ? u.photos.small : initialPhoto}
-                             alt='img'/>
-                    </NavLink>
-                    <div>
-                        {u.followed ? <button disabled={usersPage.isFollowingInProgress.includes(u.id)}
-                                              onClick={() => {
-                                                  dispatch(unfollowThunk(u.id))
-                                              }}>Unfollow</button> :
-                            <button disabled={usersPage.isFollowingInProgress.includes(u.id)}
-                                    onClick={() => {
-                                        dispatch(followThunk(u.id))
-                                    }}>Follow</button>}
-                    </div>
-                    <div className={c.user__info}>
-                        <div className={c.user__name}>{u.name}</div>
-                        <div className={c.user__status}>{u.status}</div>
-                        <div className={c.user__location}>
-                            <p className={c.user__country}>{'u.location.country'}</p>
-                            <p className={c.user__city}>{'u.location.city'}</p>
+                <div className={c.pages}>
+                    {slicedPages.map(p => <span className={usersPage.currentPage === p ? c.selected : ''}
+                                                onClick={() => dispatch(onPageChanged(p, pageSize))}>{`${p} `}</span>)}
+                </div>
+                <div className={c.user}>
+                    {usersPage.usersData.map(u => <div key={u.id}>
+                        <NavLink to={`/profile/${u.id}`}>
+                            <img className={c.user__avatar}
+                                 src={u.photos.small !== null ? u.photos.small : initialPhoto}
+                                 alt='img'/>
+                        </NavLink>
+                        <div>
+                            {u.followed
+                                ? <button disabled={usersPage.isFollowingInProgress.includes(u.id)}
+                                          onClick={() => {
+                                              dispatch(unfollow(u.id))
+                                          }}>Unfollow</button>
+                                : <button disabled={usersPage.isFollowingInProgress.includes(u.id)}
+                                          onClick={() => {
+                                              dispatch(follow(u.id))
+                                          }}>Follow</button>}
                         </div>
-                    </div>
-                </div>)}
-            </div>
-        </div>} {/*конец лоадера*/}
+                        <div className={c.user__info}>
+                            <div className={c.user__name}>{u.name}</div>
+                            <div className={c.user__status}>{u.status}</div>
+                            <div className={c.user__location}>
+                                <p className={c.user__country}>{'u.location.country'}</p>
+                                <p className={c.user__city}>{'u.location.city'}</p>
+                            </div>
+                        </div>
+                    </div>)}
+                </div>
+            </div>} {/*конец лоадера*/}
     </>)
 }
 export default Users
@@ -130,5 +131,3 @@ export default Users
 //         html остальной. данные стейта идут через пропсы и this
 //     }
 // }
-
-//====================== для большей чистоты презентационного компонента, аксиос запросы выносятся в контейнерный компонент
