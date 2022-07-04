@@ -1,66 +1,27 @@
-import c from './Users.module.scss'
 import {useDispatch, useSelector} from "react-redux";
-import {follow, getUsers, onPageChanged, unfollow} from "../../redux/usersReducer";
-import initialPhoto from '../../assets/images/avatar.png'
+import {getUsers} from "../../redux/usersReducer";
 import {useEffect} from "react";
 import Preloader from "../common/Preloader/Preloader";
-import {NavLink} from "react-router-dom";
+import UserProfile from "./UserProfile/UserProfile";
+import Pagination from "../common/Pagination/Pagination";
+import React from "react";
 
 const Users = () => {
     const dispatch = useDispatch()
-    const usersPage = useSelector(s => s.usersPage)
-
-    const pagesCount = Math.ceil(usersPage.totalUsersCount / usersPage.pageSize)
-    let pages = []
-    for (let i = 1; i <= pagesCount; i++) {
-        pages.push(i)
-    }
-    const pageSize = usersPage.pageSize
-    const currentPage = usersPage.currentPage
-    let prevPage = ((currentPage - 5) < 0) ? 0 : currentPage - 5
-    let nextPage = currentPage + 5
-    let slicedPages = pages.slice(prevPage, nextPage)
+    const isFetching = useSelector(s => s.usersPage.isFetching)
+    const pageSize = useSelector(s => s.usersPage.pageSize)
+    const currentPage = useSelector(s => s.usersPage.currentPage)
 
     useEffect(() => {
         dispatch(getUsers(currentPage, pageSize))
-    }, [])
+    }, [pageSize])
 
     return (<>
-        {usersPage.isFetching
+        {isFetching
             ? <Preloader/>
             : <div>
-                <div className={c.pages}>
-                    {slicedPages.map(p => <span className={usersPage.currentPage === p ? c.selected : ''}
-                                                onClick={() => dispatch(onPageChanged(p, pageSize))}>{`${p} `}</span>)}
-                </div>
-                <div className={c.user}>
-                    {usersPage.usersData.map(u => <div key={u.id}>
-                        <NavLink to={`/profile/${u.id}`}>
-                            <img className={c.user__avatar}
-                                 src={u.photos.small !== null ? u.photos.small : initialPhoto}
-                                 alt='img'/>
-                        </NavLink>
-                        <div>
-                            {u.followed
-                                ? <button disabled={usersPage.isFollowingInProgress.includes(u.id)}
-                                          onClick={() => {
-                                              dispatch(unfollow(u.id))
-                                          }}>Unfollow</button>
-                                : <button disabled={usersPage.isFollowingInProgress.includes(u.id)}
-                                          onClick={() => {
-                                              dispatch(follow(u.id))
-                                          }}>Follow</button>}
-                        </div>
-                        <div className={c.user__info}>
-                            <div className={c.user__name}>{u.name}</div>
-                            <div className={c.user__status}>{u.status}</div>
-                            <div className={c.user__location}>
-                                <p className={c.user__country}>{'u.location.country'}</p>
-                                <p className={c.user__city}>{'u.location.city'}</p>
-                            </div>
-                        </div>
-                    </div>)}
-                </div>
+                <Pagination/>
+                <UserProfile/>
             </div>} {/*конец лоадера*/}
     </>)
 }
