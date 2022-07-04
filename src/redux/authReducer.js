@@ -42,14 +42,12 @@ const init = () => ({type: INIT})
 const setAuthUserDataAC = (id, email, login, isAuth) => ({type: SET_USER_DATA, payload: {id, email, login, isAuth}})
 const setLoginErrorAC = (error) => ({type: SET_LOGIN_ERROR, error})
 
-export const getAuthUserData = () => dispatch => {
-    return authAPI.getSelf() // return потому что делаем промис от диспатча
-        .then((data) => {
-            if (data.resultCode === 0) {
-                let {id, email, login} = data.data
-                dispatch(setAuthUserDataAC(id, email, login, true))
-            }
-        })
+export const getAuthUserData = () => async dispatch => {
+    const data = await authAPI.getSelf()
+    if (data.resultCode === 0) {
+        let {id, email, login} = data.data
+        dispatch(setAuthUserDataAC(id, email, login, true))
+    }
 }
 
 export const initApp = () => async dispatch => {
@@ -57,25 +55,21 @@ export const initApp = () => async dispatch => {
     dispatch(init())
 }
 
-export const logIn = ({email, password, remember}) => dispatch => {
-    authAPI.logIn(email, password, remember)
-        .then((response) => {
-            if (response.data.resultCode === 0) {
-                dispatch(getAuthUserData())
-                dispatch(setLoginErrorAC(null))
-            } else {
-                dispatch(setLoginErrorAC(response.data.messages))
-            }
-        })
+export const logIn = ({email, password, remember}) => async dispatch => {
+    const response = await authAPI.logIn(email, password, remember)
+    if (response.data.resultCode === 0) {
+        dispatch(getAuthUserData())
+        dispatch(setLoginErrorAC(null))
+    } else {
+        dispatch(setLoginErrorAC(response.data.messages))
+    }
 }
 
-export const logOut = () => dispatch => {
-    authAPI.logOut()
-        .then((response) => {
-            if (response.data.resultCode === 0) {
-                dispatch(setAuthUserDataAC(null, null, null, false))
-            }
-        })
+export const logOut = () => async dispatch => {
+    const response = await authAPI.logOut()
+    if (response.data.resultCode === 0) {
+        dispatch(setAuthUserDataAC(null, null, null, false))
+    }
 }
 
 

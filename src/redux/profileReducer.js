@@ -56,35 +56,24 @@ export const deletePost = (postId) => ({type: DELETE_POST, postId})
 const setUserProfileAC = (profile) => ({type: SET_USER_PROFILE, profile})
 export const setStatusAC = (status) => ({type: SET_STATUS, status: status})
 
-export const getStatus = (id) => {
-    return dispatch => {
-        profileAPI.getStatus(id)
-            .then(response => {
-                dispatch(setStatusAC(response.data))
-            })
+export const getStatus = (id) => async dispatch => {
+    const response = await profileAPI.getStatus(id)
+    dispatch(setStatusAC(response.data))
+}
+
+export const updateStatus = (status) => async dispatch => {
+    const response = await profileAPI.updateStatus(status)
+    if (response.data.resultCode === 0) {
+        dispatch(setStatusAC(status))
+    } else if (response.data.resultCode === 1) {
+        alert('Max status length is 300 symbols')
+        dispatch(setStatusAC(initialState.status))
     }
 }
 
-export const updateStatus = (status) => {
-    return dispatch => {
-        profileAPI.updateStatus(status)
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    dispatch(setStatusAC(status))
-                } else if (response.data.resultCode === 1) {
-                    alert('Max status length is 300 symbols')
-                    dispatch(setStatusAC(initialState.status))
-                }
-            })
-    }
+export const setUserProfile = (match, myId) => async dispatch => {
+    const data = await profileAPI.getProfile(match, myId)
+    dispatch(setUserProfileAC(data))
 }
 
-export const setUserProfile = (match, myId) => {
-    return (dispatch) => {
-        profileAPI.getProfile(match, myId)
-            .then(data => {
-                dispatch(setUserProfileAC(data))
-            })
-    }
-}
 export default profileReducer
