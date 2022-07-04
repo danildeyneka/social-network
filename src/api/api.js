@@ -24,8 +24,8 @@ export const usersAPI = {
 }
 
 export const profileAPI = {
-    getProfile: (match) => {
-        return instance.get(`profile/${match ? match.params.userId : 24558}`)
+    getProfile: (match, myId) => {
+        return instance.get(`profile/${match ? match.params.userId : myId}`)
             .then(response => response.data)
     },
     getStatus: (id) => {

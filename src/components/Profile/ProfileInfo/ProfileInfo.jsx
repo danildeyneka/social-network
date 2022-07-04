@@ -2,15 +2,19 @@ import c from './ProfileInfo.module.scss'
 import Preloader from "../../common/Preloader/Preloader";
 import avatar from '../../../assets/images/avatar.png'
 import ProfileStatus from "./ProfileStatus";
+import {useSelector} from "react-redux";
 
 const ProfileInfo = (props) => {
-    if (!props.profile) {
+    const profile = useSelector(s => s.profilePage.profile)
+
+    if (!profile) {
         return <Preloader/>
     }
+
     return <div>
         <div className={c.description}>
-            <img className={c.img} src={props.profile.photos.large ? props.profile.photos.large : avatar} alt="avatar"/>
-            <div>{props.profile.fullName}</div>
+            <img className={c.img} src={profile.photos.large ? profile.photos.large : avatar} alt="avatar"/>
+            <div>{profile.fullName}</div>
             <ProfileStatus match={props.match}/>
         </div>
     </div>

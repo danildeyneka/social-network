@@ -79,9 +79,9 @@ export const updateStatus = (status) => {
     }
 }
 
-export const setUserProfile = (match) => {
+export const setUserProfile = (match, myId) => {
     return (dispatch) => {
-        profileAPI.getProfile(match)
+        profileAPI.getProfile(match, myId)
             .then(data => {
                 dispatch(setUserProfileAC(data))
             })

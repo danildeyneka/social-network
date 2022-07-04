@@ -9,15 +9,15 @@ import withRedirect from "../../hoc/withRedirect";
 
 const Profile = () => {
     const dispatch = useDispatch()
-    const profile = useSelector(s => s.profilePage.profile)
     const match = useMatch('/profile/:userId')
+    const myId = useSelector(s=>s.auth.id)
 
     useEffect(() => {
-        dispatch(setUserProfile(match))
+        dispatch(setUserProfile(match, myId))
     }, [match])
 
     return <div className={c.content}>
-        <ProfileInfo profile={profile} match={match}/>
+        <ProfileInfo match={match}/>
         <MyPosts/>
     </div>
 }
