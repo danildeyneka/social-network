@@ -7,8 +7,8 @@ import React from 'react'
 const MyPosts = React.memo(() => {
     const postData = useSelector(s => s.profilePage.postData)
     const postElements =
-        [...postData]
-            .reverse()
+        [...postData] // immutability - работать надо всегда с копией, не меняя истину
+            .reverse() // либо вызвать реверс после мапа, тк он делает новый массив
             .map(post => <Post message={post.message} id={post.id} key={post.id}/>)
 
     return (<div className={c.posts__wrapper}>
