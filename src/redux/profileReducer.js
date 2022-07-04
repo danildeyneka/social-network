@@ -1,6 +1,7 @@
 import {profileAPI} from "../api/api";
 
 const ADD_POST = 'ADD_POST'
+const DELETE_POST = 'DELETE_POST'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
 const SET_STATUS = 'SET_STATUS'
 
@@ -28,7 +29,11 @@ const profileReducer = (state = initialState, action) => {
                 ...state, // копия стейта. варианты глубокой - JSON.parse(JSON.stringify(state)) и Object.assign({}, state)
                 postData: [...state.postData, newPost]
             }
-
+        case DELETE_POST:
+            return {
+                ...state,
+                postData: state.postData.filter(p => p.id !== action.postId)
+            }
         case SET_USER_PROFILE:
             return {
                 ...state,
@@ -47,6 +52,7 @@ const profileReducer = (state = initialState, action) => {
 }
 
 export const addPost = (newPost) => ({type: ADD_POST, newPost})
+export const deletePost = (postId) => ({type: DELETE_POST, postId})
 const setUserProfileAC = (profile) => ({type: SET_USER_PROFILE, profile})
 export const setStatusAC = (status) => ({type: SET_STATUS, status: status})
 
