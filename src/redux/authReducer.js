@@ -1,8 +1,8 @@
 import {authAPI} from "../api/api";
 
-const INIT = 'INIT'
-const SET_USER_DATA = 'SET_USER_DATA'
-const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR'
+const INIT = 'auth/INIT'
+const SET_USER_DATA = 'auth/SET_USER_DATA'
+const SET_LOGIN_ERROR = 'auth/SET_LOGIN_ERROR'
 
 const initialState = {
     id: null,
