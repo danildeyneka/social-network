@@ -1,7 +1,7 @@
 import c from './ProfileInfo.module.scss'
 import Preloader from "../../common/Preloader/Preloader";
 import avatar from '../../../assets/images/avatar.png'
-import ProfileStatus from "./ProfileStatus";
+import ProfileStatus from "./ProfileStatus/ProfileStatus";
 import {useSelector} from "react-redux";
 
 const ProfileInfo = (props) => {

@@ -19,7 +19,7 @@ const Pagination = () => {
 
     return (
         <div className={c.pages}>
-            {slicedPages.map(p => <span className={currentPage === p ? c.selected : ''}
+            {slicedPages.map(p => <span key={p} className={currentPage === p ? c.selected : ''}
                                         onClick={() => dispatch(onPageChanged(p, pageSize))}>{`${p} `}</span>)}
         </div>
     )

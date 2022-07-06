@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getStatus, setStatusAC, updateStatus} from "../../../redux/profileReducer";
+import {getStatus, setStatusAC, updateStatus} from "../../../../redux/profileReducer";
 
 const ProfileStatus = (props) => {
     const dispatch = useDispatch()
