@@ -18,7 +18,7 @@ const ProfileInfo = (props) => {
     return <div>
 
         <div className={c.description}>
-            <img className={c.img} src={profile.photos.large
+            <img className={c.img} src={profile?.photos?.large
                 ? profile.photos.large
                 : avatar} alt="avatar"/>
             <ProfileStatus notMyPage={props.notMyPage}/>
@@ -29,6 +29,5 @@ const ProfileInfo = (props) => {
         </div>
     </div>
 }
-
 
 export default ProfileInfo

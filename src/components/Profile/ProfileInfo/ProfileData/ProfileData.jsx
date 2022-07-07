@@ -1,6 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
-import {uploadAvatar} from "../../../../redux/profileReducer";
+import {saveProfile, uploadAvatar} from "../../../../redux/profileReducer";
 import {Form, Field} from 'react-final-form'
+import {useEffect, useMemo} from "react";
 
 const ProfileData = (props) => {
     const profile = useSelector(s => s.profilePage.profile)
@@ -26,18 +27,19 @@ const ProfileData = (props) => {
             {profile.aboutMe}
         </div>}
 
-        <div>
+        { profile.contacts && <div>
             <b>Contacts :</b>
             {Object.keys(profile.contacts).map(key => <Contacts key={key}
                                                                 title={key}
                                                                 value={profile.contacts[key]}
             />)}
-        </div>
+        </div>}
     </>
 }
 
 export const EditProfileData = (props) => {
-    // const profile = useSelector(s => s.profilePage.profile)
+    const profile = useSelector(s => s.profilePage.profile)
+    const myId = useSelector(s => s.auth.id)
     const dispatch = useDispatch()
     const onInputChange = (e) => {
         if (e.target.files) {
@@ -45,7 +47,7 @@ export const EditProfileData = (props) => {
         }
     }
     const onSubmit = (values) => {
-        console.log(values)
+        dispatch(saveProfile(values, myId))
         props.setEditMode(false)
     }
 
@@ -59,6 +61,7 @@ export const EditProfileData = (props) => {
         <h3>Profile info</h3>
         <Form
             onSubmit={onSubmit}
+            initialValues={profile}
             render={({handleSubmit}) => (
                 <form onSubmit={handleSubmit}>
                     <div>
