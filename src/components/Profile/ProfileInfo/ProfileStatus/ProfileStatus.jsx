@@ -16,8 +16,8 @@ const ProfileStatus = (props) => {
         setToggleEdit(false)
     }
     const status = useSelector(s => s.profilePage.status)
-    const userId = useSelector(s => s.auth.id)
-    const id = props.match ? props.match.params.userId : userId
+    const myId = useSelector(s => s.auth.id)
+    const id = props.notMyPage ? props.notMyPage.params.userId : myId
     useEffect(() => {
         dispatch(getStatus(id))
     }, [id]) // initial loading of status on page (connected to matched url)
@@ -26,7 +26,9 @@ const ProfileStatus = (props) => {
         <>
             {!toggleEdit &&
                 <div>
-                    <span onClick={() => setToggleEdit(true)}>{status}</span>
+                    {props.notMyPage
+                        ? <span>{status}</span>
+                        : <span onClick={() => setToggleEdit(true)}>{status}</span>}
                 </div>
             }
             {toggleEdit &&

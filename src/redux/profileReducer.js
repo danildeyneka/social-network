@@ -4,6 +4,7 @@ const ADD_POST = 'profile/ADD_POST'
 const DELETE_POST = 'profile/DELETE_POST'
 const SET_USER_PROFILE = 'profile/SET_USER_PROFILE'
 const SET_STATUS = 'profile/SET_STATUS'
+const UPLOAD_AVATAR = 'profile/UPLOAD_AVATAR'
 
 const initialState = {
     postData: [
@@ -39,13 +40,16 @@ const profileReducer = (state = initialState, action) => {
                 ...state,
                 profile: action.profile
             }
-
         case SET_STATUS:
             return {
                 ...state,
                 status: action.status
             }
-
+        case UPLOAD_AVATAR:
+            return {
+                ...state,
+                profile: {...state.profile, photos: action.photos}
+            }
         default:
             return state
     }
@@ -53,27 +57,32 @@ const profileReducer = (state = initialState, action) => {
 
 export const addPost = (newPost) => ({type: ADD_POST, newPost})
 export const deletePost = (postId) => ({type: DELETE_POST, postId})
+export const setStatusAC = (status) => ({type: SET_STATUS, status})
 const setUserProfileAC = (profile) => ({type: SET_USER_PROFILE, profile})
-export const setStatusAC = (status) => ({type: SET_STATUS, status: status})
+const uploadAvatarAC = (photos) => ({type: UPLOAD_AVATAR, photos})
 
 export const getStatus = (id) => async dispatch => {
-    const response = await profileAPI.getStatus(id)
-    dispatch(setStatusAC(response.data))
+    const data = await profileAPI.getStatus(id)
+    dispatch(setStatusAC(data))
 }
-
 export const updateStatus = (status) => async dispatch => {
-    const response = await profileAPI.updateStatus(status)
-    if (response.data.resultCode === 0) {
+    const data = await profileAPI.updateStatus(status)
+    if (data.resultCode === 0) {
         dispatch(setStatusAC(status))
-    } else if (response.data.resultCode === 1) {
+    } else if (data.resultCode === 1) {
         alert('Max status length is 300 symbols')
         dispatch(setStatusAC(initialState.status))
     }
 }
-
 export const setUserProfile = (match, myId) => async dispatch => {
     const data = await profileAPI.getProfile(match, myId)
     dispatch(setUserProfileAC(data))
+}
+export const uploadAvatar = (file) => async dispatch => {
+    const data = await profileAPI.uploadAvatar(file)
+    if (data.resultCode === 0) {
+        dispatch(uploadAvatarAC(data.data.photos))
+    }
 }
 
 export default profileReducer

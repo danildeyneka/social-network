@@ -17,7 +17,7 @@ const Profile = () => {
     }, [match])
 
     return <div className={c.content}>
-        <ProfileInfo match={match}/>
+        <ProfileInfo notMyPage={match}/>
         <MyPosts/>
     </div>
 }

@@ -30,9 +30,17 @@ export const profileAPI = {
     },
     getStatus: (id) => {
         return instance.get('profile/status/' + id)
+            .then(response => response.data)
     },
     updateStatus: (status) => {
         return instance.put('profile/status', {status: status.trim()})
+            .then(response => response.data)
+    },
+    uploadAvatar: (file) => {
+        const formData = new FormData()
+        formData.append('image', file)
+        return instance.put('profile/photo', formData)
+            .then(response => response.data)
     }
 }
 
