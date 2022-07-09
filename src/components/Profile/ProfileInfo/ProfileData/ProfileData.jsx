@@ -1,10 +1,17 @@
 import {useDispatch, useSelector} from "react-redux";
 import {saveProfile, uploadAvatar} from "../../../../redux/profileReducer";
 import {Form, Field} from 'react-final-form'
-import {useEffect, useMemo} from "react";
+import c from './ProfileData.module.scss'
 
 const ProfileData = (props) => {
     const profile = useSelector(s => s.profilePage.profile)
+    const contacts = Object.values(profile.contacts)
+    let contactsArr = []
+    contacts.forEach((contact) => {
+        if (contact) {
+            contactsArr.push(contact)
+        }
+    })
 
     return <>
         {!props.notMyPage && <div>
@@ -14,26 +21,30 @@ const ProfileData = (props) => {
             {profile.lookingForAJob ? <h3>Looking for a job</h3> : ''}
         </div>
         <div>
-            <b>Nickname :</b> {profile.fullName}
+            <b>Nickname: </b> {profile.fullName}
         </div>
 
         {profile.lookingForAJobDescription && <div>
-            <b>Stack :</b>
+            <b>Stack: </b>
             {profile.lookingForAJobDescription}
         </div>}
 
         {profile.aboutMe && <div>
-            <b>About me :</b>
+            <b>About me: </b>
             {profile.aboutMe}
         </div>}
 
-        { profile.contacts && <div>
-            <b>Contacts :</b>
+        {
+
+        }
+        {(contactsArr.length !== 0) && <div>
+            <b>Contacts: </b>
             {Object.keys(profile.contacts).map(key => <Contacts key={key}
                                                                 title={key}
                                                                 value={profile.contacts[key]}
             />)}
-        </div>}
+        </div>
+        }
     </>
 }
 
@@ -48,7 +59,7 @@ export const EditProfileData = (props) => {
     }
     const onSubmit = (values) => {
         dispatch(saveProfile(values, myId))
-        props.setEditMode(false)
+        // props.setEditMode(false)
     }
 
     return <>
@@ -62,7 +73,7 @@ export const EditProfileData = (props) => {
         <Form
             onSubmit={onSubmit}
             initialValues={profile}
-            render={({handleSubmit}) => (
+            render={({handleSubmit, submitting}) => (
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>Looking for a job</label>
@@ -81,16 +92,17 @@ export const EditProfileData = (props) => {
                         <Field name='aboutMe' type='textarea' component='input'/>
                     </div>
 
-                    {/*<div>*/}
-                    {/*    <b>Contacts :</b>*/}
-                    {/*    {Object.keys(profile.contacts).map(key => <Contacts key={key}*/}
-                    {/*                                                        title={key}*/}
-                    {/*                                                        value={profile.contacts[key]}*/}
-                    {/*    />)}*/}
-                    {/*</div>*/}
-
                     <div>
-                        <button type='submit'>Save Profile</button>
+                        <b>Contacts: </b>
+                        {Object.keys(profile.contacts).map(key =>
+                            <div className={c.contact} key={key}>
+                                <b>{key}: </b>
+                                <Field name={`contacts.${key}`} component='input'/>
+                            </div>
+                        )}
+                    </div>
+                    <div>
+                        <button type='submit' disabled={submitting}>Save Profile</button>
                     </div>
                 </form>)}
         />
@@ -100,7 +112,7 @@ export const EditProfileData = (props) => {
 const Contacts = ({title, value}) => {
     return <>
         {value && <div>
-            <b>{title} :</b>
+            <b>{title}: </b>
             {value}
         </div>}
     </>
