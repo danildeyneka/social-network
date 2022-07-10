@@ -3,13 +3,13 @@ import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import ProfileWithRedirect from './components/Profile/Profile';
 import {Navigate, Route, Routes} from "react-router-dom";
-import Login from "./components/Login/Login";
 import {useDispatch, useSelector} from "react-redux";
 import {initApp} from "./redux/authReducer";
 import {useEffect} from "react";
 import Preloader from "./components/common/Preloader/Preloader";
 import React from "react";
 import MessengerWithRedirect from "./components/Messenger/Messenger";
+import LoginWithRedirect from "./components/Login/Login";
 // const LazyMessengerWithRedirect = React.lazy(() => import('./components/Messenger/Messenger')) // lazy-loading
 
 // в бандл первой загрузки приложения не попадают lazy компоненты, а грузятся после перехода на них
@@ -18,10 +18,17 @@ const LazyUsers = React.lazy(() => import('./components/Users/Users'))
 
 const App = () => {
     const dispatch = useDispatch()
+    const catchAllErrors = () => {
+        alert('some error occurred')
+    }
 
-    useEffect(() => {
+    useEffect(() => { // componentWillMount
         dispatch(initApp())
-    }, [dispatch])
+        window.addEventListener('unhandledrejection', catchAllErrors)
+        return () => { // componentWillUnmount
+            window.removeEventListener('unhandledrejection', catchAllErrors)
+        }
+    }, [dispatch]) // componentWillUpdate
 
     const init = useSelector(s => s.auth.init)
     if (init === false) return <Preloader/>
@@ -38,7 +45,7 @@ const App = () => {
                     <Route path='/profile/' element={<ProfileWithRedirect/>}/>
                     <Route path='/messenger/*' element={<MessengerWithRedirect/>}/>
                     <Route path='/users' element={<LazyUsers/>}/>
-                    <Route path='/login' element={<Login/>}/>
+                    <Route path='/login' element={<LoginWithRedirect/>}/>
                     <Route path='*' element={<Navigate to='/profile'/>}
                     />
                 </Routes>
