@@ -34,9 +34,6 @@ const ProfileData = (props) => {
             {profile.aboutMe}
         </div>}
 
-        {
-
-        }
         {(contactsArr.length !== 0) && <div>
             <b>Contacts: </b>
             {Object.keys(profile.contacts).map(key => <Contacts key={key}

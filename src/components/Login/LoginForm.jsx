@@ -5,9 +5,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {logIn} from "../../redux/authReducer";
 
 const LoginForm = () => {
-
     const dispatch = useDispatch()
     const error = useSelector(s=>s.auth.error)
+    const captchaUrl = useSelector(s=>s.auth.captchaUrl)
     const onSubmit = (values) => {
         dispatch(logIn(values))
     }
@@ -17,7 +17,8 @@ const LoginForm = () => {
     return <Form
         onSubmit={onSubmit}
         initialFormValues={{
-            remember: false
+            remember: false,
+            captchaUrl: null // ??
         }}
         render={({handleSubmit, form, submitting, pristine}) => (
             <form onSubmit={handleSubmit}>
@@ -60,6 +61,16 @@ const LoginForm = () => {
                 >
                     {error}
                 </div>
+
+                { captchaUrl && <img alt='captchaImg' src={captchaUrl}/>}
+                { captchaUrl && <Field name='captcha' validate={required}>
+                    {({input, meta}) => (
+                        <div>
+                            <input {...input}/>
+                            {meta.error && meta.touched && <span className={c.error}>{meta.error}</span>}
+                        </div>
+                        )}
+                </Field>}
 
                 <div className="buttons">
                     <button type="submit" disabled={submitting || pristine}>

@@ -1,8 +1,9 @@
-import {authAPI} from "../api/api";
+import {authAPI, securityAPI} from "../api/api";
 
 const INIT = 'auth/INIT'
 const SET_USER_DATA = 'auth/SET_USER_DATA'
 const SET_LOGIN_ERROR = 'auth/SET_LOGIN_ERROR'
+const SET_CAPTCHA_URL = 'auth/SET_CAPTCHA_URL'
 
 const initialState = {
     id: null,
@@ -10,7 +11,8 @@ const initialState = {
     login: null,
     error: null,
     isAuth: false,
-    init: false
+    init: false,
+    captchaUrl: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -22,15 +24,11 @@ const authReducer = (state = initialState, action) => {
             }
 
         case SET_USER_DATA:
+        case SET_LOGIN_ERROR:
+        case SET_CAPTCHA_URL:
             return {
                 ...state,
                 ...action.payload,
-            }
-
-        case SET_LOGIN_ERROR:
-            return {
-                ...state,
-                error: action.error
             }
 
         default:
@@ -39,8 +37,9 @@ const authReducer = (state = initialState, action) => {
 }
 
 const init = () => ({type: INIT})
-const setAuthUserDataAC = (id, email, login, isAuth) => ({type: SET_USER_DATA, payload: {id, email, login, isAuth}})
-const setLoginErrorAC = (error) => ({type: SET_LOGIN_ERROR, error})
+const setAuthUserDataAC = (id, email, login, isAuth, captchaUrl) => ({type: SET_USER_DATA, payload: {id, email, login, isAuth, captchaUrl}})
+const setLoginErrorAC = (error) => ({type: SET_LOGIN_ERROR, payload: {error}})
+const setCaptchaUrl = (captchaUrl) => ({type: SET_LOGIN_ERROR, payload: {captchaUrl}})
 
 export const getAuthUserData = () => async dispatch => {
     const data = await authAPI.getSelf()
@@ -55,12 +54,16 @@ export const initApp = () => async dispatch => {
     dispatch(init())
 }
 
-export const logIn = ({email, password, remember}) => async dispatch => {
-    const response = await authAPI.logIn(email, password, remember)
+export const logIn = ({email, password, remember, captcha}) => async dispatch => {
+    const response = await authAPI.logIn(email, password, remember, captcha)
     if (response.data.resultCode === 0) {
         dispatch(getAuthUserData())
         dispatch(setLoginErrorAC(null))
     } else {
+        if (response.data.resultCode === 10) {
+            dispatch(getCaptchaUrl())
+        }
+
         dispatch(setLoginErrorAC(response.data.messages))
     }
 }
@@ -68,9 +71,14 @@ export const logIn = ({email, password, remember}) => async dispatch => {
 export const logOut = () => async dispatch => {
     const response = await authAPI.logOut()
     if (response.data.resultCode === 0) {
-        dispatch(setAuthUserDataAC(null, null, null, false))
+        dispatch(setAuthUserDataAC(null, null, null, false, null))
     }
 }
 
+export const getCaptchaUrl = () => async dispatch => {
+    const response = await securityAPI.getCaptchaUrl()
+    const captchaUrl = response.data.url
+    dispatch(setCaptchaUrl(captchaUrl))
+}
 
 export default authReducer
