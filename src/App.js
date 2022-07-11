@@ -22,13 +22,13 @@ const App = () => {
         alert('some error occurred')
     }
 
-    useEffect(() => { // componentWillMount
+    useEffect(() => { // componentDidMount
         dispatch(initApp())
         window.addEventListener('unhandledrejection', catchAllErrors)
         return () => { // componentWillUnmount
             window.removeEventListener('unhandledrejection', catchAllErrors)
         }
-    }, [dispatch]) // componentWillUpdate
+    }, [dispatch]) // componentDidUpdate
 
     const init = useSelector(s => s.auth.init)
     if (init === false) return <Preloader/>
