@@ -88,7 +88,7 @@ export const saveProfile = (profileSettings, myId) => async dispatch => {
     const data = await profileAPI.saveProfile(profileSettings)
     if (data.resultCode === 0) {
         dispatch(setUserProfile(undefined, myId))
-    }
+    } else alert(data.messages)
 }
 
 export default profileReducer

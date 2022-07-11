@@ -56,7 +56,7 @@ export const EditProfileData = (props) => {
     }
     const onSubmit = (values) => {
         dispatch(saveProfile(values, myId))
-        // props.setEditMode(false)
+        props.setEditMode(false)
     }
 
     return <>
