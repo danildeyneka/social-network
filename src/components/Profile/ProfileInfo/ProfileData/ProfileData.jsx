@@ -35,7 +35,7 @@ const ProfileData = (props) => {
         </div>}
 
         {(contactsArr.length !== 0) && <div>
-            <b>Contacts: </b>
+            <b>Contacts</b>
             {Object.keys(profile.contacts).map(key => <Contacts key={key}
                                                                 title={key}
                                                                 value={profile.contacts[key]}
@@ -58,6 +58,7 @@ export const EditProfileData = (props) => {
         dispatch(saveProfile(values, myId))
         props.setEditMode(false)
     }
+    const canselSubmit = () => props.setEditMode(false)
 
     return <>
         <h2>Modifying profile</h2>
@@ -90,7 +91,7 @@ export const EditProfileData = (props) => {
                     </div>
 
                     <div>
-                        <b>Contacts: </b>
+                        <b>Contacts</b>
                         {Object.keys(profile.contacts).map(key =>
                             <div className={c.contact} key={key}>
                                 <b>{key}: </b>
@@ -100,6 +101,7 @@ export const EditProfileData = (props) => {
                     </div>
                     <div>
                         <button type='submit' disabled={submitting}>Save Profile</button>
+                        <button onClick={canselSubmit}>Cancel</button>
                     </div>
                 </form>)}
         />
