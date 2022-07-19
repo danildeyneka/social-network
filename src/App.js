@@ -4,7 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import ProfileWithRedirect from './components/Profile/Profile';
 import {Navigate, Route, Routes} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {initApp} from "./redux/authReducer.ts";
+import {initApp} from "./redux/authReducer";
 import {useEffect} from "react";
 import Preloader from "./components/common/Preloader/Preloader";
 import React from "react";

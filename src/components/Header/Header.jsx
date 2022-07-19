@@ -1,6 +1,6 @@
 import c from './Header.module.scss'
 import {NavLink} from "react-router-dom";
-import {logOut} from "../../redux/authReducer.ts";
+import {logOut} from "../../redux/authReducer";
 import {useDispatch, useSelector} from "react-redux";
 
 const Header = () => {

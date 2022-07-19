@@ -54,9 +54,7 @@ export const authAPI = {
             .then(response => response.data)
     },
     logIn: (email, password, remember, captcha) => { // добавть деструктуризацию??
-        return instance.post('auth/login', {
-            email, password, remember, captcha
-        })
+        return instance.post('auth/login', {email, password, remember, captcha})
     },
     logOut: () => {
         return instance.delete('auth/login')

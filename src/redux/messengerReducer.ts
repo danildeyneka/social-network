@@ -1,5 +1,14 @@
 const SEND_MESSAGE = 'messenger/SEND_MESSAGE'
 
+type DialogsDataType = {
+    id: number
+    name: string
+}
+type MessagesDataType = {
+    id: number
+    message: string
+}
+
 const initialState = {
     dialogsData: [
         {id: 1, name: 'Саша'},
@@ -8,17 +17,19 @@ const initialState = {
         {id: 4, name: 'Артур'},
         {id: 5, name: 'Миша'},
         {id: 6, name: 'Слава'},
-    ],
+    ] as Array<DialogsDataType>,
     messagesData: [
         {id: 1, message: 'Hello React'},
         {id: 2, message: 'Its cool'},
         {id: 3, message: 'ads'},
         {id: 4, message: 'f3w3'},
         {id: 5, message: 'lorem'}
-    ]
+    ] as Array<MessagesDataType>
 }
 
-const messengerReducer = (state = initialState, action) => {
+export type InitialStateType = typeof initialState
+
+const messengerReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
 
         case SEND_MESSAGE:
@@ -33,6 +44,10 @@ const messengerReducer = (state = initialState, action) => {
     }
 }
 
-export const sendMessage = (newMessage) => ({type: SEND_MESSAGE, newMessage})
+type SendMessageType = {
+    type: typeof SEND_MESSAGE
+    newMessage: string
+}
+export const sendMessage = (newMessage: string): SendMessageType => ({type: SEND_MESSAGE, newMessage})
 
 export default messengerReducer
