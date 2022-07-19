@@ -2,7 +2,7 @@ import {Form, Field} from 'react-final-form'
 import c from './Login.module.scss'
 import {required, maxLength} from "../../utils/validators/validators";
 import {useDispatch, useSelector} from "react-redux";
-import {logIn} from "../../redux/authReducer";
+import {logIn} from "../../redux/authReducer.ts";
 
 const LoginForm = () => {
     const dispatch = useDispatch()
