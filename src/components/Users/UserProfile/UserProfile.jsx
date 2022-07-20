@@ -19,11 +19,11 @@ const UserProfile = () => {
                 </NavLink>
                 <div>
                     {u.followed
-                        ? <button disabled={usersPage.isFollowingInProgress.includes(u.id)}
+                        ? <button disabled={usersPage.followingInProgress.includes(u.id)}
                                   onClick={() => {
                                       dispatch(unfollow(u.id))
                                   }}>Unfollow</button>
-                        : <button disabled={usersPage.isFollowingInProgress.includes(u.id)}
+                        : <button disabled={usersPage.followingInProgress.includes(u.id)}
                                   onClick={() => {
                                       dispatch(follow(u.id))
                                   }}>Follow</button>}

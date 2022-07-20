@@ -1,15 +1,17 @@
 import c from "./Pagination.module.scss";
-import {onPageChanged} from "../../../redux/usersReducer";
-import {useDispatch, useSelector} from "react-redux";
+import React from "react";
 
-const Pagination = () => {
-    const dispatch = useDispatch()
-    const pageSize = useSelector(s => s.usersPage.pageSize)
-    const currentPage = useSelector(s => s.usersPage.currentPage)
-    const totalUsersCount = useSelector(s => s.usersPage.totalUsersCount)
+type PropsType = {
+    totalUsersCount: number
+    pageSize: number
+    currentPage: number
+    onPageChanged: (pageNumber: number) => void
+}
+
+const Pagination: React.FC<PropsType> = ({totalUsersCount, pageSize, currentPage, onPageChanged}) => {
     const pagesCount = Math.ceil(totalUsersCount / pageSize)
 
-    let pages = []
+    let pages: Array<number> = []
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i)
     }
@@ -20,7 +22,7 @@ const Pagination = () => {
     return (
         <div className={c.pages}>
             {slicedPages.map(p => <span key={p} className={currentPage === p ? c.selected : ''}
-                                        onClick={() => dispatch(onPageChanged(p, pageSize))}>{`${p} `}</span>)}
+                                        onClick={() => onPageChanged(p)}>{`${p} `}</span>)}
         </div>
     )
 }

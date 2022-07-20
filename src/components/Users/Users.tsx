@@ -5,14 +5,21 @@ import Preloader from "../common/Preloader/Preloader";
 import UserProfile from "./UserProfile/UserProfile";
 import Pagination from "../common/Pagination/Pagination";
 import React from "react";
+import {selectCurrentPage, selectIsFetching, selectPageSize, selectTotalUsersCount} from "../../redux/usersSelectors";
 
-const Users = () => {
+const Users: React.FC = () => {
     const dispatch = useDispatch()
-    const isFetching = useSelector(s => s.usersPage.isFetching)
-    const pageSize = useSelector(s => s.usersPage.pageSize)
-    const currentPage = useSelector(s => s.usersPage.currentPage)
+    const isFetching = useSelector(selectIsFetching)
+    const pageSize = useSelector(selectPageSize)
+    const currentPage = useSelector(selectCurrentPage)
+    const totalUsersCount = useSelector(selectTotalUsersCount)
+    const onPageChanged = (currentPage: number) => {
+        // @ts-ignore потому что dispatch: any. фиксится в сторе
+        dispatch(getUsers(currentPage, pageSize))
+    }
 
     useEffect(() => {
+        // @ts-ignore
         dispatch(getUsers(currentPage, pageSize))
     }, [pageSize])
 
@@ -20,7 +27,7 @@ const Users = () => {
         {isFetching
             ? <Preloader/>
             : <div>
-                <Pagination/>
+                <Pagination currentPage={currentPage} pageSize={pageSize} totalUsersCount={totalUsersCount} onPageChanged={onPageChanged}/>
                 <UserProfile/>
             </div>} {/*конец лоадера*/}
     </>)
