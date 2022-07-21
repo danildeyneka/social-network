@@ -26,6 +26,7 @@ export type PhotosType = {
     large: string | null
 }
 export type UsersDataType = {
+    followed: boolean;
     id: number
     name: string
     status: string

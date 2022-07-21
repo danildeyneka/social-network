@@ -1,24 +1,27 @@
-import {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getStatus, setStatusAC, updateStatus} from "../../../../redux/profileReducer";
 
-const ProfileStatus = (props) => {
+const ProfileStatus: React.FC = (props) => {
     const dispatch = useDispatch()
     const [toggleEdit, setToggleEdit] = useState(false)
-    const onKeyDown = (e) => {
+    const status = useSelector(s => s.profilePage.status)
+    const myId = useSelector(s => s.auth.id)
+    const onKeyDown = (e: KeyboardEvent) => { // ????????? TS2345: Argument of type 'KeyboardEvent<HTMLInputElement>' is not assignable to parameter of type 'KeyboardEvent'.
         if (e.key === 'Enter') {
+            // @ts-ignore
             dispatch(updateStatus(e.currentTarget.value))
             setToggleEdit(false)
         }
     }
-    const onBlur = (e) => {
+    const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
+        // @ts-ignore
         dispatch(updateStatus(e.currentTarget.value))
         setToggleEdit(false)
     }
-    const status = useSelector(s => s.profilePage.status)
-    const myId = useSelector(s => s.auth.id)
     const id = props.notMyPage ? props.notMyPage.params.userId : myId
     useEffect(() => {
+        // @ts-ignore
         dispatch(getStatus(id))
     }, [id]) // initial loading of status on page (connected to matched url)
 

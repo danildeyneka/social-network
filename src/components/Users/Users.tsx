@@ -5,14 +5,14 @@ import Preloader from "../common/Preloader/Preloader";
 import UserProfile from "./UserProfile/UserProfile";
 import Pagination from "../common/Pagination/Pagination";
 import React from "react";
-import {selectCurrentPage, selectIsFetching, selectPageSize, selectTotalUsersCount} from "../../redux/usersSelectors";
+import {getCurrentPage, getIsFetching, getPageSize, getTotalUsersCount} from "../../redux/usersSelectors";
 
 const Users: React.FC = () => {
     const dispatch = useDispatch()
-    const isFetching = useSelector(selectIsFetching)
-    const pageSize = useSelector(selectPageSize)
-    const currentPage = useSelector(selectCurrentPage)
-    const totalUsersCount = useSelector(selectTotalUsersCount)
+    const isFetching = useSelector(getIsFetching)
+    const pageSize = useSelector(getPageSize)
+    const currentPage = useSelector(getCurrentPage)
+    const totalUsersCount = useSelector(getTotalUsersCount)
     const onPageChanged = (currentPage: number) => {
         // @ts-ignore потому что dispatch: any. фиксится в сторе
         dispatch(getUsers(currentPage, pageSize))
