@@ -1,25 +1,36 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, FC, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getStatus, setStatusAC, updateStatus} from "../../../../redux/profileReducer";
+import {selectMyId} from "../../../../redux/authSelectors";
+import {selectStatus} from "../../../../redux/profileSelectors";
 
-const ProfileStatus: React.FC = (props) => {
+type PropTypes = {
+    notMyPage: {
+        params?: {
+            userId?: number | null
+        }
+    } | null
+}
+
+const ProfileStatus: FC<PropTypes> = (props) => {
     const dispatch = useDispatch()
-    const [toggleEdit, setToggleEdit] = useState(false)
-    const status = useSelector(s => s.profilePage.status)
-    const myId = useSelector(s => s.auth.id)
-    const onKeyDown = (e: KeyboardEvent) => { // ????????? TS2345: Argument of type 'KeyboardEvent<HTMLInputElement>' is not assignable to parameter of type 'KeyboardEvent'.
+    const [editMode, toggleEditMode] = useState(false)
+    const status = useSelector(selectStatus)
+    const myId = useSelector(selectMyId)
+    const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => { // ????????? TS2345: Argument of type 'KeyboardEvent<HTMLInputElement>' is not assignable to parameter of type 'KeyboardEvent'.
         if (e.key === 'Enter') {
             // @ts-ignore
             dispatch(updateStatus(e.currentTarget.value))
-            setToggleEdit(false)
+            toggleEditMode(false)
         }
     }
     const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
         // @ts-ignore
         dispatch(updateStatus(e.currentTarget.value))
-        setToggleEdit(false)
+        toggleEditMode(false)
     }
-    const id = props.notMyPage ? props.notMyPage.params.userId : myId
+    // const id = props.notMyPage ? props.notMyPage.params.userId : myId
+    const id = props.notMyPage?.params?.userId ?? myId
     useEffect(() => {
         // @ts-ignore
         dispatch(getStatus(id))
@@ -27,14 +38,14 @@ const ProfileStatus: React.FC = (props) => {
 
     return (
         <>
-            {!toggleEdit &&
+            {!editMode &&
                 <div>
                     {props.notMyPage
                         ? <span>{status}</span>
-                        : <span onClick={() => setToggleEdit(true)}>{status}</span>}
+                        : <span onClick={() => toggleEditMode(true)}>{status}</span>}
                 </div>
             }
-            {toggleEdit &&
+            {editMode &&
                 <div>
                     <input onChange={(e) =>
                         dispatch(setStatusAC(e.currentTarget.value))}

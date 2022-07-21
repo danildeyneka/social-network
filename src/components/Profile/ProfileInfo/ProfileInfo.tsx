@@ -4,15 +4,15 @@ import avatar from '../../../assets/images/avatar.png'
 import ProfileStatus from "./ProfileStatus/ProfileStatus";
 import {useSelector} from "react-redux";
 import ProfileData, {EditProfileData} from "./ProfileData/ProfileData";
-import React, {useState} from "react";
-import {getUserProfile} from "../../../redux/profileSelectors";
+import {FC, useState} from "react";
+import {selectUserProfile} from "../../../redux/profileSelectors";
 
 type PropsType = {
-    notMyPage: number | null // ????????????
+    notMyPage: object | null // ????????????
 }
-const ProfileInfo: React.FC<PropsType> = (props) => {
+const ProfileInfo: FC<PropsType> = (props) => {
 
-    const profile = useSelector(getUserProfile)
+    const profile = useSelector(selectUserProfile)
 
     const [isEditMode, setEditMode] = useState(false)
 

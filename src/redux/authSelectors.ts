@@ -1,3 +1,3 @@
 import {AppStateType} from "./store";
 
-export const getMyId = (state: AppStateType) => state.auth.id
+export const selectMyId = (state: AppStateType) => state.auth.id

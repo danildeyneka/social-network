@@ -3,12 +3,12 @@ import {NavLink} from "react-router-dom";
 import initialPhoto from "../../../assets/images/avatar.png";
 import {follow, unfollow} from "../../../redux/usersReducer";
 import {useDispatch, useSelector} from "react-redux";
-import React from "react";
-import {getFollowingInProgress, getUsersData} from "../../../redux/usersSelectors";
+import {FC} from "react";
+import {selectFollowingInProgress, selectUsersData} from "../../../redux/usersSelectors";
 
-const UserProfile: React.FC = () => {
-    const usersData = useSelector(getUsersData)
-    const followingInProgress = useSelector(getFollowingInProgress)
+const UserProfile: FC = () => {
+    const usersData = useSelector(selectUsersData)
+    const followingInProgress = useSelector(selectFollowingInProgress)
     const dispatch = useDispatch()
 
     return (
