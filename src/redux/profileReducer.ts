@@ -15,13 +15,13 @@ const initialState = {
         {id: 4, message: 'Hi', likesCount: 2},
     ] as Array<PostDataType>,
     newPost: 'Введите текст',
-    profile: null as null | ProfileType,
+    profile: null as ProfileType | null,
     status: 'edit status'
 }
 
 type InitialStateType = typeof initialState
 
-const profileReducer = (state = initialState, action: any): InitialStateType => {
+const profileReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case ADD_POST:
             let newPost = {
@@ -57,6 +57,8 @@ const profileReducer = (state = initialState, action: any): InitialStateType => 
             return state
     }
 }
+
+type ActionTypes = AddPostType | DeletePostType | SetStatusType | SetUserProfileType | UploadAvatarType
 
 
 type AddPostType = {

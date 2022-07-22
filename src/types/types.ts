@@ -10,6 +10,7 @@ export type ProfileType = {
     fullName: string
     contacts: ProfileContactsType
     photos: PhotosType
+    aboutMe: string
 }
 export type ProfileContactsType = {
     github: string
@@ -20,6 +21,7 @@ export type ProfileContactsType = {
     website: string
     youtube: string
     mainLink: string
+    [key: string]: string // for mapping
 }
 export type PhotosType = {
     small: string | null

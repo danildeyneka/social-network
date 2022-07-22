@@ -2,10 +2,19 @@ import {useDispatch, useSelector} from "react-redux";
 import {saveProfile, uploadAvatar} from "../../../../redux/profileReducer";
 import {Form, Field} from 'react-final-form'
 import c from './ProfileData.module.scss'
+import {ChangeEvent, FC} from "react";
+import {selectUserProfile} from "../../../../redux/profileSelectors";
+import {selectMyId} from "../../../../redux/authSelectors";
 
-const ProfileData = (props) => {
-    const profile = useSelector(s => s.profilePage.profile)
-    const contacts = Object.values(profile.contacts)
+type PropsType = {
+    notMyPage: object | null
+    isEditMode: boolean
+    setEditMode: (value: boolean) => void
+}
+const ProfileData: FC<PropsType> = (props) => {
+    const profile = useSelector(selectUserProfile) // ! in selector file to specify !null + contacts[key]
+    console.log(profile.contacts)
+    const contacts = Object.values(profile!.contacts)
     let contactsArr = []
     contacts.forEach((contact) => {
         if (contact) {
@@ -45,20 +54,23 @@ const ProfileData = (props) => {
     </>
 }
 
-export const EditProfileData = (props) => {
-    const profile = useSelector(s => s.profilePage.profile)
-    const myId = useSelector(s => s.auth.id)
+export const EditProfileData: FC<PropsType> = (props) => {
+    const profile = useSelector(selectUserProfile) // ???? same err
+    const myId = useSelector(selectMyId)
     const dispatch = useDispatch()
-    const onInputChange = (e) => {
+    const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
+            // @ts-ignore
             dispatch(uploadAvatar(e.target.files[0]))
         }
     }
-    const onSubmit = (values) => {
+    const onSubmit = (values: any) => {
+        console.log(values) // =================================change
+        // @ts-ignore
         dispatch(saveProfile(values, myId))
         props.setEditMode(false)
     }
-    const canselSubmit = () => props.setEditMode(false)
+    const cancelSubmit = () => props.setEditMode(false)
 
     return <>
         <h2>Modifying profile</h2>
@@ -101,14 +113,21 @@ export const EditProfileData = (props) => {
                     </div>
                     <div>
                         <button type='submit' disabled={submitting}>Save Profile</button>
-                        <button onClick={canselSubmit}>Cancel</button>
+                        <button onClick={cancelSubmit}>Cancel</button>
                     </div>
                 </form>)}
         />
     </>
 }
 
-const Contacts = ({title, value}) => {
+type ContactsType = {
+    key: string
+    title: string
+    value: string
+}
+
+const Contacts: FC<ContactsType> = ({title, value}) => {
+    console.log(value)
     return <>
         {value && <div>
             <b>{title}: </b>

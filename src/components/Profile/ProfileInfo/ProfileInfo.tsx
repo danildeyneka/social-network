@@ -8,12 +8,10 @@ import {FC, useState} from "react";
 import {selectUserProfile} from "../../../redux/profileSelectors";
 
 type PropsType = {
-    notMyPage: object | null // ????????????
+    notMyPage: object | null
 }
 const ProfileInfo: FC<PropsType> = (props) => {
-
     const profile = useSelector(selectUserProfile)
-
     const [isEditMode, setEditMode] = useState(false)
 
     if (!profile) {
@@ -22,14 +20,12 @@ const ProfileInfo: FC<PropsType> = (props) => {
     return <div>
 
         <div className={c.description}>
-            <img className={c.img} src={profile?.photos?.large
-                ? profile.photos.large
-                : avatar} alt="avatar"/>
+            <img className={c.img} src={profile.photos.large ?? avatar} alt="avatar"/>
             <ProfileStatus notMyPage={props.notMyPage}/>
 
             {isEditMode
-                ? <EditProfileData notMyPage={props.notMyPage} setEditMode={setEditMode} isEditMode={isEditMode}/>
-                : <ProfileData notMyPage={props.notMyPage} setEditMode={setEditMode} isEditMode={isEditMode}/>}
+                ? <EditProfileData notMyPage={props.notMyPage} isEditMode={isEditMode} setEditMode={setEditMode}/>
+                : <ProfileData notMyPage={props.notMyPage} isEditMode={isEditMode} setEditMode={setEditMode}/>}
         </div>
     </div>
 }

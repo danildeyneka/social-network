@@ -12,10 +12,9 @@ const Profile: FC = () => {
     const dispatch = useDispatch()
     const match = useMatch('/profile/:userId')
     const myId = useSelector(selectMyId)
-    console.log(match)
 
     useEffect(() => {
-        // @ts-ignore
+        // @ts-ignore ============================ change
         dispatch(setUserProfile(match, myId))
     }, [match])
 
