@@ -1,4 +1,4 @@
-import {AppStateType} from "./store";
+import {RootState} from "./store";
 
-export const selectUserProfile = (state: AppStateType) => state.profilePage.profile!
-export const selectStatus = (state: AppStateType) => state.profilePage.status
+export const selectUserProfile = (state: RootState) => state.profilePage.profile!
+export const selectStatus = (state: RootState) => state.profilePage.status

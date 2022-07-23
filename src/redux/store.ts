@@ -1,19 +1,30 @@
-import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
 import profileReducer from "./profileReducer";
 import messengerReducer from "./messengerReducer";
 import usersReducer from "./usersReducer";
 import authReducer from "./authReducer";
-import thunk from "redux-thunk";
+import {combineReducers, configureStore} from "@reduxjs/toolkit";
 
-let rootReducer = combineReducers({
+const rootReducer = combineReducers({
     profilePage: profileReducer,
     messengerPage: messengerReducer,
     usersPage: usersReducer,
     auth: authReducer
 })
-type RootReducerType = typeof rootReducer
-export type AppStateType = ReturnType<RootReducerType>
+const store = configureStore({
+    reducer: rootReducer
+    // middleware: thunk - added by default in rtk
+})
 
-let store = legacy_createStore(rootReducer, applyMiddleware(thunk)) // or configureStore (rtk)
+type RootReducerType = typeof rootReducer
+export type RootState = ReturnType<RootReducerType>
+export type AppDispatch = typeof store.dispatch
 
 export default store
+
+// const reducer = combineReducers({ // but from redux (same)
+//     profilePage: profileReducer,
+//     messengerPage: messengerReducer,
+//     usersPage: usersReducer,
+//     auth: authReducer
+// })
+// let store = legacy_createStore(rootReducer, applyMiddleware(thunk))

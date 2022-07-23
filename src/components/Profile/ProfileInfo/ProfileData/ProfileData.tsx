@@ -1,10 +1,10 @@
-import {useDispatch, useSelector} from "react-redux";
 import {saveProfile, uploadAvatar} from "../../../../redux/profileReducer";
 import {Form, Field} from 'react-final-form'
 import c from './ProfileData.module.scss'
 import {ChangeEvent, FC} from "react";
 import {selectUserProfile} from "../../../../redux/profileSelectors";
 import {selectMyId} from "../../../../redux/authSelectors";
+import {useAppDispatch, useAppSelector} from "../../../../hooks/hooks";
 
 type PropsType = {
     notMyPage: object | null
@@ -12,8 +12,7 @@ type PropsType = {
     setEditMode: (value: boolean) => void
 }
 const ProfileData: FC<PropsType> = (props) => {
-    const profile = useSelector(selectUserProfile) // ! in selector file to specify !null + contacts[key]
-    console.log(profile.contacts)
+    const profile = useAppSelector(selectUserProfile) // ! in selector file to specify !null + contacts[key]
     const contacts = Object.values(profile!.contacts)
     let contactsArr = []
     contacts.forEach((contact) => {
@@ -55,12 +54,11 @@ const ProfileData: FC<PropsType> = (props) => {
 }
 
 export const EditProfileData: FC<PropsType> = (props) => {
-    const profile = useSelector(selectUserProfile) // ???? same err
-    const myId = useSelector(selectMyId)
-    const dispatch = useDispatch()
+    const profile = useAppSelector(selectUserProfile) // ???? same err
+    const myId = useAppSelector(selectMyId)
+    const dispatch = useAppDispatch()
     const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            // @ts-ignore
             dispatch(uploadAvatar(e.target.files[0]))
         }
     }
@@ -127,7 +125,6 @@ type ContactsType = {
 }
 
 const Contacts: FC<ContactsType> = ({title, value}) => {
-    console.log(value)
     return <>
         {value && <div>
             <b>{title}: </b>

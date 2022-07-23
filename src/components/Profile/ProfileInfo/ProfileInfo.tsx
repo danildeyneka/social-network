@@ -2,16 +2,16 @@ import c from './ProfileInfo.module.scss'
 import Preloader from "../../common/Preloader/Preloader";
 import avatar from '../../../assets/images/avatar.png'
 import ProfileStatus from "./ProfileStatus/ProfileStatus";
-import {useSelector} from "react-redux";
 import ProfileData, {EditProfileData} from "./ProfileData/ProfileData";
 import {FC, useState} from "react";
 import {selectUserProfile} from "../../../redux/profileSelectors";
+import {useAppSelector} from "../../../hooks/hooks";
 
 type PropsType = {
     notMyPage: object | null
 }
 const ProfileInfo: FC<PropsType> = (props) => {
-    const profile = useSelector(selectUserProfile)
+    const profile = useAppSelector(selectUserProfile)
     const [isEditMode, setEditMode] = useState(false)
 
     if (!profile) {

@@ -100,11 +100,11 @@ export const updateStatus = (status: string) => async (dispatch: any) => {
         dispatch(setStatusAC(initialState.status))
     }
 }
-export const setUserProfile = (match: number | null, myId: number) => async (dispatch: any) => {
+export const setUserProfile = (match: object | null, myId: number | null) => async (dispatch: any) => {
     const data = await profileAPI.getProfile(match, myId)
     dispatch(setUserProfileAC(data))
 }
-export const uploadAvatar = (file: string) => async (dispatch: any) => {
+export const uploadAvatar = (file: File) => async (dispatch: any) => {
     const data = await profileAPI.uploadAvatar(file)
     if (data.resultCode === 0) {
         dispatch(uploadAvatarAC(data.data.photos))

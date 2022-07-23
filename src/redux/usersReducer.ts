@@ -1,6 +1,9 @@
 import {usersAPI} from "../api/api";
 import {mapUsersWithNewProperty} from "../utils/reducerHelpers/reducerHelpers";
 import {UsersDataType} from "../types/types";
+import {ThunkAction} from "redux-thunk";
+import {RootState} from "./store";
+import {Dispatch} from "react";
 
 const SET_USERS = 'users/SET_USERS'
 const FOLLOW = 'users/FOLLOW'
@@ -108,7 +111,10 @@ const toggleFollowingInProgress = (followingInProgress: boolean, userId: number)
     userId
 })
 
-export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: any) => {
+type ThunkType = ThunkAction<void, RootState, unknown, ActionTypes>
+type DispatchType = Dispatch<ActionTypes>
+
+export const getUsers = (currentPage: number, pageSize: number): ThunkType => async dispatch => {
     dispatch(setCurrentPage(currentPage))
     dispatch(toggleFetching(true))
     const data = await usersAPI.getUsers(currentPage, pageSize)
@@ -116,15 +122,8 @@ export const getUsers = (currentPage: number, pageSize: number) => async (dispat
     dispatch(setUsers(data.items))
     dispatch(setTotalUsersCount(data.totalCount))
 }
-// export const onPageChanged = (pageNumber: number, pageSize: number) => async (dispatch: any) => {
-//     dispatch(setCurrentPage(pageNumber))
-//     dispatch(toggleFetching(true))
-//     const data = await usersAPI.getUsers(pageNumber, pageSize)
-//     dispatch(toggleFetching(false))
-//     dispatch(setUsers(data.items))
-// }
 
-const toggleFollowing = async (dispatch: any, userId: number, apiRequest: any, action: any) => {
+const _toggleFollowing = async (dispatch: DispatchType, userId: number, apiRequest: any, action: typeof unfollowAC | typeof followAC) => {
     dispatch(toggleFollowingInProgress(true, userId))
     const data = await apiRequest(userId)
     if (data.resultCode === 0) {
@@ -132,13 +131,14 @@ const toggleFollowing = async (dispatch: any, userId: number, apiRequest: any, a
     }
     dispatch(toggleFollowingInProgress(false, userId))
 }
-export const unfollow = (userId: number) => async (dispatch: any) => {
+export const unfollow = (userId: number): ThunkType => async dispatch => {
     const apiRequest = usersAPI.unfollow.bind(usersAPI)
-    await toggleFollowing(dispatch, userId, apiRequest, unfollowAC)
+    await _toggleFollowing(dispatch, userId, apiRequest, unfollowAC)
 }
-export const follow = (userId: number) => async (dispatch: any) => {
+export const follow = (userId: number): ThunkType => async dispatch => {
     const apiRequest = usersAPI.follow.bind(usersAPI)
-    await toggleFollowing(dispatch, userId, apiRequest, followAC)
+    await _toggleFollowing(dispatch, userId, apiRequest, followAC)
 }
+
 
 export default usersReducer
