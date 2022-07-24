@@ -1,5 +1,5 @@
 import c from "./Pagination.module.scss";
-import React from "react";
+import {FC} from "react";
 
 type PropsType = {
     totalUsersCount: number
@@ -8,7 +8,7 @@ type PropsType = {
     onPageChanged: (pageNumber: number) => void
 }
 
-const Pagination: React.FC<PropsType> = ({totalUsersCount, pageSize, currentPage, onPageChanged}) => {
+const Pagination: FC<PropsType> = ({totalUsersCount, pageSize, currentPage, onPageChanged}) => {
     const pagesCount = Math.ceil(totalUsersCount / pageSize)
 
     let pages: Array<number> = []

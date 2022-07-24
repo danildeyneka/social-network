@@ -29,7 +29,7 @@ const initialState = {
 
 export type InitialStateType = typeof initialState
 
-const messengerReducer = (state = initialState, action: any): InitialStateType => {
+const messengerReducer = (state = initialState, action: SendMessageType): InitialStateType => {
     switch (action.type) {
 
         case SEND_MESSAGE:
