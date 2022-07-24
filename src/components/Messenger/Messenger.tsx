@@ -1,16 +1,18 @@
 import c from './Messenger.module.scss'
 import User from "./User/User";
 import Message from "./Message/Messsage";
-import {useSelector} from "react-redux";
 import withRedirect from "../../hoc/withRedirect";
 import NewMessageForm from "./NewMessageForm";
+import {useAppSelector} from "../../hooks/hooks";
+import {selectDialogsData, selectMessagesData} from "../../redux/messengerSelectors";
+import {FC} from "react";
 
-const Messenger = () => {
-    const messengerPage = useSelector(s => s.messengerPage)
+const Messenger: FC = () => {
+    const messagesData = useAppSelector(selectMessagesData)
+    const dialogsData = useAppSelector(selectDialogsData)
 
-    const dialogsElements = messengerPage.dialogsData.map(user => <User name={user.name} id={user.id} key={user.id}/>)
-    const messageElements = messengerPage.messagesData.map(message => <Message message={message.message}
-                                                                               id={message.id} key={message.id}/>)
+    const dialogsElements = dialogsData.map(user => <User name={user.name} id={user.id} key={user.id}/>)
+    const messageElements = messagesData.map(message => <Message message={message.message} key={message.id}/>)
 
     return (
         <div className={c.dialogs}>

@@ -1,7 +1,8 @@
 import c from './Navbar.module.scss'
 import {NavLink} from "react-router-dom";
+import {FC} from "react";
 
-const Navbar = () => {
+const Navbar: FC = () => {
     return <nav>
         <div className={c.item}>
             <NavLink to='/profile' className={(nav) => nav.isActive ? c.active : ''}> Profile </NavLink>

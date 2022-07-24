@@ -1,11 +1,12 @@
 import c from './MyPosts.module.scss'
 import Post from './Post/Post'
-import {useSelector} from "react-redux";
 import NewPostForm from "./NewPostForm";
-import React from 'react'
+import React, {FC} from 'react'
+import {useAppSelector} from "../../../hooks/hooks";
+import {selectPostData} from "../../../redux/profileSelectors";
 
-const MyPosts = React.memo(() => {
-    const postData = useSelector(s => s.profilePage.postData)
+const MyPosts: FC = React.memo(() => {
+    const postData = useAppSelector(selectPostData)
     const postElements =
         [...postData] // immutability - работать надо всегда с копией, не меняя истину
             .reverse() // либо вызвать реверс после мапа, тк он делает новый массив

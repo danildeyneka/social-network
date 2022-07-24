@@ -1,11 +1,14 @@
 import c from './Header.module.scss'
 import {NavLink} from "react-router-dom";
 import {logOut} from "../../redux/authReducer";
-import {useDispatch, useSelector} from "react-redux";
+import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
+import {FC} from "react";
+import {selectIsAuth} from "../../redux/authSelectors";
 
-const Header = () => {
-    const isAuth = useSelector(s => s.auth.isAuth)
-    const dispatch = useDispatch()
+
+const Header: FC = () => {
+    const isAuth = useAppSelector(selectIsAuth)
+    const dispatch = useAppDispatch()
     const logout = () => {
         dispatch(logOut())
     }

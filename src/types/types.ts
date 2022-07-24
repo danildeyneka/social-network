@@ -34,3 +34,8 @@ export type UsersDataType = {
     status: string
     photos: PhotosType
 }
+export type UseMatchType = {
+    params: {
+        userId: string
+    }
+}
