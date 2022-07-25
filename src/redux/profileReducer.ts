@@ -1,5 +1,5 @@
 import {profileAPI} from "../api/api";
-import {PostDataType, ProfileType, PhotosType} from "../types/types";
+import {PostDataType, ProfileType, PhotosType, UseMatchType} from "../types/types";
 import {ThunkAction} from "redux-thunk";
 import {RootState} from "./store";
 
@@ -102,7 +102,7 @@ export const updateStatus = (status: string): ThunkType => async dispatch => {
         dispatch(setStatusAC(initialState.status))
     }
 }
-export const setUserProfile = (match: object | null, myId: number | null): ThunkType => async dispatch => {
+export const setUserProfile = (match: UseMatchType, myId: number | null): ThunkType => async dispatch => {
     const data = await profileAPI.getProfile(match, myId)
     dispatch(setUserProfileAC(data))
 }
@@ -112,7 +112,7 @@ export const uploadAvatar = (file: File): ThunkType => async dispatch => {
         dispatch(uploadAvatarAC(data.data.photos))
     }
 }
-export const saveProfile = (profile: ProfileType, myId: number): ThunkType => async dispatch => {
+export const saveProfile = (profile: ProfileType, myId: number | null): ThunkType => async dispatch => {
     const data = await profileAPI.saveProfile(profile)
     if (data.resultCode === 0) {
         dispatch(setUserProfile(null, myId))

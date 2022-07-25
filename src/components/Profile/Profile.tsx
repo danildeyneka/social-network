@@ -10,7 +10,7 @@ import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 
 const Profile: FC = () => {
     const dispatch = useAppDispatch()
-    const match = useMatch('/profile/:userId')
+    const match: any = useMatch('/profile/:userId')
     const myId = useAppSelector(selectMyId)
 
     useEffect(() => {

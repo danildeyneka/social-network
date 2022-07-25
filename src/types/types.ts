@@ -38,4 +38,4 @@ export type UseMatchType = {
     params: {
         userId: string
     }
-}
+} | null
