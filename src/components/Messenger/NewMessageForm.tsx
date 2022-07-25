@@ -1,14 +1,17 @@
 import c from "./Messenger.module.scss";
 import {sendMessage} from "../../redux/messengerReducer";
 import {Field, Form} from "react-final-form";
-import {useDispatch, useSelector} from "react-redux";
 import {Textarea} from "../common/Forms/Forms";
 import {required} from "../../utils/validators/validators";
+import {FormValuesType} from "../../types/types";
+import {selectNewMessage} from "../../redux/messengerSelectors";
+import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
+import {FC} from "react";
 
-const NewMessageForm = () => {
-    const dispatch = useDispatch()
-    const messengerPage = useSelector(s => s.messengerPage)
-    const onSubmit = values => {
+const NewMessageForm: FC = () => {
+    const dispatch = useAppDispatch()
+    const newMessage = useAppSelector(selectNewMessage)
+    const onSubmit = (values: FormValuesType) => {
         dispatch(sendMessage(values.newMessage)) // привязка к name у Field
         values.newMessage = ''
     }
@@ -19,7 +22,7 @@ const NewMessageForm = () => {
                       <div>
                           <Field name='newMessage'
                                  component={Textarea}
-                                 value={messengerPage.newMessage}
+                                 value={newMessage}
                                  validate={required}
                           />
                       </div>

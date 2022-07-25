@@ -83,7 +83,7 @@ export const authAPI = {
         return instance.get<GetSelfType>(`auth/me`)
             .then(response => response.data)
     },
-    logIn: (email: string, password: string, remember: boolean, captcha: string) => { // добавть деструктуризацию??
+    logIn: (email: string, password: string, remember: boolean, captcha: string | null) => { // добавть деструктуризацию??
         return instance.post<ResponseType>('auth/login', {email, password, remember, captcha})
             .then(response => response.data)
     },

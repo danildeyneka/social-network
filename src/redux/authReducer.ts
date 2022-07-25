@@ -77,7 +77,7 @@ export const initApp = (): ThunkType => async dispatch => {
     await dispatch(getAuthUserData())
     dispatch(init())
 }
-export const logIn = (email: string, password: string, remember: boolean, captcha: string): ThunkType => async dispatch => { // убрать деструктуризацию (апи)
+export const logIn = (email: string, password: string, remember: boolean, captcha: string | null): ThunkType => async dispatch => { // убрать деструктуризацию (апи)
     const data = await authAPI.logIn(email, password, remember, captcha)
     if (data.resultCode === ResultCodesEnum.Success) {
         dispatch(getAuthUserData())

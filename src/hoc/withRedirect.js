@@ -1,9 +1,10 @@
-import {useSelector} from "react-redux";
 import Login from "../components/Login/Login";
+import {useAppSelector} from "../hooks/hooks";
+import {selectIsAuth} from "../redux/authSelectors";
 
 const withRedirect = (Component) => {
     function RouterComponent(props) {
-        const isAuth = useSelector(s => s.auth.isAuth)
+        const isAuth = useAppSelector(selectIsAuth)
 
         if (!isAuth) return <Login/>
 

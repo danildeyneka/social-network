@@ -39,3 +39,11 @@ export type UseMatchType = {
         userId: string
     }
 } | null
+export type FormValuesType = {
+    email: string
+    password: string
+    remember: boolean
+    captcha: string
+    newMessage: string
+    newPost: string
+}

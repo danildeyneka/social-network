@@ -1,13 +1,16 @@
 import {addPost} from "../../../redux/profileReducer";
-import {useDispatch, useSelector} from "react-redux";
 import {Form, Field} from 'react-final-form'
 import {required} from "../../../utils/validators/validators";
 import {Textarea} from "../../common/Forms/Forms";
+import {FormValuesType} from "../../../types/types";
+import {useAppDispatch, useAppSelector} from "../../../hooks/hooks";
+import {selectNewPost} from "../../../redux/profileSelectors";
+import {FC} from "react";
 
-const NewPostForm = () => {
-    const dispatch = useDispatch()
-    const profilePage = useSelector(s => s.profilePage)
-    const onSubmit = values => {
+const NewPostForm: FC = () => {
+    const dispatch = useAppDispatch()
+    const newPost = useAppSelector(selectNewPost)
+    const onSubmit = (values: FormValuesType) => {
         dispatch(addPost(values.newPost))
         values.newPost = ''
     }
@@ -18,7 +21,7 @@ const NewPostForm = () => {
                       <div>
                           <Field name='newPost'
                                  component={Textarea}
-                                 value={profilePage.newPost}
+                                 value={newPost}
                                  validate={required}
                           />
                       </div>
@@ -34,13 +37,3 @@ const NewPostForm = () => {
 }
 
 export default NewPostForm
-
-
-//         <div>
-//         <textarea
-//             value={profilePage.newPost}
-//             onChange={(e) => dispatch(writePost(e.target.value))}/>
-//         </div>
-//         <div>
-//             <button onClick={() => dispatch(addPost())}>Add post</button>
-//         </div>

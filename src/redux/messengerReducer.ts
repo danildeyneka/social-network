@@ -24,7 +24,8 @@ const initialState = {
         {id: 3, message: 'ads'},
         {id: 4, message: 'f3w3'},
         {id: 5, message: 'lorem'}
-    ] as Array<MessagesDataType>
+    ] as Array<MessagesDataType>,
+    newMessage : ''
 }
 
 export type InitialStateType = typeof initialState

@@ -7,10 +7,7 @@ import {selectPostData} from "../../../redux/profileSelectors";
 
 const MyPosts: FC = React.memo(() => {
     const postData = useAppSelector(selectPostData)
-    const postElements =
-        [...postData] // immutability - работать надо всегда с копией, не меняя истину
-            .reverse() // либо вызвать реверс после мапа, тк он делает новый массив
-            .map(post => <Post message={post.message} id={post.id} key={post.id}/>)
+    const postElements = postData.map(post => <Post message={post.message} key={post.id}/>).reverse()
 
     return (<div className={c.posts__wrapper}>
         <h3>My posts</h3>

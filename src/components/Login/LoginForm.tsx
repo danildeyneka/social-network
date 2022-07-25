@@ -1,24 +1,28 @@
 import {Form, Field} from 'react-final-form'
 import c from './Login.module.scss'
 import {required, maxLength} from "../../utils/validators/validators";
-import {useDispatch, useSelector} from "react-redux";
 import {logIn} from "../../redux/authReducer";
+import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
+import {selectAuthError, selectCaptchaUrl} from "../../redux/authSelectors";
+import {FormValuesType} from "../../types/types";
+import {FC} from "react";
 
-const LoginForm = () => {
-    const dispatch = useDispatch()
-    const error = useSelector(s=>s.auth.error)
-    const captchaUrl = useSelector(s=>s.auth.captchaUrl)
-    const onSubmit = (values) => {
-        dispatch(logIn(values))
+const LoginForm: FC = () => {
+    const dispatch = useAppDispatch()
+    const error = useAppSelector(selectAuthError)
+    const captchaUrl = useAppSelector(selectCaptchaUrl)
+    const onSubmit = (values: FormValuesType) => {
+        const {email, password, remember, captcha} = values
+        dispatch(logIn(email, password, remember, captcha))
     }
-    const composeValidators = (...validators) => value =>
-        validators.reduce((error, validator) => error || validator(value), undefined)
+    const composeValidators = (...validators: any) => (value: any) =>
+        validators.reduce((error: any, validator: any) => error || validator(value), undefined)
 
     return <Form
         onSubmit={onSubmit}
         initialFormValues={{
             remember: false,
-            captchaUrl: null // ??
+            captchaUrl: null
         }}
         render={({handleSubmit, form, submitting, pristine}) => (
             <form onSubmit={handleSubmit}>
@@ -62,14 +66,14 @@ const LoginForm = () => {
                     {error}
                 </div>
 
-                { captchaUrl && <img alt='captchaImg' src={captchaUrl}/>}
-                { captchaUrl && <Field name='captcha' validate={required}>
+                {captchaUrl && <img alt='captchaImg' src={captchaUrl}/>}
+                {captchaUrl && <Field name='captcha' validate={required}>
                     {({input, meta}) => (
                         <div>
                             <input {...input}/>
                             {meta.error && meta.touched && <span className={c.error}>{meta.error}</span>}
                         </div>
-                        )}
+                    )}
                 </Field>}
 
                 <div className="buttons">
@@ -78,6 +82,7 @@ const LoginForm = () => {
                     </button>
                     <button
                         type="button"
+                        // @ts-ignore
                         onClick={form.reset}
                         disabled={submitting || pristine}
                     >
