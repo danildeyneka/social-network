@@ -2,15 +2,11 @@ import {ProfileType, UseMatchType} from "../types/types";
 import {instance} from "./api";
 import {ResponseType} from "./api";
 
-type UploadAvatarType = {
-    data: {
-        photos: {
-            small: string
-            large: string
-        }
+type UploadAvatarDataType = {
+    photos: {
+        small: string
+        large: string
     }
-    resultCode: number
-    messages: Array<string>
 }
 
 export const profileAPI = {
@@ -19,7 +15,7 @@ export const profileAPI = {
             .then(response => response.data)
     },
     getStatus: (id: number) => {
-        return instance.get<any>('profile/status/' + id)
+        return instance.get<string>('profile/status/' + id)
             .then(response => response.data)
     },
     updateStatus: (status: string) => {
@@ -29,7 +25,7 @@ export const profileAPI = {
     uploadAvatar: (file: File) => {
         const formData = new FormData()
         formData.append('image', file)
-        return instance.put<UploadAvatarType>('profile/photo', formData)
+        return instance.put<ResponseType<UploadAvatarDataType>>('profile/photo', formData)
             .then(response => response.data)
     },
     saveProfile: (profile: ProfileType) => {

@@ -1,4 +1,4 @@
-import profileReducer, {addPost, deletePost} from "./profileReducer";
+import profileReducer, {actions} from "./profileReducer";
 
 const state = {
     postData: [
@@ -6,12 +6,15 @@ const state = {
         {id: 2, message: 'Hi e3dq', likesCount: 6},
         {id: 3, message: 'Hi 23213', likesCount: 11},
         {id: 4, message: 'Hi', likesCount: 2},
-    ]
+    ],
+    newPost: 'Введите текст',
+    profile: null,
+    status: 'edit status'
 }
 
 it('new post should be added', () => {
     // initial test data
-    const action = addPost('new post text')
+    const action = actions.addPost('new post text')
     // action
     let newState = profileReducer(state, action)
     // output
@@ -19,7 +22,7 @@ it('new post should be added', () => {
 })
 
 it('post should be removed', () => {
-    const action = deletePost(4)
+    const action = actions.deletePost(4)
     let newState = profileReducer(state, action)
     expect(newState.postData.length).toBe(3)
 })

@@ -3,6 +3,12 @@ import {ThunkAction} from "redux-thunk";
 import {InferActionTypes, RootState} from "./store";
 import {profileAPI} from "../api/profileAPI";
 
+const ADD_POST = 'profile/ADD_POST'
+const DELETE_POST = 'profile/DELETE_POST'
+const SET_USER_PROFILE = 'profile/SET_USER_PROFILE'
+const SET_STATUS = 'profile/SET_STATUS'
+const UPLOAD_AVATAR = 'profile/UPLOAD_AVATAR'
+
 const initialState = {
     postData: [
         {id: 1, message: 'Hi there', likesCount: 4},
@@ -19,32 +25,32 @@ type InitialStateType = typeof initialState
 
 const profileReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
-        case 'ADD_POST':
+        case ADD_POST:
             let newPost = {
-                id: 5, // хардкод
-                message: action.newPost, // ловим сообщение из textarea, записанное в стейт
+                id: Date.now(),
+                message: action.newPost,
                 likesCount: 0
             }
             return {
-                ...state, // копия стейта. варианты глубокой - JSON.parse(JSON.stringify(state)) и Object.assign({}, state)
+                ...state,
                 postData: [...state.postData, newPost]
             }
-        case 'DELETE_POST':
+        case DELETE_POST:
             return {
                 ...state,
                 postData: state.postData.filter(p => p.id !== action.postId)
             }
-        case 'SET_USER_PROFILE':
+        case SET_USER_PROFILE:
             return {
                 ...state,
                 profile: action.profile
             }
-        case 'SET_STATUS':
+        case SET_STATUS:
             return {
                 ...state,
                 status: action.status
             }
-        case 'UPLOAD_AVATAR':
+        case UPLOAD_AVATAR:
             return {
                 ...state,
                 profile: {...state.profile, photos: action.photos} as ProfileType
@@ -58,11 +64,11 @@ type ActionTypes = InferActionTypes<typeof actions>
 type ThunkType = ThunkAction<void, RootState, unknown, ActionTypes>
 
 export const actions = {
-    addPost: (newPost: string) => ({type: 'ADD_POST', newPost} as const),
-    deletePost: (postId: number) => ({type: 'DELETE_POST', postId} as const),
-    setStatusAC: (status: string) => ({type: 'SET_STATUS', status} as const),
-    setUserProfileAC: (profile: ProfileType) => ({type: 'SET_USER_PROFILE', profile} as const),
-    uploadAvatarAC: (photos: PhotosType) => ({type: 'UPLOAD_AVATAR', photos} as const)
+    addPost: (newPost: string) => ({type: ADD_POST, newPost} as const),
+    deletePost: (postId: number) => ({type: DELETE_POST, postId} as const),
+    setStatusAC: (status: string) => ({type: SET_STATUS, status} as const),
+    setUserProfileAC: (profile: ProfileType) => ({type: SET_USER_PROFILE, profile} as const),
+    uploadAvatarAC: (photos: PhotosType) => ({type: UPLOAD_AVATAR, photos} as const)
 }
 
 export const getStatus = (id: number): ThunkType => async dispatch => {

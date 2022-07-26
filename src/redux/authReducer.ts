@@ -3,6 +3,9 @@ import {ThunkAction} from "redux-thunk";
 import {InferActionTypes, RootState} from "./store";
 import {authAPI} from "../api/authAPI";
 
+const INIT = 'auth/INIT'
+const SET_DATA = 'auth/SET_DATA'
+
 const initialState = {
     id: null as null | number,
     email: null as null | string,
@@ -17,12 +20,12 @@ export type InitialStateType = typeof initialState
 
 const authReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
-        case 'INIT':
+        case INIT:
             return {
                 ...state,
                 init: true
             }
-        case 'SET_DATA':
+        case SET_DATA:
             return {
                 ...state,
                 ...action.payload,
@@ -33,13 +36,13 @@ const authReducer = (state = initialState, action: ActionTypes): InitialStateTyp
 }
 
 const actions = {
-    init: () => ({type: 'INIT'} as const),
+    init: () => ({type: INIT} as const),
     _setAuthUserDataAC: (id: number | null, email: string | null, login: string | null, isAuth: boolean, captchaUrl: string | null) => ({
-        type: 'SET_DATA',
+        type: SET_DATA,
         payload: {id, email, login, isAuth, captchaUrl}
     } as const),
-    setLoginErrorAC: (error: Array<string> | null) => ({type: 'SET_DATA', payload: {error}} as const),
-    setCaptchaUrl: (captchaUrl: string) => ({type: 'SET_DATA', payload: {captchaUrl}} as const)
+    setLoginErrorAC: (error: Array<string> | null) => ({type: SET_DATA, payload: {error}} as const),
+    setCaptchaUrl: (captchaUrl: string) => ({type: SET_DATA, payload: {captchaUrl}} as const)
 }
 
 type ActionTypes = InferActionTypes<typeof actions>

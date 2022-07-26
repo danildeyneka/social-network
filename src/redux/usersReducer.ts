@@ -5,6 +5,14 @@ import {InferActionTypes, RootState} from "./store";
 import {Dispatch} from "react";
 import {usersAPI} from "../api/usersAPI";
 
+const SET_USERS = 'users/SET_USERS'
+const FOLLOW = 'users/FOLLOW'
+const UNFOLLOW = 'users/UNFOLLOW'
+const SET_CURRENT_PAGE = 'users/SET_CURRENT_PAGE'
+const SET_TOTAL_USERS_COUNT = 'users/SET_TOTAL_USERS_COUNT'
+const TOGGLE_FETCHING = 'users/TOGGLE_FETCHING'
+const TOGGLE_FOLLOWING_IN_PROGRESS = 'users/TOGGLE_FOLLOWING_IN_PROGRESS'
+
 const initialState = {
     usersData: [] as Array<UsersDataType>,
     pageSize: 5,
@@ -17,37 +25,37 @@ type InitialStateType = typeof initialState
 
 const usersReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
-        case 'SET_USERS':
+        case SET_USERS:
             return {
                 ...state,
                 usersData: [...action.usersData]
             }
-        case 'FOLLOW':
+        case FOLLOW:
             return {
                 ...state,
                 usersData: mapUsersWithNewProperty(state.usersData, action.userId, 'id', {followed: true})
             }
-        case 'UNFOLLOW':
+        case UNFOLLOW:
             return {
                 ...state,
                 usersData: mapUsersWithNewProperty(state.usersData, action.userId, 'id', {followed: false})
             }
-        case 'SET_CURRENT_PAGE':
+        case SET_CURRENT_PAGE:
             return {
                 ...state,
                 currentPage: action.currentPage
             }
-        case 'TOGGLE_FETCHING':
+        case TOGGLE_FETCHING:
             return {
                 ...state,
                 isFetching: action.isFetching
             }
-        case 'SET_TOTAL_USERS_COUNT':
+        case SET_TOTAL_USERS_COUNT:
             return {
                 ...state,
                 totalUsersCount: action.totalUsersCount
             }
-        case 'TOGGLE_FOLLOWING_IN_PROGRESS':
+        case TOGGLE_FOLLOWING_IN_PROGRESS:
             return {
                 ...state,
                 followingInProgress: action.followingInProgress
@@ -61,14 +69,14 @@ const usersReducer = (state = initialState, action: ActionTypes): InitialStateTy
 
 type ActionTypes = InferActionTypes<typeof actions>
 export const actions = {
-    followAC: (userId: number) => ({type: 'FOLLOW', userId} as const),
-    unfollowAC: (userId: number) => ({type: 'UNFOLLOW', userId} as const),
-    setUsers: (usersData: Array<UsersDataType>) => ({type: 'SET_USERS', usersData} as const),
-    setCurrentPage: (currentPage: number) => ({type: 'SET_CURRENT_PAGE', currentPage} as const),
-    setTotalUsersCount: (totalUsersCount: number) => ({type: 'SET_TOTAL_USERS_COUNT', totalUsersCount} as const),
-    toggleFetching: (isFetching: boolean) => ({type: 'TOGGLE_FETCHING', isFetching} as const),
+    followAC: (userId: number) => ({type: FOLLOW, userId} as const),
+    unfollowAC: (userId: number) => ({type: UNFOLLOW, userId} as const),
+    setUsers: (usersData: Array<UsersDataType>) => ({type: SET_USERS, usersData} as const),
+    setCurrentPage: (currentPage: number) => ({type: SET_CURRENT_PAGE, currentPage} as const),
+    setTotalUsersCount: (totalUsersCount: number) => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount} as const),
+    toggleFetching: (isFetching: boolean) => ({type: TOGGLE_FETCHING, isFetching} as const),
     toggleFollowingInProgress: (followingInProgress: boolean, userId: number) => ({
-        type: 'TOGGLE_FOLLOWING_IN_PROGRESS',
+        type: TOGGLE_FOLLOWING_IN_PROGRESS,
         followingInProgress,
         userId
     } as const)
