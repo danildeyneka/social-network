@@ -19,12 +19,7 @@ type RootReducerType = typeof rootReducer
 export type RootState = ReturnType<RootReducerType>
 export type AppDispatch = typeof store.dispatch
 
-export default store
+export type InferActionTypes<T> = T extends {[key: string]: (...args: any[]) => infer U } ? U : never
+// infer creates type by itself for action object (T) in reducers, taking its keys as functions (U)
 
-// const reducer = combineReducers({ // but from redux (same)
-//     profilePage: profileReducer,
-//     messengerPage: messengerReducer,
-//     usersPage: usersReducer,
-//     auth: authReducer
-// })
-// let store = legacy_createStore(rootReducer, applyMiddleware(thunk))
+export default store

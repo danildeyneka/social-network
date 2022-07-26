@@ -1,4 +1,4 @@
-import {addPost} from "../../../redux/profileReducer";
+import {actions} from "../../../redux/profileReducer";
 import {Form, Field} from 'react-final-form'
 import {required} from "../../../utils/validators/validators";
 import {Textarea} from "../../common/Forms/Forms";
@@ -11,7 +11,7 @@ const NewPostForm: FC = () => {
     const dispatch = useAppDispatch()
     const newPost = useAppSelector(selectNewPost)
     const onSubmit = (values: FormValuesType) => {
-        dispatch(addPost(values.newPost))
+        dispatch(actions.addPost(values.newPost))
         values.newPost = ''
     }
     return <>

@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FC, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getStatus, setStatusAC, updateStatus} from "../../../../redux/profileReducer";
+import {getStatus, actions, updateStatus} from "../../../../redux/profileReducer";
 import {selectMyId} from "../../../../redux/authSelectors";
 import {selectStatus} from "../../../../redux/profileSelectors";
 
@@ -48,7 +48,7 @@ const ProfileStatus: FC<PropTypes> = (props) => {
             {editMode &&
                 <div>
                     <input onChange={(e) =>
-                        dispatch(setStatusAC(e.currentTarget.value))}
+                        dispatch(actions.setStatusAC(e.currentTarget.value))}
                            onBlur={(e) => onBlur(e)}
                            onKeyDown={(e) => onKeyDown(e)}
                            type="text"

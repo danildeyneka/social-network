@@ -1,5 +1,3 @@
-const SEND_MESSAGE = 'messenger/SEND_MESSAGE'
-
 type DialogsDataType = {
     id: number
     name: string
@@ -33,7 +31,7 @@ export type InitialStateType = typeof initialState
 const messengerReducer = (state = initialState, action: SendMessageType): InitialStateType => {
     switch (action.type) {
 
-        case SEND_MESSAGE:
+        case 'SEND_MESSAGE':
             let newMessage = action.newMessage
             return {
                 ...state,
@@ -46,9 +44,9 @@ const messengerReducer = (state = initialState, action: SendMessageType): Initia
 }
 
 type SendMessageType = {
-    type: typeof SEND_MESSAGE
+    type: 'SEND_MESSAGE'
     newMessage: string
 }
-export const sendMessage = (newMessage: string): SendMessageType => ({type: SEND_MESSAGE, newMessage})
+export const sendMessage = (newMessage: string): SendMessageType => ({type: 'SEND_MESSAGE', newMessage})
 
 export default messengerReducer

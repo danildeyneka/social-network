@@ -1,13 +1,7 @@
-import {profileAPI} from "../api/api";
 import {PostDataType, ProfileType, PhotosType, UseMatchType} from "../types/types";
 import {ThunkAction} from "redux-thunk";
-import {RootState} from "./store";
-
-const ADD_POST = 'profile/ADD_POST'
-const DELETE_POST = 'profile/DELETE_POST'
-const SET_USER_PROFILE = 'profile/SET_USER_PROFILE'
-const SET_STATUS = 'profile/SET_STATUS'
-const UPLOAD_AVATAR = 'profile/UPLOAD_AVATAR'
+import {InferActionTypes, RootState} from "./store";
+import {profileAPI} from "../api/profileAPI";
 
 const initialState = {
     postData: [
@@ -25,7 +19,7 @@ type InitialStateType = typeof initialState
 
 const profileReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
-        case ADD_POST:
+        case 'ADD_POST':
             let newPost = {
                 id: 5, // хардкод
                 message: action.newPost, // ловим сообщение из textarea, записанное в стейт
@@ -35,22 +29,22 @@ const profileReducer = (state = initialState, action: ActionTypes): InitialState
                 ...state, // копия стейта. варианты глубокой - JSON.parse(JSON.stringify(state)) и Object.assign({}, state)
                 postData: [...state.postData, newPost]
             }
-        case DELETE_POST:
+        case 'DELETE_POST':
             return {
                 ...state,
                 postData: state.postData.filter(p => p.id !== action.postId)
             }
-        case SET_USER_PROFILE:
+        case 'SET_USER_PROFILE':
             return {
                 ...state,
                 profile: action.profile
             }
-        case SET_STATUS:
+        case 'SET_STATUS':
             return {
                 ...state,
                 status: action.status
             }
-        case UPLOAD_AVATAR:
+        case 'UPLOAD_AVATAR':
             return {
                 ...state,
                 profile: {...state.profile, photos: action.photos} as ProfileType
@@ -60,56 +54,38 @@ const profileReducer = (state = initialState, action: ActionTypes): InitialState
     }
 }
 
-type ActionTypes = AddPostType | DeletePostType | SetStatusType | SetUserProfileType | UploadAvatarType
+type ActionTypes = InferActionTypes<typeof actions>
 type ThunkType = ThunkAction<void, RootState, unknown, ActionTypes>
 
-type AddPostType = {
-    type: typeof ADD_POST
-    newPost: string
+export const actions = {
+    addPost: (newPost: string) => ({type: 'ADD_POST', newPost} as const),
+    deletePost: (postId: number) => ({type: 'DELETE_POST', postId} as const),
+    setStatusAC: (status: string) => ({type: 'SET_STATUS', status} as const),
+    setUserProfileAC: (profile: ProfileType) => ({type: 'SET_USER_PROFILE', profile} as const),
+    uploadAvatarAC: (photos: PhotosType) => ({type: 'UPLOAD_AVATAR', photos} as const)
 }
-export const addPost = (newPost: string): AddPostType => ({type: ADD_POST, newPost})
-type DeletePostType = {
-    type: typeof DELETE_POST
-    postId: number
-}
-export const deletePost = (postId: number): DeletePostType => ({type: DELETE_POST, postId})
-type SetStatusType = {
-    type: typeof SET_STATUS
-    status: string
-}
-export const setStatusAC = (status: string): SetStatusType => ({type: SET_STATUS, status})
-type SetUserProfileType = {
-    type: typeof SET_USER_PROFILE
-    profile: ProfileType
-}
-const setUserProfileAC = (profile: ProfileType): SetUserProfileType => ({type: SET_USER_PROFILE, profile})
-type UploadAvatarType = {
-    type: typeof UPLOAD_AVATAR
-    photos: PhotosType
-}
-const uploadAvatarAC = (photos:PhotosType): UploadAvatarType => ({type: UPLOAD_AVATAR, photos})
 
 export const getStatus = (id: number): ThunkType => async dispatch => {
     const data = await profileAPI.getStatus(id)
-    dispatch(setStatusAC(data))
+    dispatch(actions.setStatusAC(data))
 }
 export const updateStatus = (status: string): ThunkType => async dispatch => {
     const data = await profileAPI.updateStatus(status)
     if (data.resultCode === 0) {
-        dispatch(setStatusAC(status))
+        dispatch(actions.setStatusAC(status))
     } else if (data.resultCode === 1) {
         alert('Max status length is 300 symbols')
-        dispatch(setStatusAC(initialState.status))
+        dispatch(actions.setStatusAC(initialState.status))
     }
 }
 export const setUserProfile = (match: UseMatchType, myId: number | null): ThunkType => async dispatch => {
     const data = await profileAPI.getProfile(match, myId)
-    dispatch(setUserProfileAC(data))
+    dispatch(actions.setUserProfileAC(data))
 }
 export const uploadAvatar = (file: File): ThunkType => async dispatch => {
     const data = await profileAPI.uploadAvatar(file)
     if (data.resultCode === 0) {
-        dispatch(uploadAvatarAC(data.data.photos))
+        dispatch(actions.uploadAvatarAC(data.data.photos))
     }
 }
 export const saveProfile = (profile: ProfileType, myId: number | null): ThunkType => async dispatch => {
