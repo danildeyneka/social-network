@@ -5,6 +5,7 @@ import {ChangeEvent, FC} from "react";
 import {selectUserProfile} from "../../../../redux/profileSelectors";
 import {selectMyId} from "../../../../redux/authSelectors";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/hooks";
+import {ProfileContactsType} from "../../../../types/types";
 
 type PropsType = {
     notMyPage: object | null
@@ -46,7 +47,7 @@ const ProfileData: FC<PropsType> = (props) => {
             <b>Contacts</b>
             {Object.keys(profile.contacts).map(key => <Contacts key={key}
                                                                 title={key}
-                                                                value={profile.contacts[key]}
+                                                                value={profile.contacts[key as keyof ProfileContactsType]}
             />)}
         </div>
         }

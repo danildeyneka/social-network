@@ -1,23 +1,20 @@
-import './App.css';
+import './App.scss';
 import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import ProfileWithRedirect from './components/Profile/Profile';
 import {Navigate, Route, Routes} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 import {initApp} from "./redux/authReducer";
-import {useEffect} from "react";
+import {FC, useEffect} from "react";
 import Preloader from "./components/common/Preloader/Preloader";
 import React from "react";
 import MessengerWithRedirect from "./components/Messenger/Messenger";
 import LoginWithRedirect from "./components/Login/Login";
-// const LazyMessengerWithRedirect = React.lazy(() => import('./components/Messenger/Messenger')) // lazy-loading
+import {useAppDispatch, useAppSelector} from "./hooks/hooks";
+import {selectInit} from "./redux/authSelectors";
 
-// в бандл первой загрузки приложения не попадают lazy компоненты, а грузятся после перехода на них
-// import Users from "./components/Users/Users";
 const LazyUsers = React.lazy(() => import('./components/Users/Users'))
-
-const App = () => {
-    const dispatch = useDispatch()
+const App: FC = () => {
+    const dispatch = useAppDispatch()
     const catchAllErrors = () => {
         alert('some error occurred')
     }
@@ -30,8 +27,8 @@ const App = () => {
         }
     }, [dispatch]) // componentDidUpdate
 
-    const init = useSelector(s => s.auth.init)
-    if (init === false) return <Preloader/>
+    const init = useAppSelector(selectInit)
+    if (!init) return <Preloader/>
 
     return <div className='app-wrapper'>
         <Header/>

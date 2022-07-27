@@ -21,7 +21,6 @@ export type ProfileContactsType = {
     website: string
     youtube: string
     mainLink: string
-    [key: string]: string // for mapping
 }
 export type PhotosType = {
     small: string | null
