@@ -10,7 +10,7 @@ import React from "react";
 import MessengerWithRedirect from "./components/Messenger/Messenger";
 import LoginWithRedirect from "./components/Login/Login";
 import {useAppDispatch, useAppSelector} from "./hooks/hooks";
-import {selectInit} from "./redux/authSelectors";
+import {selectInit} from "./redux/selectors/authSelectors";
 
 const LazyUsers = React.lazy(() => import('./components/Users/Users'))
 const App: FC = () => {

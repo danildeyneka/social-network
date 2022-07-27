@@ -4,7 +4,7 @@ import initialPhoto from "../../../assets/images/avatar.png";
 import {follow, unfollow} from "../../../redux/usersReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {FC} from "react";
-import {selectFollowingInProgress, selectUsersData} from "../../../redux/usersSelectors";
+import {selectFollowingInProgress, selectUsersData} from "../../../redux/selectors/usersSelectors";
 
 const UserProfile: FC = () => {
     const usersData = useSelector(selectUsersData)

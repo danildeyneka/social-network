@@ -5,7 +5,7 @@ import {FC, useEffect} from "react";
 import {setUserProfile} from "../../redux/profileReducer";
 import {useMatch} from "react-router-dom";
 import withRedirect from "../../hoc/withRedirect";
-import {selectMyId} from "../../redux/authSelectors";
+import {selectMyId} from "../../redux/selectors/authSelectors";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 
 const Profile: FC = () => {

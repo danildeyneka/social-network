@@ -4,7 +4,7 @@ import {FC, useEffect} from "react";
 import Preloader from "../common/Preloader/Preloader";
 import UserProfile from "./UserProfile/UserProfile";
 import Pagination from "../common/Pagination/Pagination";
-import {selectCurrentPage, selectIsFetching, selectPageSize, selectTotalUsersCount} from "../../redux/usersSelectors";
+import {selectCurrentPage, selectIsFetching, selectPageSize, selectTotalUsersCount} from "../../redux/selectors/usersSelectors";
 
 const Users: FC = () => {
     const dispatch = useDispatch()

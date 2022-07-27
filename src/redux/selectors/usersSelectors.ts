@@ -1,4 +1,4 @@
-import {RootState} from "./store";
+import {RootState} from "../store";
 
 export const selectIsFetching = (state: RootState) => state.usersPage.isFetching
 export const selectPageSize = (state: RootState) => state.usersPage.pageSize

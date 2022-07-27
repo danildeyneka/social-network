@@ -4,7 +4,7 @@ import Message from "./Message/Messsage";
 import withRedirect from "../../hoc/withRedirect";
 import NewMessageForm from "./NewMessageForm";
 import {useAppSelector} from "../../hooks/hooks";
-import {selectDialogsData, selectMessagesData} from "../../redux/messengerSelectors";
+import {selectDialogsData, selectMessagesData} from "../../redux/selectors/messengerSelectors";
 import {FC} from "react";
 
 const Messenger: FC = () => {

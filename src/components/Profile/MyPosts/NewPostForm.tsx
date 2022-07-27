@@ -4,7 +4,7 @@ import {required} from "../../../utils/validators/validators";
 import {Textarea} from "../../common/Forms/Forms";
 import {FormValuesType} from "../../../types/types";
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks";
-import {selectNewPost} from "../../../redux/profileSelectors";
+import {selectNewPost} from "../../../redux/selectors/profileSelectors";
 import {FC} from "react";
 
 const NewPostForm: FC = () => {

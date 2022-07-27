@@ -1,8 +1,8 @@
 import React, {ChangeEvent, FC, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getStatus, actions, updateStatus} from "../../../../redux/profileReducer";
-import {selectMyId} from "../../../../redux/authSelectors";
-import {selectStatus} from "../../../../redux/profileSelectors";
+import {selectMyId} from "../../../../redux/selectors/authSelectors";
+import {selectStatus} from "../../../../redux/selectors/profileSelectors";
 
 type PropTypes = {
     notMyPage: {

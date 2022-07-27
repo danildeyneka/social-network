@@ -21,7 +21,7 @@ const initialState = {
     isFetching: false,
     followingInProgress: [] as Array<number>
 }
-type InitialStateType = typeof initialState
+export type InitialStateType = typeof initialState
 
 const usersReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
@@ -69,8 +69,8 @@ const usersReducer = (state = initialState, action: ActionTypes): InitialStateTy
 
 type ActionTypes = InferActionTypes<typeof actions>
 export const actions = {
-    followAC: (userId: number) => ({type: FOLLOW, userId} as const),
-    unfollowAC: (userId: number) => ({type: UNFOLLOW, userId} as const),
+    followUser: (userId: number) => ({type: FOLLOW, userId} as const),
+    unfollowUser: (userId: number) => ({type: UNFOLLOW, userId} as const),
     setUsers: (usersData: Array<UsersDataType>) => ({type: SET_USERS, usersData} as const),
     setCurrentPage: (currentPage: number) => ({type: SET_CURRENT_PAGE, currentPage} as const),
     setTotalUsersCount: (totalUsersCount: number) => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount} as const),
@@ -103,11 +103,11 @@ const _toggleFollowing = async (dispatch: DispatchType, userId: number, apiReque
 }
 export const unfollow = (userId: number): ThunkType => async dispatch => {
     const apiRequest = usersAPI.unfollow.bind(usersAPI)
-    await _toggleFollowing(dispatch, userId, apiRequest, actions.unfollowAC)
+    await _toggleFollowing(dispatch, userId, apiRequest, actions.unfollowUser)
 }
 export const follow = (userId: number): ThunkType => async dispatch => {
     const apiRequest = usersAPI.follow.bind(usersAPI)
-    await _toggleFollowing(dispatch, userId, apiRequest, actions.followAC)
+    await _toggleFollowing(dispatch, userId, apiRequest, actions.followUser)
 }
 
 export default usersReducer

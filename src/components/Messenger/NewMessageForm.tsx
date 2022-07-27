@@ -4,7 +4,7 @@ import {Field, Form} from "react-final-form";
 import {Textarea} from "../common/Forms/Forms";
 import {required} from "../../utils/validators/validators";
 import {FormValuesType} from "../../types/types";
-import {selectNewMessage} from "../../redux/messengerSelectors";
+import {selectNewMessage} from "../../redux/selectors/messengerSelectors";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 import {FC} from "react";
 

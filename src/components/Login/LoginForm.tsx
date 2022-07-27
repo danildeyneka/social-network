@@ -3,7 +3,7 @@ import c from './Login.module.scss'
 import {required, maxLength} from "../../utils/validators/validators";
 import {logIn} from "../../redux/authReducer";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
-import {selectAuthError, selectCaptchaUrl} from "../../redux/authSelectors";
+import {selectAuthError, selectCaptchaUrl} from "../../redux/selectors/authSelectors";
 import {FormValuesType} from "../../types/types";
 import {FC} from "react";
 

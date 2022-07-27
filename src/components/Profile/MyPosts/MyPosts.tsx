@@ -3,7 +3,7 @@ import Post from './Post/Post'
 import NewPostForm from "./NewPostForm";
 import React, {FC} from 'react'
 import {useAppSelector} from "../../../hooks/hooks";
-import {selectPostData} from "../../../redux/profileSelectors";
+import {selectPostData} from "../../../redux/selectors/profileSelectors";
 
 const MyPosts: FC = React.memo(() => {
     const postData = useAppSelector(selectPostData)

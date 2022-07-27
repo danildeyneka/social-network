@@ -2,8 +2,8 @@ import {saveProfile, uploadAvatar} from "../../../../redux/profileReducer";
 import {Form, Field} from 'react-final-form'
 import c from './ProfileData.module.scss'
 import {ChangeEvent, FC} from "react";
-import {selectUserProfile} from "../../../../redux/profileSelectors";
-import {selectMyId} from "../../../../redux/authSelectors";
+import {selectUserProfile} from "../../../../redux/selectors/profileSelectors";
+import {selectMyId} from "../../../../redux/selectors/authSelectors";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/hooks";
 import {ProfileContactsType} from "../../../../types/types";
 

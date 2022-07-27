@@ -4,7 +4,7 @@ import avatar from '../../../assets/images/avatar.png'
 import ProfileStatus from "./ProfileStatus/ProfileStatus";
 import ProfileData, {EditProfileData} from "./ProfileData/ProfileData";
 import {FC, useState} from "react";
-import {selectUserProfile} from "../../../redux/profileSelectors";
+import {selectUserProfile} from "../../../redux/selectors/profileSelectors";
 import {useAppSelector} from "../../../hooks/hooks";
 
 type PropsType = {
