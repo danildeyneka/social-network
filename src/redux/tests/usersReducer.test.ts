@@ -2,7 +2,7 @@ import usersReducer, {actions, InitialStateType} from "../usersReducer";
 
 let state: InitialStateType
 
-beforeEach(() => { // remain original state
+beforeEach(() => {
     state = {
         usersData: [
             {id: 0, status: 'status 0', photos: {large: null, small: null}, followed: false, name: 'user 0'},
