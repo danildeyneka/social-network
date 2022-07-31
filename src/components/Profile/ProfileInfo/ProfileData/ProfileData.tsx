@@ -55,7 +55,7 @@ const ProfileData: FC<PropsType> = (props) => {
 }
 
 export const EditProfileData: FC<PropsType> = (props) => {
-    const profile = useAppSelector(selectUserProfile) // ???? same err
+    const profile = useAppSelector(selectUserProfile)
     const myId = useAppSelector(selectMyId)
     const dispatch = useAppDispatch()
     const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,8 +64,6 @@ export const EditProfileData: FC<PropsType> = (props) => {
         }
     }
     const onSubmit = (values: any) => {
-        console.log(values) // =================================change
-        // @ts-ignore
         dispatch(saveProfile(values, myId))
         props.setEditMode(false)
     }

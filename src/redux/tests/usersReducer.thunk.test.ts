@@ -34,3 +34,4 @@ test('unfollowing works', async () => {
     expect(dispatch).toHaveBeenNthCalledWith(2, actions.unfollowUser(1))
     expect(dispatch).toHaveBeenNthCalledWith(3, actions.toggleFollowingInProgress(false, 1))
 })
+

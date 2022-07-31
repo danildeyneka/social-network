@@ -2,14 +2,14 @@ import c from "../Users.module.scss";
 import {NavLink} from "react-router-dom";
 import initialPhoto from "../../../assets/images/avatar.png";
 import {follow, unfollow} from "../../../redux/usersReducer";
-import {useDispatch, useSelector} from "react-redux";
 import {FC} from "react";
 import {selectFollowingInProgress, selectUsersData} from "../../../redux/selectors/usersSelectors";
+import {useAppDispatch, useAppSelector} from "../../../hooks/hooks";
 
 const UserProfile: FC = () => {
-    const usersData = useSelector(selectUsersData)
-    const followingInProgress = useSelector(selectFollowingInProgress)
-    const dispatch = useDispatch()
+    const usersData = useAppSelector(selectUsersData)
+    const followingInProgress = useAppSelector(selectFollowingInProgress)
+    const dispatch = useAppDispatch()
 
     return (
         <div className={c.user}>
@@ -23,12 +23,10 @@ const UserProfile: FC = () => {
                     {u.followed
                         ? <button disabled={followingInProgress.includes(u.id)}
                                   onClick={() => {
-                                      // @ts-ignore
                                       dispatch(unfollow(u.id))
                                   }}>Unfollow</button>
                         : <button disabled={followingInProgress.includes(u.id)}
                                   onClick={() => {
-                                      // @ts-ignore
                                       dispatch(follow(u.id))
                                   }}>Follow</button>}
                 </div>

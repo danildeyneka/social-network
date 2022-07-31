@@ -13,7 +13,11 @@ beforeEach(() => {
         currentPage: 1,
         isFetching: false,
         pageSize: 10,
-        totalUsersCount: 0
+        totalUsersCount: 0,
+        filter: {
+            term: '',
+            friend: ''
+        }
     }
 })
 
