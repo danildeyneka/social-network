@@ -8,10 +8,10 @@ import {
     selectIsFetching,
     selectPageSize,
     selectTotalUsersCount
-} from "../../redux/selectors/usersSelectors";
-import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
-import UserSearch from "./UserSearch";
-import {useNavigate} from "react-router-dom";
+} from "../../redux/selectors/usersSelectors"
+import {useAppDispatch, useAppSelector} from "../../hooks/hooks"
+import UserSearch from "./UserSearch"
+import {createBrowserHistory} from "history";
 
 const Users: FC = () => {
     const dispatch = useAppDispatch()
@@ -20,7 +20,7 @@ const Users: FC = () => {
     const currentPage = useAppSelector(selectCurrentPage)
     const totalUsersCount = useAppSelector(selectTotalUsersCount)
     const filter = useAppSelector(selectFilter)
-    const navigate = useNavigate()
+    const history = createBrowserHistory()
 
     const onPageChanged = (currentPage: number) => {
         dispatch(getUsers(currentPage, pageSize, filter))
@@ -28,20 +28,26 @@ const Users: FC = () => {
     const onFilterChange = (filter: UsersFilterType) => {
         dispatch(getUsers(1, pageSize, filter))
     }
+
     useEffect(() => {
         dispatch(getUsers(currentPage, pageSize, filter))
     }, [])
-    useEffect(()=> {
-        if (filter.term !== '' || filter.friend !== '' || currentPage !== 1)
-        navigate(`/users?term=${filter.term}&friend=${filter.friend}&page=${currentPage}`)
-    }, [currentPage, filter])
+    // todo url sync ??
+    useEffect(() => {
+        history.push({
+            pathname: '/#/users',
+            search: `?term=${filter.term}&friend=${filter.friend}&page=${currentPage}`
+        })
+    }, [filter, currentPage])
+
 
     return (<>
         {isFetching
             ? <Preloader/>
             : <div>
                 <UserSearch onFilterChange={onFilterChange}/>
-                <Pagination currentPage={currentPage} pageSize={pageSize} totalUsersCount={totalUsersCount} onPageChanged={onPageChanged}/>
+                <Pagination currentPage={currentPage} pageSize={pageSize} totalUsersCount={totalUsersCount}
+                            onPageChanged={onPageChanged}/>
                 <UserProfile/>
             </div>}
     </>)
