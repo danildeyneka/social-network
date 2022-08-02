@@ -5,6 +5,7 @@ import './index.scss';
 import App from './App';
 import {HashRouter} from "react-router-dom";
 import {Provider} from "react-redux";
+import 'antd/dist/antd.min.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

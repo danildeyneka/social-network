@@ -4,14 +4,17 @@ import Preloader from "../common/Preloader/Preloader";
 import UserProfile from "./UserProfile/UserProfile";
 import Pagination from "../common/Pagination/Pagination";
 import {
-    selectCurrentPage, selectFilter,
+    selectCurrentPage,
+    selectFilter,
     selectIsFetching,
     selectPageSize,
     selectTotalUsersCount
 } from "../../redux/selectors/usersSelectors"
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks"
 import UserSearch from "./UserSearch"
-import {createBrowserHistory} from "history";
+import {useSearchParams} from "react-router-dom";
+import {Logger} from "sass";
+import {logIn} from "../../redux/authReducer";
 
 const Users: FC = () => {
     const dispatch = useAppDispatch()
@@ -20,7 +23,7 @@ const Users: FC = () => {
     const currentPage = useAppSelector(selectCurrentPage)
     const totalUsersCount = useAppSelector(selectTotalUsersCount)
     const filter = useAppSelector(selectFilter)
-    const history = createBrowserHistory()
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const onPageChanged = (currentPage: number) => {
         dispatch(getUsers(currentPage, pageSize, filter))
@@ -30,16 +33,17 @@ const Users: FC = () => {
     }
 
     useEffect(() => {
-        dispatch(getUsers(currentPage, pageSize, filter))
-    }, [])
-    // todo url sync ??
+        if (currentPage !== 1 || filter.friend !== '' || filter.term !== '')
+            setSearchParams(`?term=${filter.term}&friend=${filter.friend}&page=${currentPage}`)
+        // console.log(searchParams.get('page'))
+        // if (searchParams.get('page') !== String(currentPage))
+        //     searchParams.set('page', '3')
+        // console.log(searchParams.get('page'))
+    }, [currentPage, searchParams])
     useEffect(() => {
-        history.push({
-            pathname: '/#/users',
-            search: `?term=${filter.term}&friend=${filter.friend}&page=${currentPage}`
-        })
-    }, [filter, currentPage])
-
+        dispatch(getUsers(currentPage, pageSize, filter))
+    }, [currentPage])
+    // todo url sync ??
 
     return (<>
         {isFetching
