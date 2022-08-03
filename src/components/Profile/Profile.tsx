@@ -1,6 +1,5 @@
 import c from './Profile.module.scss'
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import MyPosts from "./MyPosts/MyPosts";
 import {FC, useEffect} from "react";
 import {setUserProfile} from "../../redux/profileReducer";
 import {useMatch} from "react-router-dom";
@@ -19,7 +18,6 @@ const Profile: FC = () => {
 
     return <div className={c.content}>
         <ProfileInfo notMyPage={match}/>
-        <MyPosts/>
     </div>
 }
 

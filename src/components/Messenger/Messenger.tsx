@@ -1,32 +1,69 @@
-import c from './Messenger.module.scss'
-import User from "./User/User";
-import Message from "./Message/Messsage";
+import {FC, useEffect, useState} from "react";
 import withRedirect from "../../hoc/withRedirect";
-import NewMessageForm from "./NewMessageForm";
-import {useAppSelector} from "../../hooks/hooks";
-import {selectDialogsData, selectMessagesData} from "../../redux/selectors/messengerSelectors";
-import {FC} from "react";
+
+const ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
+type WSMessagesType = {
+    message: string
+    photo: string
+    userId: number
+    userName: string
+}
 
 const Messenger: FC = () => {
-    const messagesData = useAppSelector(selectMessagesData)
-    const dialogsData = useAppSelector(selectDialogsData)
-
-    const dialogsElements = dialogsData.map(user => <User name={user.name} id={user.id} key={user.id}/>)
-    const messageElements = messagesData.map(message => <Message message={message.message} key={message.id}/>)
 
     return (
-        <div className={c.dialogs}>
-            <div className={c.dialogs__items}>
-                {dialogsElements}
-            </div>
-            <div className={c.messages}>
-                {messageElements}
-            </div>
-            <NewMessageForm/>
+        <div>
+            <Messages/>
+            <AddMessage/>
         </div>
     )
 }
 
-const MessengerWithRedirect = withRedirect(Messenger)
+const Messages: FC = () => {
+    const [messages, setMessages] = useState<WSMessagesType[]>([])
 
+    useEffect(() => {
+        ws.addEventListener('message', (e: MessageEvent) => {
+            let newMessages = JSON.parse(e.data);
+            setMessages(state => [...state, ...newMessages])
+        })
+    }, [])
+
+    return <>
+        <div style={{height: 400, overflowY: "auto"}}>
+            {messages.map((m, index) => <Message key={index} message={m}/>)}
+        </div>
+    </>
+}
+
+const Message: FC<{ message: WSMessagesType }> = ({message}) => {
+
+    return <>
+        <img alt="avatar" src={message.photo} style={{width: 30}}/>
+        <b>{message.userName}</b>
+        <div>{message.message}</div>
+    </>
+}
+
+const AddMessage: FC = () => {
+    const [message, setMessage] = useState('')
+    const sendMessage = () => {
+        debugger
+        if (!message) return
+        ws.send(message)
+        setMessage('')
+    }
+
+    return <>
+        <div>
+            <textarea onChange={(e)=>setMessage(e.currentTarget.value.trim())} value={message}/>
+        </div>
+        <div>
+            <button onClick={sendMessage}>Send</button>
+        </div>
+    </>
+}
+
+
+const MessengerWithRedirect = withRedirect(Messenger)
 export default MessengerWithRedirect

@@ -1,22 +1,13 @@
-import {PostDataType, ProfileType, PhotosType, UseMatchType} from "../types/types";
+import {PhotosType, ProfileType, UseMatchType} from "../types/types";
 import {ThunkAction} from "redux-thunk";
 import {InferActionTypes, RootState} from "./store";
 import {profileAPI} from "../api/profileAPI";
 
-const ADD_POST = 'profile/ADD_POST'
-const DELETE_POST = 'profile/DELETE_POST'
 const SET_USER_PROFILE = 'profile/SET_USER_PROFILE'
 const SET_STATUS = 'profile/SET_STATUS'
 const UPLOAD_AVATAR = 'profile/UPLOAD_AVATAR'
 
 const initialState = {
-    postData: [
-        {id: 1, message: 'Hi there', likesCount: 4},
-        {id: 2, message: 'Hi e3dq', likesCount: 6},
-        {id: 3, message: 'Hi 23213', likesCount: 11},
-        {id: 4, message: 'Hi', likesCount: 2},
-    ] as Array<PostDataType>,
-    newPost: 'Введите текст',
     profile: null as ProfileType | null,
     status: 'edit status'
 }
@@ -25,21 +16,6 @@ type InitialStateType = typeof initialState
 
 const profileReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
-        case ADD_POST:
-            let newPost = {
-                id: Date.now(),
-                message: action.newPost,
-                likesCount: 0
-            }
-            return {
-                ...state,
-                postData: [...state.postData, newPost]
-            }
-        case DELETE_POST:
-            return {
-                ...state,
-                postData: state.postData.filter(p => p.id !== action.postId)
-            }
         case SET_USER_PROFILE:
             return {
                 ...state,
@@ -64,8 +40,6 @@ type ActionTypes = InferActionTypes<typeof actions>
 type ThunkType = ThunkAction<void, RootState, unknown, ActionTypes>
 
 export const actions = {
-    addPost: (newPost: string) => ({type: ADD_POST, newPost} as const),
-    deletePost: (postId: number) => ({type: DELETE_POST, postId} as const),
     setStatusAC: (status: string) => ({type: SET_STATUS, status} as const),
     setUserProfileAC: (profile: ProfileType) => ({type: SET_USER_PROFILE, profile} as const),
     uploadAvatarAC: (photos: PhotosType) => ({type: UPLOAD_AVATAR, photos} as const)

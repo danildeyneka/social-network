@@ -6,16 +6,16 @@ import {initApp} from "./redux/authReducer";
 import {FC, useEffect} from "react";
 import Preloader from "./components/common/Preloader/Preloader";
 import React from "react";
-import MessengerWithRedirect from "./components/Messenger/Messenger";
 import LoginWithRedirect from "./components/Login/Login";
 import {useAppDispatch, useAppSelector} from "./hooks/hooks";
 import {selectInit} from "./redux/selectors/authSelectors";
-import {Breadcrumb, Layout, Menu} from 'antd';
+import {Layout, Menu} from 'antd';
 import {siderMenuItems} from "./utils/ant-design/antd";
 
 const {Content, Footer, Sider} = Layout
 
 const LazyUsers = React.lazy(() => import('./components/Users/Users'))
+const LazyMessengerWithRedirect = React.lazy(()=> import('./components/Messenger/Messenger'))
 const App: FC = () => {
     const dispatch = useAppDispatch()
     const catchAllErrors = () => {
@@ -36,10 +36,6 @@ const App: FC = () => {
     return <Layout>
         <AppHeader/>
         <Content style={{padding: '0 50px'}}>
-            <Breadcrumb style={{margin: '16px 0'}}>
-                <Breadcrumb.Item> <Link to='/'>Home</Link> </Breadcrumb.Item>
-                <Breadcrumb.Item> <Link to='/users'>Users</Link> </Breadcrumb.Item>
-            </Breadcrumb>
             <Layout className="site-layout-background" style={{padding: '24px 0'}}>
                 <Sider className="site-layout-background" width={200}>
                     <Menu
@@ -55,7 +51,7 @@ const App: FC = () => {
                         <Routes>
                             <Route path='/profile/:userId' element={<ProfileWithRedirect/>}/>
                             <Route path='/profile/' element={<ProfileWithRedirect/>}/>
-                            <Route path='/messenger/*' element={<MessengerWithRedirect/>}/>
+                            <Route path='/messenger/*' element={<LazyMessengerWithRedirect/>}/>
                             <Route path='/users' element={<LazyUsers/>}/>
                             <Route path='/login' element={<LoginWithRedirect/>}/>
                             <Route path='*' element={<Navigate to='/profile'/>}
