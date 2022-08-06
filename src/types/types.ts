@@ -1,8 +1,3 @@
-export type PostDataType = {
-    id: number
-    message: string
-    likesCount: number
-}
 export type ProfileType = {
     userId: number
     lookingForAJob: boolean
@@ -45,4 +40,10 @@ export type FormValuesType = {
     captcha: string
     newMessage: string
     newPost: string
+}
+export type WSMessagesType = {
+    message: string
+    photo: string
+    userId: number
+    userName: string
 }
