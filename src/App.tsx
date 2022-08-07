@@ -40,8 +40,6 @@ const App: FC = () => {
                 <Sider className="site-layout-background" width={200}>
                     <Menu
                         mode="inline"
-                        // defaultSelectedKeys={['1']}
-                        // defaultOpenKeys={['sub1']}
                         style={{height: '100%'}}
                         items={siderMenuItems}
                     />
@@ -61,7 +59,7 @@ const App: FC = () => {
                 </Content>
             </Layout>
         </Content>
-        <Footer style={{textAlign: 'center'}}>Social network ©2022 Created by Danil Deyneka</Footer>
+        <Footer style={{textAlign: 'center'}}>Social network ©2022 Created by <a href='#/profile/24558'>Danil Deyneka</a></Footer>
     </Layout>
 }
 

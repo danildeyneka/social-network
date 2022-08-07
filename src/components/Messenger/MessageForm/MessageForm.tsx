@@ -9,7 +9,7 @@ export const MessageForm: FC<{wsChannel: WebSocket | null}> = (props) => {
         setMessage('')
     }
 
-    useEffect(() => { // for form handler
+    useEffect(() => {
         props.wsChannel?.addEventListener('open', ()=>{
             setChannelOpened(true)
         })
@@ -17,7 +17,7 @@ export const MessageForm: FC<{wsChannel: WebSocket | null}> = (props) => {
 
     return <>
         <div>
-            <textarea onChange={(e) => setMessage(e.currentTarget.value.trim())} value={message}/>
+            <textarea onChange={(e) => setMessage(e.currentTarget.value)} value={message}/>
         </div>
         <div>
             <button disabled={channelOpened} onClick={sendMessage}>Send</button>

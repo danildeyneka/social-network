@@ -2,7 +2,7 @@ import {FC, useEffect, useState} from "react";
 import {WSMessagesType} from "../../../types/types";
 import {Message} from "./Message/Message";
 
-export const Messages: FC<{ ws: WebSocket | null }> = (props) => {
+export const Messages: FC<{ wsChannel: WebSocket | null }> = (props) => {
     const [messages, setMessages] = useState<WSMessagesType[]>([])
 
     useEffect(() => {
@@ -10,11 +10,11 @@ export const Messages: FC<{ ws: WebSocket | null }> = (props) => {
             let newMessages = JSON.parse(e.data);
             setMessages(state => [...state, ...newMessages])
         }
-        props.ws?.addEventListener('message', traceMessages)
+        props.wsChannel?.addEventListener('message', traceMessages)
         return () => {
-            props.ws?.removeEventListener('message', traceMessages)
+            props.wsChannel?.removeEventListener('message', traceMessages)
         }
-    }, [props.ws])
+    }, [props.wsChannel])
 
     return <>
         <div style={{height: 400, overflowY: "auto"}}>

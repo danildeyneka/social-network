@@ -12,10 +12,25 @@ type PropsType = {
     isEditMode: boolean
     setEditMode: (value: boolean) => void
 }
+type ContactsType = {
+    key: string
+    title: string
+    value: string
+}
+
+const Contacts: FC<ContactsType> = ({title, value}) => {
+    return <>
+        {value && <div>
+            <b>{title}: </b>
+            {value}
+        </div>}
+    </>
+}
+
 const ProfileData: FC<PropsType> = (props) => {
     const profile = useAppSelector(selectUserProfile) // ! in selector file to specify !null + contacts[key]
     const contacts = Object.values(profile!.contacts)
-    let contactsArr = []
+    let contactsArr = [] // check for full emptiness (to display or not al all)
     contacts.forEach((contact) => {
         if (contact) {
             contactsArr.push(contact)
@@ -114,21 +129,6 @@ export const EditProfileData: FC<PropsType> = (props) => {
                     </div>
                 </form>)}
         />
-    </>
-}
-
-type ContactsType = {
-    key: string
-    title: string
-    value: string
-}
-
-const Contacts: FC<ContactsType> = ({title, value}) => {
-    return <>
-        {value && <div>
-            <b>{title}: </b>
-            {value}
-        </div>}
     </>
 }
 

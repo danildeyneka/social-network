@@ -18,11 +18,7 @@ function getItem(label: React.ReactNode,
 }
 
 export const siderMenuItems: MenuItem[] = [
-    getItem('My Profile', 'MyProfile', <UserOutlined/>, [
-        getItem(<Link to='/profile'>Profile</Link>,'Profile'),
-        getItem(<Link to='/settings'>Edit profile</Link>,'Messages')
-    ]),
-
+    getItem(<Link to='/profile'>Profile</Link> , null, <UserOutlined/>),
     getItem(<Link to='/users'>Users</Link>, null, <LaptopOutlined/>, ),
     getItem(<Link to='/messenger'>Messenger</Link>, null, <MessageOutlined/>)
 ]
