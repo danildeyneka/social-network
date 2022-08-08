@@ -1,26 +1,27 @@
-import {FC, useEffect, useState} from "react";
+import React, {FC, useEffect, useState} from 'react'
+import {useAppDispatch} from '../../../hooks/hooks'
+import {sendMessage} from '../../../redux/messengerReducer'
 
-export const MessageForm: FC<{wsChannel: WebSocket | null}> = (props) => {
-    const [channelOpened, setChannelOpened] = useState(false)
+export const MessageForm: FC = () => {
     const [message, setMessage] = useState('')
-    const sendMessage = () => {
+    const [status, setStatus] = useState<'pending' | 'ready'>('pending')
+    const dispatch = useAppDispatch()
+    const sendMessageHandler = () => {
         if (!message) return
-        props.wsChannel?.send(message)
+        dispatch(sendMessage(message))
         setMessage('')
     }
-
     useEffect(() => {
-        props.wsChannel?.addEventListener('open', ()=>{
-            setChannelOpened(true)
-        })
-    }, [])
+        setStatus('ready')
+        return () => setStatus('pending')
+    }, [status])
 
     return <>
         <div>
             <textarea onChange={(e) => setMessage(e.currentTarget.value)} value={message}/>
         </div>
         <div>
-            <button disabled={channelOpened} onClick={sendMessage}>Send</button>
+            <button disabled={status === 'pending'} onClick={sendMessageHandler}>Send</button>
         </div>
     </>
 }

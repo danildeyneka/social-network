@@ -1,19 +1,22 @@
-import {FC, useEffect, useState} from "react";
-import withRedirect from "../../hoc/withRedirect";
-import {Messages} from "./Messages/Messages";
-import {MessageForm} from "./MessageForm/MessageForm";
+import {FC, useEffect} from 'react'
+import withRedirect from '../../hoc/withRedirect'
+import {Messages} from './Messages/Messages'
+import {MessageForm} from './MessageForm/MessageForm'
+import {useAppDispatch} from '../../hooks/hooks'
+import {startMessagesListening, stopMessagesListening} from '../../redux/messengerReducer'
 
 const Messenger: FC = () => {
-    const [wsChannel, setWsChannel] = useState<WebSocket | null>(null)
+    const dispatch = useAppDispatch()
 
-    useEffect(()=>{
-
+    useEffect(() => {
+        dispatch(startMessagesListening())
+        return () => dispatch(stopMessagesListening())
     }, [])
 
     return (
         <div>
-            <Messages wsChannel={wsChannel}/>
-            <MessageForm wsChannel={wsChannel}/>
+            <Messages/>
+            <MessageForm/>
         </div>
     )
 }

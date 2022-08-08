@@ -1,32 +1,46 @@
-import {WSMessagesType} from "../types/types";
+import {WSMessagesType} from '../types/types'
 
 type SubscriberType = (messages: WSMessagesType[]) => void
 
 let subscribers = [] as SubscriberType[]
-let ws: WebSocket
+let ws: WebSocket | null
 
 const closeChannel = () => {
     console.log('Channel closed')
     setTimeout(createChannel, 5000)
 }
-
 const traceMessages = (e: MessageEvent) => {
-    let newMessages = JSON.parse(e.data);
-    subscribers.forEach(s=>s(newMessages))
+    let newMessages = JSON.parse(e.data)
+    subscribers.forEach(s => s(newMessages))
 }
+const cleanUp = () => {
+    subscribers = []
 
-const createChannel = () => {
     ws?.removeEventListener('close', closeChannel)
-    ws?.close() // closing tunnel to prevent leaking
+    ws?.removeEventListener('message', traceMessages)
+    ws?.close()
+}
+const createChannel = () => {
+    cleanUp()
     ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
     ws.addEventListener('close', closeChannel)
+    ws.addEventListener('message', traceMessages)
 }
 
 export const messengerAPI = {
+    start() {
+        createChannel()
+    },
+    stop() {
+        cleanUp()
+    },
     subscribe(callback: SubscriberType) {
         subscribers.push(callback)
-        return () => {
-            subscribers = subscribers.filter(s => s !== callback)
-        }
+    },
+    unsubscribe(callback: SubscriberType) {
+        subscribers.filter(s => s !== callback)
+    },
+    sendMessage(message: string) {
+        ws?.send(message)
     }
 }

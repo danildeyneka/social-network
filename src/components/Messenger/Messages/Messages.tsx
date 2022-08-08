@@ -1,24 +1,26 @@
-import {FC, useEffect, useState} from "react";
-import {WSMessagesType} from "../../../types/types";
-import {Message} from "./Message/Message";
+import React, {FC, useEffect, useRef, useState} from 'react'
+import {Message} from './Message/Message'
+import {useAppSelector} from '../../../hooks/hooks'
+import {selectMessages} from '../../../redux/selectors/messengerSelectors'
 
-export const Messages: FC<{ wsChannel: WebSocket | null }> = (props) => {
-    const [messages, setMessages] = useState<WSMessagesType[]>([])
+export const Messages: FC = () => {
+    const messages = useAppSelector(selectMessages)
+    const anchor = useRef<HTMLDivElement>(null)
+    const [autoscroll, setAutoscroll] = useState(true)
+    const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+        const el = e.currentTarget
+        if (Math.abs((el.scrollHeight - el.scrollTop) - el.clientHeight) < 300) setAutoscroll(true)
+        else setAutoscroll(false)
+    }
 
-    useEffect(() => {
-        const traceMessages = (e: MessageEvent) => {
-            let newMessages = JSON.parse(e.data);
-            setMessages(state => [...state, ...newMessages])
-        }
-        props.wsChannel?.addEventListener('message', traceMessages)
-        return () => {
-            props.wsChannel?.removeEventListener('message', traceMessages)
-        }
-    }, [props.wsChannel])
+    useEffect(()=>{
+        if (autoscroll) anchor.current?.scrollIntoView({behavior: 'smooth'})
+    },[])
 
     return <>
-        <div style={{height: 400, overflowY: "auto"}}>
+        <div style={{height: 400, overflowY: 'auto'}} onScroll={scrollHandler}>
             {messages.map((m, index) => <Message key={index} message={m}/>)}
+            <div ref={anchor}></div>
         </div>
     </>
 }
