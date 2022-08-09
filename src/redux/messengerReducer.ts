@@ -59,8 +59,7 @@ export const startMessagesListening = (): ThunkType => async dispatch => {
 export const stopMessagesListening = (): ThunkType => async dispatch => {
     messengerAPI.unsubscribe(newMessageHandlerCreator(dispatch))
     messengerAPI.stop()
-    debugger
-    actions.messageCleared()
+    dispatch(actions.messageCleared())
 }
 
 export default messengerReducer

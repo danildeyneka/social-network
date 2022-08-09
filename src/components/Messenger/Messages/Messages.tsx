@@ -9,13 +9,13 @@ export const Messages: FC = () => {
     const [autoscroll, setAutoscroll] = useState(true)
     const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         const el = e.currentTarget
-        if (Math.abs((el.scrollHeight - el.scrollTop) - el.clientHeight) < 300) setAutoscroll(true)
-        else setAutoscroll(false)
+        if (Math.abs((el.scrollHeight - el.scrollTop) - el.clientHeight) < 300) !autoscroll && setAutoscroll(true)
+        else autoscroll && setAutoscroll(false)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         if (autoscroll) anchor.current?.scrollIntoView({behavior: 'smooth'})
-    },[])
+    }, [messages])
 
     return <>
         <div style={{height: 400, overflowY: 'auto'}} onScroll={scrollHandler}>
