@@ -2,6 +2,7 @@ import {FC} from "react";
 import {Field, Form, Formik} from "formik";
 import {UsersFilterType} from "../../redux/usersReducer";
 
+
 type PropsType = {
     onFilterChange: (filter: UsersFilterType) => void
 }
@@ -28,7 +29,7 @@ const onSubmit = (values: UsersFilterType, {setSubmitting}: {setSubmitting: (isS
                         <option value='true'>Only followed</option>
                         <option value='false'>Only unfollowed</option>
                     </Field>
-                    <button type='submit' disabled={isSubmitting}>Find</button>
+                    <button className="ant-btn ant-btn-primary" type='submit' style={{marginLeft: 10}} disabled={isSubmitting}>Find</button>
                 </Form>
             )}
             </Formik>

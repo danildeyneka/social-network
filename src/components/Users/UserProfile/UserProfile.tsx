@@ -5,6 +5,7 @@ import {follow, unfollow} from "../../../redux/usersReducer";
 import {FC} from "react";
 import {selectFollowingInProgress, selectUsersData} from "../../../redux/selectors/usersSelectors";
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks";
+import {Button} from 'antd'
 
 const UserProfile: FC = () => {
     const usersData = useAppSelector(selectUsersData)
@@ -21,14 +22,14 @@ const UserProfile: FC = () => {
                 </NavLink>
                 <div>
                     {u.followed
-                        ? <button disabled={followingInProgress.includes(u.id)}
+                        ? <Button disabled={followingInProgress.includes(u.id)}
                                   onClick={() => {
                                       dispatch(unfollow(u.id))
-                                  }}>Unfollow</button>
-                        : <button disabled={followingInProgress.includes(u.id)}
+                                  }}>Unfollow</Button>
+                        : <Button disabled={followingInProgress.includes(u.id)}
                                   onClick={() => {
                                       dispatch(follow(u.id))
-                                  }}>Follow</button>}
+                                  }}>Follow</Button>}
                 </div>
                 <div className={c.user__info}>
                     <div className={c.user__name}>{u.name}</div>
