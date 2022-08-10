@@ -14,7 +14,7 @@ export const profileAPI = {
         return instance.get<ProfileType>(`profile/${match ? match.params.userId : myId}`)
             .then(response => response.data)
     },
-    getStatus: (id: number) => {
+    getStatus: (id: number | null) => {
         return instance.get<string>('profile/status/' + id)
             .then(response => response.data)
     },

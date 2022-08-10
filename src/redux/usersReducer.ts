@@ -17,7 +17,7 @@ const TOGGLE_FOLLOWING_IN_PROGRESS = 'users/TOGGLE_FOLLOWING_IN_PROGRESS'
 
 const initialState = {
     usersData: [] as Array<UsersDataType>,
-    pageSize: 5,
+    pageSize: 9,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: false,

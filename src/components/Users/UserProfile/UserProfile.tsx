@@ -14,13 +14,14 @@ const UserProfile: FC = () => {
 
     return (
         <div className={c.user}>
-            {usersData.map(u => <div key={u.id}>
+            {usersData.map(u => <div key={u.id} className={c.user__wrapper}>
+                <div className={c.user__name}>{u.name}</div>
                 <NavLink to={`/profile/${u.id}`}>
                     <img className={c.user__avatar}
                          src={u.photos.small !== null ? u.photos.small : initialPhoto}
                          alt='img'/>
                 </NavLink>
-                <div>
+                <div  className={c.user__btn}>
                     {u.followed
                         ? <Button disabled={followingInProgress.includes(u.id)}
                                   onClick={() => {
@@ -30,10 +31,6 @@ const UserProfile: FC = () => {
                                   onClick={() => {
                                       dispatch(follow(u.id))
                                   }}>Follow</Button>}
-                </div>
-                <div className={c.user__info}>
-                    <div className={c.user__name}>{u.name}</div>
-                    <div className={c.user__status}>{u.status}</div>
                 </div>
             </div>)}
         </div>

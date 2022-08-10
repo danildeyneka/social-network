@@ -1,8 +1,8 @@
 import React, {ChangeEvent, FC, useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {getStatus, actions, updateStatus} from "../../../../redux/profileReducer";
 import {selectMyId} from "../../../../redux/selectors/authSelectors";
 import {selectStatus} from "../../../../redux/selectors/profileSelectors";
+import {useAppDispatch, useAppSelector} from '../../../../hooks/hooks'
 
 type PropTypes = {
     notMyPage: {
@@ -13,36 +13,31 @@ type PropTypes = {
 }
 
 const ProfileStatus: FC<PropTypes> = (props) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const [editMode, toggleEditMode] = useState(false)
-    const status = useSelector(selectStatus)
-    const myId = useSelector(selectMyId)
-    const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => { // ????????? TS2345: Argument of type 'KeyboardEvent<HTMLInputElement>' is not assignable to parameter of type 'KeyboardEvent'.
+    const status = useAppSelector(selectStatus)
+    const myId = useAppSelector(selectMyId)
+    const id = props.notMyPage?.params?.userId ?? myId
+    const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            // @ts-ignore
             dispatch(updateStatus(e.currentTarget.value))
             toggleEditMode(false)
         }
     }
     const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
-        // @ts-ignore
         dispatch(updateStatus(e.currentTarget.value))
         toggleEditMode(false)
     }
-    // const id = props.notMyPage ? props.notMyPage.params.userId : myId
-    const id = props.notMyPage?.params?.userId ?? myId
+    const toggleEditHandler = () => toggleEditMode(true)
     useEffect(() => {
-        // @ts-ignore
         dispatch(getStatus(id))
-    }, [id]) // initial loading of status on page (connected to matched url)
+    }, [id])
 
     return (
         <>
             {!editMode &&
                 <div>
-                    {props.notMyPage
-                        ? <span>{status}</span>
-                        : <span onClick={() => toggleEditMode(true)}>{status}</span>}
+                    <span style={{color: '#1890ff', fontSize: 22, cursor: 'pointer'}} onClick={!props.notMyPage ? toggleEditHandler : undefined}>{status}</span>
                 </div>
             }
             {editMode &&

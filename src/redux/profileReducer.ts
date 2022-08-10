@@ -45,7 +45,7 @@ export const actions = {
     uploadAvatarAC: (photos: PhotosType) => ({type: UPLOAD_AVATAR, photos} as const)
 }
 
-export const getStatus = (id: number): ThunkType => async dispatch => {
+export const getStatus = (id: number | null): ThunkType => async dispatch => {
     const data = await profileAPI.getStatus(id)
     dispatch(actions.setStatusAC(data))
 }

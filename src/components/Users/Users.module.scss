@@ -1,20 +1,35 @@
-.user{
-  &__avatar{
-    width: 100px;
-    height: 100px;
+.user {
+  //background-color: red;
+  width: 640px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: stretch;
+
+
+  &__name {
+    width: 160px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #1890ff;
+    margin-bottom: 5px;
+  }
+
+  &__wrapper {
+    margin-right: 20px;
+  }
+
+  &__avatar {
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
-  }
-  &__info{
-
-  }
-  &__name{
-
-  }
-  &__status{
-
-  }
-  &__location{
-
+    border: 1px solid #1890ff;
+    margin-bottom: 5px;
   }
 
+  &__btn {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
 }

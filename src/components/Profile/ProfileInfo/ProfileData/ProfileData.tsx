@@ -1,11 +1,11 @@
-import {saveProfile, uploadAvatar} from "../../../../redux/profileReducer";
+import {saveProfile, uploadAvatar} from '../../../../redux/profileReducer'
 import {Form, Field} from 'react-final-form'
 import c from './ProfileData.module.scss'
-import {ChangeEvent, FC} from "react";
-import {selectUserProfile} from "../../../../redux/selectors/profileSelectors";
-import {selectMyId} from "../../../../redux/selectors/authSelectors";
-import {useAppDispatch, useAppSelector} from "../../../../hooks/hooks";
-import {ProfileContactsType} from "../../../../types/types";
+import {ChangeEvent, FC} from 'react'
+import {selectUserProfile} from '../../../../redux/selectors/profileSelectors'
+import {selectMyId} from '../../../../redux/selectors/authSelectors'
+import {useAppDispatch, useAppSelector} from '../../../../hooks/hooks'
+import {ProfileContactsType} from '../../../../types/types'
 import {Button} from 'antd'
 
 type PropsType = {
@@ -46,7 +46,7 @@ const ProfileData: FC<PropsType> = (props) => {
             {profile.lookingForAJob ? <h3>Looking for a job</h3> : ''}
         </div>
         <div>
-            <b>Nickname: </b> {profile.fullName}
+            <b>Name: </b> {profile.fullName}
         </div>
 
         {profile.lookingForAJobDescription && <div>
@@ -60,7 +60,7 @@ const ProfileData: FC<PropsType> = (props) => {
         </div>}
 
         {(contactsArr.length !== 0) && <div>
-            <b>Contacts</b>
+            <b className={c.contacts}>Contacts</b>
             {Object.keys(profile.contacts).map(key => <Contacts key={key}
                                                                 title={key}
                                                                 value={profile.contacts[key as keyof ProfileContactsType]}
@@ -85,7 +85,7 @@ export const EditProfileData: FC<PropsType> = (props) => {
     }
     const cancelSubmit = () => props.setEditMode(false)
 
-    return <>
+    return <div className={c.form}>
         <h2>Modifying profile</h2>
         <h3>Avatar</h3>
         <div>
@@ -100,37 +100,42 @@ export const EditProfileData: FC<PropsType> = (props) => {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>Looking for a job</label>
-                        <Field name='lookingForAJob' type='checkbox' component='input'/>
+                        <Field className="ant-checkbox" name="lookingForAJob" type="checkbox" component="input"/>
                     </div>
                     <div>
                         <label>Full Name</label>
-                        <Field name='fullName' component='input'/>
+                        <Field className={`ant-input ${c.input}`} name="fullName" component="input"/>
                     </div>
                     <div>
                         <label>Stack</label>
-                        <Field name='lookingForAJobDescription' type='textarea' component='input'/>
+                        <Field className={`ant-input ${c.input}`} name="lookingForAJobDescription" type="textarea"
+                               component="input"/>
                     </div>
                     <div>
-                        <label>aboutMe</label>
-                        <Field name='aboutMe' type='textarea' component='input'/>
+                        <label>About me</label>
+                        <Field className={`ant-input ${c.input + ' ' + c.textarea}`} name="aboutMe" type="textarea" component="textarea"/>
                     </div>
 
                     <div>
-                        <b>Contacts</b>
+                        <b className={c.contacts}>Contacts</b>
                         {Object.keys(profile.contacts).map(key =>
                             <div className={c.contact} key={key}>
                                 <b>{key}: </b>
-                                <Field name={`contacts.${key}`} component='input'/>
+                                <Field className={`ant-input ${c.input}`} name={`contacts.${key}`} component="input"/>
                             </div>
                         )}
                     </div>
                     <div>
-                        <button type='submit' disabled={submitting}>Save Profile</button>
-                        <button onClick={cancelSubmit}>Cancel</button>
+                        <button className="ant-btn ant-btn-primary" type="submit" disabled={submitting}>
+                            Save Profile
+                        </button>
+                        <button style={{marginLeft: 6}} className="ant-btn ant-btn-primary" onClick={cancelSubmit}>
+                            Cancel
+                        </button>
                     </div>
                 </form>)}
         />
-    </>
+    </div>
 }
 
 export default ProfileData
